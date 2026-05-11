@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coky Fauzi Alfi, PhD — Academic Resume</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --night:#0f0e0c;--ink:#1c1a16;--charcoal:#2e2b24;--warm:#3d3929;--muted:#7a7262;
+  --border:#3a3630;--paper:#f2eddf;--cream:#faf7ef;
+  --gold:#c9a227;--gold-dim:#7a610f;--gold-pale:#f5e9b8;
+  --teal:#2d7a6a;--teal-dim:#1a4a40;--teal-pale:#d4ede7;
+  --rust:#8b3e22;--rust-pale:#f5ddd4;
+  --font-display:'Playfair Display',Georgia,serif;
+  --font-body:'Crimson Pro',Georgia,serif;
+  --font-mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--night);color:var(--paper);font-family:var(--font-body);font-size:17px;line-height:1.65;min-height:100vh;}
+
+/* MASTHEAD */
+.masthead{position:relative;background:var(--ink);padding:56px 48px 48px;overflow:hidden;border-bottom:1px solid var(--border);}
+.masthead::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(201,162,39,0.07) 0%,transparent 60%),repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,0.02) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,0.015) 40px);pointer-events:none;}
+.masthead-inner{max-width:1080px;margin:0 auto;position:relative;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;}
+.eyebrow{font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.eyebrow::before{content:'';display:block;width:28px;height:1px;background:var(--gold);}
+h1.name{font-family:var(--font-display);font-size:clamp(38px,6vw,68px);font-weight:900;line-height:1.0;color:var(--cream);letter-spacing:-0.02em;margin-bottom:8px;}
+h1.name span{color:var(--gold);font-style:italic;}
+.tagline{font-family:var(--font-display);font-size:clamp(16px,2.5vw,22px);font-style:italic;color:var(--muted);margin-bottom:28px;font-weight:400;}
+.contact-row{display:flex;flex-wrap:wrap;gap:6px 18px;font-family:var(--font-mono);font-size:11px;color:var(--muted);}
+.contact-row a{color:var(--gold);text-decoration:none;}
+.contact-row a:hover{color:var(--cream);}
+.contact-item::before{content:'◆ ';font-size:8px;color:var(--gold-dim);}
+.masthead-stats{display:flex;flex-direction:column;gap:14px;align-items:flex-end;padding-bottom:4px;}
+.stat-pill{background:rgba(201,162,39,0.1);border:1px solid rgba(201,162,39,0.25);border-radius:4px;padding:10px 18px;text-align:center;min-width:100px;}
+.stat-pill .num{display:block;font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--gold);line-height:1;}
+.stat-pill .lbl{display:block;font-family:var(--font-mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-top:4px;}
+
+/* NAV */
+.sidenav{position:sticky;top:0;z-index:100;background:var(--charcoal);border-bottom:1px solid var(--border);padding:0 48px;}
+.sidenav-inner{max-width:1080px;margin:0 auto;display:flex;gap:0;overflow-x:auto;scrollbar-width:none;}
+.sidenav-inner::-webkit-scrollbar{display:none;}
+.nav-btn{background:none;border:none;color:var(--muted);font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;padding:15px 18px;cursor:pointer;border-bottom:2px solid transparent;transition:color 0.2s,border-color 0.2s;white-space:nowrap;}
+.nav-btn:hover{color:var(--paper);}
+.nav-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+
+/* LAYOUT */
+.wrapper{max-width:1080px;margin:0 auto;padding:0 48px 80px;}
+section{padding-top:56px;display:none;}
+section.active{display:block;animation:rise 0.3s ease;}
+@keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+/* SECTION HEADS */
+.sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:32px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.sec-head h2{font-family:var(--font-display);font-size:30px;font-weight:700;color:var(--cream);letter-spacing:-0.01em;}
+.sec-head .sec-num{font-family:var(--font-mono);font-size:11px;color:var(--gold);letter-spacing:0.1em;}
+
+/* SUMMARY */
+#sec-summary .summary-text{font-size:19px;line-height:1.75;color:rgba(242,237,223,0.85);max-width:720px;margin-bottom:32px;}
+.interests-cloud{display:flex;flex-wrap:wrap;gap:8px;}
+.interest-tag{background:rgba(201,162,39,0.08);border:1px solid rgba(201,162,39,0.2);color:var(--gold);font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.08em;padding:5px 12px;border-radius:3px;transition:background 0.2s;}
+.interest-tag:hover{background:rgba(201,162,39,0.16);}
+.metrics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-top:32px;}
+.metric-card{background:var(--charcoal);border:1px solid var(--border);border-radius:4px;padding:18px 16px;position:relative;overflow:hidden;}
+.metric-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);}
+.metric-card .m-val{font-family:var(--font-display);font-size:32px;font-weight:700;color:var(--gold);line-height:1;display:block;}
+.metric-card .m-lab{font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.13em;text-transform:uppercase;color:var(--muted);display:block;margin-top:6px;}
+.metric-card .m-sub{font-size:12px;color:var(--muted);margin-top:4px;font-style:italic;}
+
+/* TIMELINE */
+.timeline{position:relative;}
+.timeline::before{content:'';position:absolute;left:14px;top:8px;bottom:8px;width:1px;background:linear-gradient(to bottom,var(--gold),transparent);}
+.tl-item{display:flex;gap:28px;margin-bottom:36px;position:relative;}
+.tl-dot{width:28px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding-top:6px;}
+.tl-dot-inner{width:10px;height:10px;border-radius:50%;background:var(--gold);border:2px solid var(--night);box-shadow:0 0 0 3px rgba(201,162,39,0.3);flex-shrink:0;}
+.tl-body{flex:1;background:var(--charcoal);border:1px solid var(--border);border-radius:6px;padding:22px 24px;transition:border-color 0.2s;}
+.tl-body:hover{border-color:rgba(201,162,39,0.4);}
+.tl-period{font-family:var(--font-mono);font-size:10px;letter-spacing:0.12em;color:var(--gold-dim);text-transform:uppercase;margin-bottom:6px;}
+.tl-title{font-family:var(--font-display);font-size:19px;font-weight:700;color:var(--cream);margin-bottom:2px;line-height:1.25;}
+.tl-inst{font-style:italic;color:var(--muted);font-size:15px;margin-bottom:12px;}
+.tl-body p,.tl-body li{font-size:15px;color:rgba(242,237,223,0.7);line-height:1.65;}
+.tl-body ul{padding-left:18px;}
+.tl-body li{margin-bottom:4px;}
+.tl-body strong{color:rgba(242,237,223,0.9);font-weight:600;}
+.badge-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.badge{font-family:var(--font-mono);font-size:10px;padding:3px 9px;border-radius:3px;letter-spacing:0.05em;}
+.badge-gold{background:rgba(201,162,39,0.12);border:1px solid rgba(201,162,39,0.3);color:var(--gold);}
+.badge-teal{background:rgba(45,122,106,0.12);border:1px solid rgba(45,122,106,0.3);color:#5ab8a4;}
+.badge-rust{background:rgba(139,62,34,0.12);border:1px solid rgba(139,62,34,0.3);color:#d4855c;}
+
+/* PUBLICATIONS */
+.pub-filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px;}
+.filter-btn{background:none;border:1px solid var(--border);color:var(--muted);font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:6px 14px;border-radius:3px;cursor:pointer;transition:all 0.2s;}
+.filter-btn:hover,.filter-btn.active{background:rgba(201,162,39,0.1);border-color:var(--gold);color:var(--gold);}
+.pub-card{background:var(--charcoal);border:1px solid var(--border);border-radius:6px;padding:22px 24px;margin-bottom:14px;border-left:3px solid var(--gold);transition:border-color 0.2s,transform 0.2s;}
+.pub-card:hover{transform:translateX(4px);}
+.pub-card[data-type="book"]{border-left-color:#5ab8a4;}
+.pub-card[data-type="conf"]{border-left-color:#d4855c;}
+.pub-card[data-type="diss"]{border-left-color:#9b7fd4;}
+.pub-type-tag{font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.pub-title{font-family:var(--font-display);font-size:17px;font-weight:700;color:var(--cream);line-height:1.35;margin-bottom:5px;font-style:italic;}
+.pub-authors{font-size:13.5px;color:var(--muted);margin-bottom:4px;}
+.pub-journal{font-size:13.5px;color:rgba(242,237,223,0.6);margin-bottom:8px;}
+.pub-meta-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px;}
+.pub-doi{font-family:var(--font-mono);font-size:10px;color:var(--gold);text-decoration:none;}
+.pub-doi:hover{text-decoration:underline;}
+.citation-count{font-family:var(--font-mono);font-size:10px;background:rgba(201,162,39,0.1);border:1px solid rgba(201,162,39,0.2);color:var(--gold);padding:2px 8px;border-radius:10px;}
+.pub-impact{font-size:13px;color:rgba(242,237,223,0.55);font-style:italic;margin-top:8px;line-height:1.5;border-top:1px solid var(--border);padding-top:8px;}
+
+/* SKILLS */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;}
+.skill-group{background:var(--charcoal);border:1px solid var(--border);border-radius:6px;padding:20px;}
+.skill-group-title{font-family:var(--font-mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.skill-item{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(58,54,48,0.5);font-size:14px;color:rgba(242,237,223,0.8);}
+.skill-item:last-child{border-bottom:none;}
+.skill-dot-row{display:flex;gap:4px;}
+.skill-dot{width:7px;height:7px;border-radius:50%;background:var(--border);}
+.skill-dot.filled{background:var(--gold);}
+.software-cloud{display:flex;flex-wrap:wrap;gap:7px;margin-top:6px;}
+.sw-chip{background:rgba(45,122,106,0.1);border:1px solid rgba(45,122,106,0.25);color:#5ab8a4;font-family:var(--font-mono);font-size:10px;padding:4px 10px;border-radius:3px;}
+
+/* TALKS */
+.talk-item{display:flex;gap:20px;padding:16px 0;border-bottom:1px solid var(--border);transition:padding-left 0.2s;}
+.talk-item:hover{padding-left:6px;}
+.talk-date{font-family:var(--font-mono);font-size:10px;color:var(--gold-dim);min-width:90px;text-align:right;padding-top:3px;flex-shrink:0;}
+.talk-title{font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--cream);font-style:italic;margin-bottom:3px;line-height:1.35;}
+.talk-venue{font-size:13.5px;color:var(--muted);}
+.talk-role{font-family:var(--font-mono);font-size:10px;color:#5ab8a4;margin-top:4px;letter-spacing:0.07em;}
+
+/* REFERENCES */
+.refs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}
+.ref-card{background:var(--charcoal);border:1px solid var(--border);border-radius:6px;padding:20px;}
+.ref-name{font-family:var(--font-display);font-size:17px;font-weight:700;color:var(--cream);margin-bottom:3px;}
+.ref-role{font-size:13px;color:var(--gold);font-style:italic;margin-bottom:3px;}
+.ref-inst{font-size:13px;color:var(--muted);margin-bottom:8px;}
+.ref-email{font-family:var(--font-mono);font-size:10.5px;color:#5ab8a4;word-break:break-all;text-decoration:none;display:block;margin-bottom:6px;}
+.ref-email:hover{color:var(--gold);}
+.ref-scope{font-size:12px;color:var(--muted);font-style:italic;line-height:1.5;}
+
+/* AWARDS */
+.award-card{background:var(--charcoal);border:1px solid var(--border);border-radius:6px;padding:24px;display:flex;gap:20px;align-items:flex-start;margin-bottom:14px;}
+.award-icon{font-size:30px;flex-shrink:0;}
+.award-title{font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--gold);font-style:italic;margin-bottom:4px;line-height:1.3;}
+.award-body{font-size:14px;color:rgba(242,237,223,0.7);line-height:1.6;}
+.award-body strong{color:rgba(242,237,223,0.9);}
+
+footer{text-align:center;padding:32px 24px;border-top:1px solid var(--border);font-family:var(--font-mono);font-size:10.5px;color:var(--muted);letter-spacing:0.08em;}
+footer a{color:var(--gold);text-decoration:none;}
+
+@media(max-width:700px){
+  .masthead{padding:32px 20px 28px;}
+  .masthead-inner{grid-template-columns:1fr;}
+  .masthead-stats{flex-direction:row;align-items:flex-start;flex-wrap:wrap;}
+  .stat-pill{min-width:80px;}
+  .sidenav{padding:0 16px;}
+  .wrapper{padding:0 16px 60px;}
+  .timeline::before{display:none;}
+  .tl-dot{display:none;}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="masthead-left">
+      <div class="eyebrow">Academic Resume · Financial Criminology</div>
+      <h1 class="name">Coky Fauzi <span>Alfi</span></h1>
+      <p class="tagline">PhD · Researcher · Educator · Author</p>
+      <div class="contact-row">
+        <span class="contact-item">coky.fauzi.alfi@gmail.com</span>
+        <span class="contact-item">+62 822 7649 2236</span>
+        <span class="contact-item"><a href="https://www.linkedin.com/in/cokyfauzialfi" target="_blank">linkedin.com/in/cokyfauzialfi</a></span>
+        <span class="contact-item">Palembang, South Sumatra, Indonesia</span>
+        <span class="contact-item">Scopus: 57713523100</span>
+        <span class="contact-item">ORCID: 0000-0003-1100-275X</span>
+      </div>
+    </div>
+    <div class="masthead-stats">
+      <div class="stat-pill"><span class="num">54</span><span class="lbl">Citations</span></div>
+      <div class="stat-pill"><span class="num">3</span><span class="lbl">h-index</span></div>
+      <div class="stat-pill"><span class="num">8</span><span class="lbl">Publications</span></div>
+      <div class="stat-pill"><span class="num">26</span><span class="lbl">Top Cited</span></div>
+    </div>
+  </div>
+</header>
+
+<nav class="sidenav">
+  <div class="sidenav-inner">
+    <button class="nav-btn active" onclick="show('sec-summary',this)">Summary</button>
+    <button class="nav-btn" onclick="show('sec-education',this)">Education</button>
+    <button class="nav-btn" onclick="show('sec-research',this)">Research</button>
+    <button class="nav-btn" onclick="show('sec-publications',this)">Publications</button>
+    <button class="nav-btn" onclick="show('sec-talks',this)">Talks &amp; Workshops</button>
+    <button class="nav-btn" onclick="show('sec-teaching',this)">Teaching</button>
+    <button class="nav-btn" onclick="show('sec-skills',this)">Skills</button>
+    <button class="nav-btn" onclick="show('sec-awards',this)">Awards</button>
+    <button class="nav-btn" onclick="show('sec-refs',this)">References</button>
+  </div>
+</nav>
+
+<div class="wrapper">
+
+<!-- SUMMARY -->
+<section id="sec-summary" class="active">
+  <div class="sec-head"><span class="sec-num">§ 01</span><h2>Professional Summary</h2></div>
+  <p class="summary-text">PhD in Financial Criminology from Universiti Teknologi MARA (UiTM), Malaysia, specialising in greenhouse gas emissions disclosure, earnings management, and stock performance in ASEAN carbon-intensive industries. Published scholar with peer-reviewed articles in Scopus journals and author of <em>Meta-analysis for Beginners</em> (2024). Demonstrated expertise in advanced quantitative methods including meta-analysis, structural equation modeling, content analysis, and panel data econometrics (GLM, GMM). Experienced educator across Indonesian and Malaysian higher education institutions.</p>
+
+  <div class="metrics-grid">
+    <div class="metric-card"><span class="m-val">54</span><span class="m-lab">Total Citations</span><p class="m-sub">Google Scholar</p></div>
+    <div class="metric-card"><span class="m-val">3</span><span class="m-lab">h-index</span><p class="m-sub">Scopus verified</p></div>
+    <div class="metric-card"><span class="m-val">2</span><span class="m-lab">i10-index</span></div>
+    <div class="metric-card"><span class="m-val">5</span><span class="m-lab">Journal Articles</span><p class="m-sub">Peer-reviewed</p></div>
+    <div class="metric-card"><span class="m-val">282</span><span class="m-lab">Companies</span><p class="m-sub">ASEAN dataset</p></div>
+    <div class="metric-card"><span class="m-val">720</span><span class="m-lab">Company-years</span><p class="m-sub">2018–2022</p></div>
+  </div>
+
+  <div class="sec-head" style="margin-top:40px"><span class="sec-num">§ 01b</span><h2>Research Interests</h2></div>
+  <div class="interests-cloud">
+    <span class="interest-tag">GHG Emissions Disclosure</span><span class="interest-tag">Earnings Management</span><span class="interest-tag">Stock Market Performance</span><span class="interest-tag">Corporate Governance</span><span class="interest-tag">ESG Reporting</span><span class="interest-tag">Climate-Related Financial Disclosures</span><span class="interest-tag">Sustainability Accounting</span><span class="interest-tag">Panel Data Econometrics</span><span class="interest-tag">Meta-Analysis</span><span class="interest-tag">ASEAN Emerging Markets</span><span class="interest-tag">Stakeholder Theory</span><span class="interest-tag">Legitimacy Theory</span><span class="interest-tag">Islamic Finance</span><span class="interest-tag">Behavioral Finance</span><span class="interest-tag">Bibliometrics</span><span class="interest-tag">Eco-Humor Research</span>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="sec-education">
+  <div class="sec-head"><span class="sec-num">§ 02</span><h2>Education</h2></div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+      <div class="tl-body">
+        <div class="tl-period">October 2022 – November 2025</div>
+        <div class="tl-title">Doctor of Philosophy in Financial Criminology</div>
+        <div class="tl-inst">Accounting Research Institute (ARI), Universiti Teknologi MARA (UiTM) · Shah Alam, Selangor, Malaysia</div>
+        <p><strong>Dissertation:</strong> "Investigating the Effects of GHG Emissions Disclosure on Earnings Management and Stock Performance: Evidence From ASEAN Developing Economies"</p>
+        <p style="margin-top:6px"><strong>Supervisors:</strong> Assoc. Prof. Dr. Maslinawati Mohamad (main) · Prof. Jamaliah Said (co)</p>
+        <p style="margin-top:6px"><strong>Viva Voce:</strong> 9 May 2025, minor corrections</p>
+        <div class="badge-row">
+          <span class="badge badge-gold">Graduating On Time (GOT)</span>
+          <span class="badge badge-gold">Excellence Research Award (APC)</span>
+          <span class="badge badge-teal">FRGS Research Assistantship 2023–24</span>
+          <span class="badge badge-teal">Comprehensive Examination — Distinction</span>
+        </div>
+        <ul style="margin-top:12px">
+          <li>Analysed 720 company-year observations across five ASEAN countries (2018–2022)</li>
+          <li>Developed comprehensive GHG disclosure quality index: strategic, performance, reporting dimensions</li>
+          <li>Published 4 peer-reviewed articles during candidature (2 in Scopus-indexed journals)</li>
+          <li>Applied GLM and IV-2-step GMM for causal inference</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+      <div class="tl-body">
+        <div class="tl-period">August 2016</div>
+        <div class="tl-title">Master of Management</div>
+        <div class="tl-inst">Sriwijaya University · Palembang, Indonesia</div>
+        <p><strong>Thesis:</strong> "Analysis of the Effect of Student Trust, Relational Commitment, and Student Satisfaction on Student Retention in the Implementation of Relational Marketing in State Polytechnic of Sriwijaya"</p>
+        <p style="margin-top:6px"><strong>GPA:</strong> 3.71/4.00 · Predicate: Very Satisfactory</p>
+        <div class="badge-row"><span class="badge badge-teal">SEM · 300 Respondents</span><span class="badge badge-teal">R-Studio Lavaan</span></div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+      <div class="tl-body">
+        <div class="tl-period">June 2002</div>
+        <div class="tl-title">Bachelor of Economics</div>
+        <div class="tl-inst">University of Indonesia · Depok, Indonesia</div>
+        <p><strong>Specialisation:</strong> Operations Management</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section id="sec-research">
+  <div class="sec-head"><span class="sec-num">§ 03</span><h2>Research Experience</h2></div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+      <div class="tl-body">
+        <div class="tl-period">October 2022 – May 2025</div>
+        <div class="tl-title">Doctoral Researcher</div>
+        <div class="tl-inst">Accounting Research Institute, UiTM · Shah Alam, Malaysia</div>
+        <p><strong>Project:</strong> "The Effect of GHG Emissions Disclosure on Earnings Management and Stock Performance in ASEAN Carbon-Intensive Industries"</p>
+        <ul style="margin-top:10px">
+          <li>Investigated GHG disclosure across 282 companies in 5 ASEAN nations (2018–2022)</li>
+          <li>Developed theoretical framework integrating stakeholder, legitimacy, and institutional theories</li>
+          <li>Applied GLM and IV-2-step GMM for causal inference</li>
+          <li>Sector-specific analysis: Mining, Transportation, Manufacturing, Utilities, Energy</li>
+          <li>Bibliometric analysis of 745 publications (1953–2022) on voluntary carbon emissions disclosure</li>
+          <li>Meta-analysis synthesising 22 empirical studies on board characteristics and carbon disclosure</li>
+        </ul>
+        <div class="badge-row" style="margin-top:12px">
+          <span class="badge badge-teal">GLM · IV-2-step GMM</span>
+          <span class="badge badge-teal">Content Analysis</span>
+          <span class="badge badge-teal">VOSviewer</span>
+          <span class="badge badge-gold">4 Publications During Candidature</span>
+        </div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+      <div class="tl-body">
+        <div class="tl-period">February 2023 – January 2024</div>
+        <div class="tl-title">Research Assistant — FRGS Grant</div>
+        <div class="tl-inst">Ministry of Higher Education Malaysia · PI: Assoc. Prof. Dr. Maslinawati binti Mohamad</div>
+        <p><strong>Project:</strong> "A Framework for Categorising Carbon Emission Disclosure Management Among Malaysian Listed Companies"</p>
+        <ul style="margin-top:8px">
+          <li>Conducted meta-analysis on carbon disclosure</li>
+          <li>Analysed carbon disclosure of 100+ Malaysian publicly listed companies</li>
+          <li>Developed coding framework for content analysis of sustainability reports</li>
+        </ul>
+        <div class="badge-row" style="margin-top:10px"><span class="badge badge-gold">FRGS Grant-Funded</span></div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+      <div class="tl-body">
+        <div class="tl-period">September 2014 – August 2016</div>
+        <div class="tl-title">Graduate Researcher</div>
+        <div class="tl-inst">Sriwijaya University · Palembang, Indonesia</div>
+        <p><strong>Project:</strong> "Student Retention and Relational Marketing in Higher Education"</p>
+        <ul style="margin-top:8px">
+          <li>Quantitative study with 300 undergraduate participants</li>
+          <li>Applied SEM using R-Studio Lavaan</li>
+          <li>Finding: Relationship commitment as strongest predictor of student retention</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="sec-publications">
+  <div class="sec-head"><span class="sec-num">§ 04</span><h2>Publications</h2></div>
+  <div class="pub-filter">
+    <button class="filter-btn active" onclick="filterPubs('all',this)">All (8)</button>
+    <button class="filter-btn" onclick="filterPubs('article',this)">Journal Articles (5)</button>
+    <button class="filter-btn" onclick="filterPubs('book',this)">Books (1)</button>
+    <button class="filter-btn" onclick="filterPubs('conf',this)">Conference (1)</button>
+    <button class="filter-btn" onclick="filterPubs('diss',this)">Dissertation (1)</button>
+  </div>
+  <div id="pub-list">
+    <div class="pub-card" data-type="article">
+      <div class="pub-type-tag">Journal Article · Scopus Q2 · SJR 0.912 · ABS 3 · ABDC A</div>
+      <div class="pub-title">Unveiling the hidden symphony: Board dynamics and carbon emission disclosure — A meta-analysis study in the realm of developed markets</div>
+      <div class="pub-authors">Alfi, C.F., Mohamad, M., and Hussainey, K. (2025)</div>
+      <div class="pub-journal">Journal of Accounting Literature, 47(2), 404–432 · Emerald · Published online: 9 January 2024</div>
+      <div class="pub-impact">Meta-analysis of 22 studies: medium-strength positive correlation (r = 0.45) between board independence and carbon disclosure. First comprehensive meta-analytic synthesis of board-carbon disclosure relationship in developed markets.</div>
+      <div class="pub-meta-row">
+        <span class="citation-count">26 citations</span>
+        <a class="pub-doi" href="https://doi.org/10.1108/JAL-07-2023-0126" target="_blank">DOI: 10.1108/JAL-07-2023-0126</a>
+        <span class="badge badge-gold">Lead Author</span>
+      </div>
+    </div>
+    <div class="pub-card" data-type="article">
+      <div class="pub-type-tag">Journal Article · Scopus Q2 · SJR 0.36</div>
+      <div class="pub-title">Religiosity and saving behavior: A preliminary investigation among Muslim students in Indonesia</div>
+      <div class="pub-authors">Alfi, C.F., Yusuf, S.N.S. (2022)</div>
+      <div class="pub-journal">Journal of Islamic Monetary Economics and Finance, 8(1), 25–48 · Bank Indonesia Institute</div>
+      <div class="pub-impact">PLS-PM analysis with 103 respondents: significant relationship between religiosity, saving intention, and behavior.</div>
+      <div class="pub-meta-row">
+        <span class="citation-count">18 citations</span>
+        <a class="pub-doi" href="https://doi.org/10.21098/jimf.v8i1.1440" target="_blank">DOI: 10.21098/jimf.v8i1.1440</a>
+      </div>
+    </div>
+    <div class="pub-card" data-type="article">
+      <div class="pub-type-tag">Journal Article · ABDC C · ERA Listed</div>
+      <div class="pub-title">What can we glean from the past seven decades of voluntary carbon emissions disclosure research?</div>
+      <div class="pub-authors">Mohamad, M., Abd Rahman, N.R., Nahar, H.S., and Alfi, C.F. (2023)</div>
+      <div class="pub-journal">International Journal of Energy Economics and Policy, 13(5), 83–97 · Econjournals</div>
+      <div class="pub-impact">Bibliometric analysis of 745 publications (1953–2022) mapped evolution of carbon disclosure research using VOSviewer and network analysis.</div>
+      <div class="pub-meta-row"><a class="pub-doi" href="https://doi.org/10.32479/ijeep.14296" target="_blank">DOI: 10.32479/ijeep.14296</a></div>
+    </div>
+    <div class="pub-card" data-type="article">
+      <div class="pub-type-tag">Journal Article · ERA Listed</div>
+      <div class="pub-title">An overview of the Government of Indonesia's sustainable initiatives to encourage saving behaviour among Zakat recipients in Indonesia</div>
+      <div class="pub-authors">Alfi, C.F., Mohamad, M. (2023)</div>
+      <div class="pub-journal">Journal of Academic Research in Business and Social Sciences, 13(6), 1209–1217 · HR MARS</div>
+      <div class="pub-impact">Conceptual framework linking Indonesian government sustainability initiatives with financial inclusion among Zakat beneficiaries.</div>
+      <div class="pub-meta-row">
+        <a class="pub-doi" href="https://doi.org/10.6007/ijarbss/v13-i6/16165" target="_blank">DOI: 10.6007/ijarbss/v13-i6/16165</a>
+        <span class="badge badge-gold">Lead Author</span>
+      </div>
+    </div>
+    <div class="pub-card" data-type="article">
+      <div class="pub-type-tag">Journal Article · Scopus Q4 · SJR 0.169 · ERA Listed · MyCite</div>
+      <div class="pub-title">A meta-analysis of the relationship between religiosity and saving behaviour</div>
+      <div class="pub-authors">Alfi, C.F. (2023)</div>
+      <div class="pub-journal">International Journal of Banking and Finance, 18(1), 67–94 · UUM Press</div>
+      <div class="pub-impact">Meta-analysis of 11 studies: positive correlation (r = 0.303) between religiosity and saving behavior.</div>
+      <div class="pub-meta-row">
+        <span class="citation-count">6 citations</span>
+        <a class="pub-doi" href="https://doi.org/10.32890/ijbf2023.18.1.4" target="_blank">DOI: 10.32890/ijbf2023.18.1.4</a>
+        <span class="badge badge-gold">Sole Author</span>
+      </div>
+    </div>
+    <div class="pub-card" data-type="conf">
+      <div class="pub-type-tag">Conference Proceedings</div>
+      <div class="pub-title">Disclosing GHG emissions in the perspective of strategy, performance, and reporting: A Y-shape mapping approach</div>
+      <div class="pub-authors">Alfi, C.F., &amp; Mohamad, M. (2023)</div>
+      <div class="pub-journal">Proceedings of ICRES 2023 · ISTES Organization · 18 May 2023</div>
+      <div class="pub-impact">Y-shape mapping facilitates stakeholder engagement by providing an intuitive language for discussing emissions disclosure and sustainability implications.</div>
+    </div>
+    <div class="pub-card" data-type="book">
+      <div class="pub-type-tag">Book · ISBN: 978-623-155-974-6</div>
+      <div class="pub-title">Meta-analysis for Beginners: A Practical Guide for Conducting a Meta-Analysis Study Using Jamovi</div>
+      <div class="pub-authors">Alfi, C.F. (2024)</div>
+      <div class="pub-journal">PT. Nas Media Indonesia (Nasmedia Pustaka) · October 2024</div>
+      <div class="pub-impact">Comprehensive beginner-friendly guide using open-source Jamovi. Addresses the accessibility gap in meta-analysis education for Indonesian researchers and students in developing countries.</div>
+    </div>
+    <div class="pub-card" data-type="diss">
+      <div class="pub-type-tag">Doctoral Dissertation · UiTM 2025</div>
+      <div class="pub-title">Investigating the Effects of GHG Emissions Disclosure on Earnings Management and Stock Performance: Evidence From ASEAN Developing Economies</div>
+      <div class="pub-authors">Alfi, C.F. (2025)</div>
+      <div class="pub-journal">Accounting Research Institute, UiTM · Viva Voce: 9 May 2025</div>
+      <div class="pub-impact">Panel data from 282 companies across 5 ASEAN nations (2018–2022). Uncovered opportunistic disclosure behaviour; established positive GHG disclosure–stock performance relationship.</div>
+      <div class="pub-meta-row"><span class="badge badge-gold">GOT Award</span><span class="badge badge-gold">APC Excellence Award</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- TALKS -->
+<section id="sec-talks">
+  <div class="sec-head"><span class="sec-num">§ 05</span><h2>Conference Presentations &amp; Invited Talks</h2></div>
+  <div class="talks-list">
+    <div class="talk-item">
+      <div class="talk-date">Nov 2025</div>
+      <div class="talk-content">
+        <div class="talk-title">Eco-Humour Linguistic Strategies: A Cross-Cultural Analysis of Indonesia and Malaysia</div>
+        <div class="talk-venue">National Webinar on Eco-Humour Research · School of Accounting, BINUS University, Jakarta (Virtual)</div>
+        <div class="talk-role">Guest Lecturer</div>
+      </div>
+    </div>
+    <div class="talk-item">
+      <div class="talk-date">Apr 2025</div>
+      <div class="talk-content">
+        <div class="talk-title">AI-Driven Meta-Analysis: A Hands-On Workshop for Smarter Research Synthesis</div>
+        <div class="talk-venue">Pre-IPCAF Workshop · International Postgraduate Conference on Accounting and Finance, UiTM (Virtual)</div>
+        <div class="talk-role">Workshop Facilitator · Full-day virtual workshop</div>
+      </div>
+    </div>
+    <div class="talk-item">
+      <div class="talk-date">Oct 2024</div>
+      <div class="talk-content">
+        <div class="talk-title">Mentoring for Academic Article Writing</div>
+        <div class="talk-venue">Workshop on Academic Article Writing · Faculty of Islamic Economics and Business, UIN Raden Fatah Palembang</div>
+        <div class="talk-role">Resource Person / Facilitator</div>
+      </div>
+    </div>
+    <div class="talk-item">
+      <div class="talk-date">Oct 2024</div>
+      <div class="talk-content">
+        <div class="talk-title">Strategic Global Economic Transformation through Inclusive Islamic Social Finance</div>
+        <div class="talk-venue">2nd International Conference on Islamic Social Finance (IConISF) · UIN Raden Fatah Palembang</div>
+        <div class="talk-role">Conference Presenter</div>
+      </div>
+    </div>
+    <div class="talk-item">
+      <div class="talk-date">Jul 2024</div>
+      <div class="talk-content">
+        <div class="talk-title">AI for Academic Writing: Meta-Analysis</div>
+        <div class="talk-venue">In-House Training · HETI Project ADB, University of Lampung · Horison Hotel, Bandar Lampung</div>
+        <div class="talk-role">Invited Speaker · 3-day training programme</div>
+      </div>
+    </div>
+    <div class="talk-item">
+      <div class="talk-date">Jul–Aug 2023</div>
+      <div class="talk-content">
+        <div class="talk-title">Towards Sustainable Development: Leveraging AI and Big Data Analytics in Business and Accounting</div>
+        <div class="talk-venue">EBICCS Summer Course · Universitas Diponegoro (Virtual, International)</div>
+        <div class="talk-role">Participant · 3-week intensive programme</div>
+      </div>
+    </div>
+    <div class="talk-item">
+      <div class="talk-date">May 2023</div>
+      <div class="talk-content">
+        <div class="talk-title">Disclosing GHG Emissions in the Perspective of Strategy, Performance, and Reporting: A Y-Shape Mapping Approach</div>
+        <div class="talk-venue">ICRES 2023 · International Society for Technology, Education and Science (ISTES)</div>
+        <div class="talk-role">Conference Paper &amp; Oral Presentation · Co-author: Maslinawati Mohamad</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEACHING -->
+<section id="sec-teaching">
+  <div class="sec-head"><span class="sec-num">§ 06</span><h2>Teaching Experience</h2></div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+      <div class="tl-body">
+        <div class="tl-period">March – June 2021</div>
+        <div class="tl-title">Non-Permanent Lecturer</div>
+        <div class="tl-inst">Raden Fatah State Islamic University · Palembang, Indonesia</div>
+        <p><strong>Course:</strong> Educational Research Methodology (Undergraduate)</p>
+        <ul style="margin-top:8px"><li>Delivered comprehensive curriculum covering quantitative, qualitative, and mixed-methods approaches</li></ul>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+      <div class="tl-body">
+        <div class="tl-period">2006 – 2011</div>
+        <div class="tl-title">Non-Permanent Lecturer</div>
+        <div class="tl-inst">University of Indonesia &amp; Indo Global Mandiri University</div>
+        <p><strong>Courses:</strong> Interactive Media · Marketing · Visual Communication · Design Management · Multimedia (Undergraduate)</p>
+        <div class="badge-row" style="margin-top:10px"><span class="badge badge-teal">5 Years</span><span class="badge badge-teal">Interdisciplinary</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="sec-skills">
+  <div class="sec-head"><span class="sec-num">§ 07</span><h2>Research Skills &amp; Technical Competencies</h2></div>
+  <div class="skills-grid">
+    <div class="skill-group">
+      <div class="skill-group-title">Quantitative Methods</div>
+      <div class="skill-item"><span>Meta-Analysis (Fisher's z, RE)</span><div class="skill-dot-row"><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div></div></div>
+      <div class="skill-item"><span>SEM / PLS-SEM</span><div class="skill-dot-row"><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div></div></div>
+      <div class="skill-item"><span>Panel Econometrics (GLM, GMM)</span><div class="skill-dot-row"><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot"></div></div></div>
+      <div class="skill-item"><span>Regression (OLS, Logistic)</span><div class="skill-dot-row"><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div></div></div>
+      <div class="skill-item"><span>Bibliometric &amp; Network Analysis</span><div class="skill-dot-row"><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot"></div></div></div>
+      <div class="skill-item"><span>Content Analysis &amp; Coding</span><div class="skill-dot-row"><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div></div></div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Qualitative Methods</div>
+      <div class="skill-item"><span>Content Analysis (manual/Orange)</span><div class="skill-dot-row"><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot"></div></div></div>
+      <div class="skill-item"><span>Thematic Analysis</span><div class="skill-dot-row"><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot"></div></div></div>
+      <div class="skill-item"><span>Document Analysis</span><div class="skill-dot-row"><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div></div></div>
+      <div class="skill-item"><span>Case Study Research</span><div class="skill-dot-row"><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot"></div><div class="skill-dot"></div></div></div>
+      <div class="skill-item"><span>Mixed-Methods Integration</span><div class="skill-dot-row"><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot"></div></div></div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Statistical Software</div>
+      <div class="skill-item" style="flex-direction:column;align-items:flex-start;gap:6px">
+        <span style="color:var(--gold);font-size:12px;font-family:var(--font-mono)">Advanced</span>
+        <div class="software-cloud"><span class="sw-chip">R-Studio</span><span class="sw-chip">lavaan</span><span class="sw-chip">cSEM</span><span class="sw-chip">meta</span><span class="sw-chip">tidyverse</span><span class="sw-chip">ggplot2</span></div>
+        <span style="color:var(--gold);font-size:12px;font-family:var(--font-mono);margin-top:6px">Proficient</span>
+        <div class="software-cloud"><span class="sw-chip">SPSS</span><span class="sw-chip">Stata</span><span class="sw-chip">gretl</span></div>
+        <span style="color:var(--gold);font-size:12px;font-family:var(--font-mono);margin-top:6px">Specialised</span>
+        <div class="software-cloud"><span class="sw-chip">VOSviewer</span><span class="sw-chip">JASP</span><span class="sw-chip">Jamovi</span><span class="sw-chip">GPower</span><span class="sw-chip">Gephi</span><span class="sw-chip">Orange</span></div>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Academic Writing &amp; Tools</div>
+      <div class="skill-item"><span>PRISMA Systematic Reviews</span><div class="skill-dot-row"><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div></div></div>
+      <div class="skill-item"><span>APA 7th / Chicago / Harvard</span><div class="skill-dot-row"><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div></div></div>
+      <div class="skill-item"><span>EndNote / Mendeley / Zotero</span><div class="skill-dot-row"><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot"></div></div></div>
+      <div class="skill-item"><span>Journal Submission Systems</span><div class="skill-dot-row"><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot"></div></div></div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Data &amp; Visualisation</div>
+      <div class="skill-item"><span>Excel (Advanced, Pivot Tables)</span><div class="skill-dot-row"><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div></div></div>
+      <div class="skill-item"><span>ggplot2 / Tableau Basics</span><div class="skill-dot-row"><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot"></div><div class="skill-dot"></div></div></div>
+      <div class="skill-item"><span>CmapTools / draw.io</span><div class="skill-dot-row"><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot"></div><div class="skill-dot"></div></div></div>
+      <div class="skill-item"><span>Adobe Creative Suite</span><div class="skill-dot-row"><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot"></div><div class="skill-dot"></div></div></div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Research Metrics</div>
+      <div class="skill-item"><span>Boolean Search Strategies</span><div class="skill-dot-row"><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div></div></div>
+      <div class="skill-item"><span>h-index / i10-index Analysis</span><div class="skill-dot-row"><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot"></div></div></div>
+      <div class="skill-item"><span>Citation Tracking</span><div class="skill-dot-row"><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot"></div></div></div>
+      <div class="skill-item"><span>Publish or Perish</span><div class="skill-dot-row"><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot filled"></div><div class="skill-dot"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- AWARDS -->
+<section id="sec-awards">
+  <div class="sec-head"><span class="sec-num">§ 08</span><h2>Awards &amp; Memberships</h2></div>
+  <div class="award-card">
+    <div class="award-icon">🏆</div>
+    <div>
+      <div class="award-title">Innovation Award — GHGVIZ</div>
+      <div class="award-body"><strong>Project:</strong> "GHGVIZ: GHG Disclosure Patterns Using the Y-Shape Mapping Approach"<br><strong>Team:</strong> Coky Fauzi Alfi · Maslinawati Mohamad · Jamaliah Said<br><strong>Competition:</strong> Virtual International Competition · 20–27 September 2023<br><strong>Theme:</strong> "Community Resilience Through Research and Innovation"<br>Recognised for innovative visual mapping approach to analyse and communicate GHG disclosure patterns, providing stakeholders with an intuitive tool for assessing corporate environmental transparency.</div>
+    </div>
+  </div>
+  <div class="award-card">
+    <div class="award-icon">🎓</div>
+    <div>
+      <div class="award-title">Excellence Research Award (APC — Anugerah Penyelidikan Cemerlang)</div>
+      <div class="award-body">Awarded during doctoral candidature at UiTM for outstanding research output and contribution to academic literature on carbon emissions disclosure.</div>
+    </div>
+  </div>
+  <div class="award-card">
+    <div class="award-icon">📅</div>
+    <div>
+      <div class="award-title">Graduating On Time (GOT)</div>
+      <div class="award-body">Completed PhD candidature on schedule (October 2022 – November 2025) at Accounting Research Institute, UiTM, demonstrating exceptional research management and productivity.</div>
+    </div>
+  </div>
+  <div class="sec-head" style="margin-top:40px"><span class="sec-num">§ 08b</span><h2>Professional Memberships</h2></div>
+  <div class="award-card">
+    <div class="award-icon">🌿</div>
+    <div>
+      <div class="award-title">Association of Carbon Emission Expert Indonesia (ACEXI)</div>
+      <div class="award-body"><strong>Member ID:</strong> 240216 · <strong>Since:</strong> 2024 – Present</div>
+    </div>
+  </div>
+</section>
+
+<!-- REFERENCES -->
+<section id="sec-refs">
+  <div class="sec-head"><span class="sec-num">§ 09</span><h2>References</h2></div>
+  <div class="refs-grid">
+    <div class="ref-card">
+      <div class="ref-name">Assoc. Prof. Dr. Maslinawati Mohamad</div>
+      <div class="ref-role">PhD Main Supervisor</div>
+      <div class="ref-inst">Accounting Faculty, UiTM</div>
+      <a class="ref-email" href="mailto:masli856@uitm.edu.my">masli856@uitm.edu.my</a>
+      <div class="ref-scope">Research capabilities, publication record, doctoral progress</div>
+    </div>
+    <div class="ref-card">
+      <div class="ref-name">Professor Jamaliah Said</div>
+      <div class="ref-role">PhD Co-Supervisor</div>
+      <div class="ref-inst">Accounting Research Institute, UiTM</div>
+      <a class="ref-email" href="mailto:jamaliah533@uitm.edu.my">jamaliah533@uitm.edu.my</a>
+      <div class="ref-scope">Research capabilities, doctoral progress</div>
+    </div>
+    <div class="ref-card">
+      <div class="ref-name">Prof. Sharifah Norzehan Syed Yusuf</div>
+      <div class="ref-role">Co-author (JIMF 2022)</div>
+      <div class="ref-inst">Accounting Research Institute, UiTM</div>
+      <a class="ref-email" href="mailto:shari893@uitm.edu.my">shari893@uitm.edu.my</a>
+      <div class="ref-scope">Research collaboration, publication quality</div>
+    </div>
+    <div class="ref-card">
+      <div class="ref-name">Professor Khaled Hussainey</div>
+      <div class="ref-role">Co-author (JAL 2025)</div>
+      <div class="ref-inst">Bangor Business School, Bangor University, UK</div>
+      <a class="ref-email" href="mailto:k.hussainey@bangor.ac.uk">k.hussainey@bangor.ac.uk</a>
+      <div class="ref-scope">Research collaboration, publication quality</div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <p>Coky Fauzi Alfi, PhD &nbsp;·&nbsp; Palembang, South Sumatra, Indonesia &nbsp;·&nbsp;
+    <a href="mailto:coky.fauzi.alfi@gmail.com">coky.fauzi.alfi@gmail.com</a> &nbsp;·&nbsp;
+    <a href="https://www.linkedin.com/in/cokyfauzialfi" target="_blank">LinkedIn</a> &nbsp;·&nbsp;
+    Scopus: 57713523100 &nbsp;·&nbsp; ORCID: 0000-0003-1100-275X
+  </p>
+</footer>
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({ top: document.querySelector('.sidenav').offsetTop, behavior: 'smooth' });
+}
+function filterPubs(type, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.pub-card').forEach(c => {
+    c.style.display = (type === 'all' || c.dataset.type === type) ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>
