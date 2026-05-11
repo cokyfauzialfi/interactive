@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Statistical Transformation Reference Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1916;
+    --paper: #f5f2eb;
+    --cream: #ede9df;
+    --gold: #b8860b;
+    --gold-light: #f0d98c;
+    --gold-pale: #fdf7e3;
+    --teal: #1a6b5a;
+    --teal-light: #d6ede8;
+    --rust: #8b3a22;
+    --rust-light: #f5e0d8;
+    --slate: #2c3e50;
+    --slate-light: #dce6ef;
+    --violet: #4a2d6b;
+    --violet-light: #e8dff5;
+    --muted: #7a7568;
+    --border: #c8c0b0;
+    --shadow: rgba(26,25,22,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 32px 40px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 24px,
+      rgba(184,134,11,0.06) 24px,
+      rgba(184,134,11,0.06) 25px
+    );
+  }
+  .header-inner { position: relative; max-width: 1200px; margin: 0 auto; }
+  .header-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 8px;
+  }
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(26px, 4vw, 40px);
+    font-weight: 400;
+    line-height: 1.15;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+  header h1 em { color: var(--gold-light); font-style: italic; }
+  .header-meta {
+    font-size: 13px;
+    color: rgba(245,242,235,0.55);
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 20px;
+  }
+
+  /* ── NAV TABS ── */
+  .nav-tabs {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    position: relative;
+  }
+  .tab-btn {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: rgba(245,242,235,0.65);
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    padding: 8px 18px;
+    border-radius: 4px 4px 0 0;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+  .tab-btn.active {
+    background: var(--paper);
+    border-color: var(--paper);
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* ── MAIN ── */
+  main { max-width: 1200px; margin: 0 auto; padding: 32px 24px 60px; }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; animation: fadeIn 0.25s ease; }
+  @keyframes fadeIn { from { opacity:0; transform: translateY(4px); } to { opacity:1; transform: translateY(0); } }
+
+  /* ── SECTION TITLE ── */
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .section-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+
+  /* ── GRID CARDS ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px;
+    box-shadow: 0 2px 8px var(--shadow);
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .card:hover { box-shadow: 0 6px 20px var(--shadow); transform: translateY(-2px); }
+
+  .card-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+  }
+  .tag-teal { background: var(--teal-light); color: var(--teal); }
+  .tag-rust { background: var(--rust-light); color: var(--rust); }
+  .tag-slate { background: var(--slate-light); color: var(--slate); }
+  .tag-violet { background: var(--violet-light); color: var(--violet); }
+  .tag-gold { background: var(--gold-pale); color: var(--gold); }
+
+  .card h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 10px;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .card p, .card li { font-size: 13px; color: #444; line-height: 1.65; }
+  .card ul { padding-left: 16px; }
+  .card ul li { margin-bottom: 4px; }
+
+  /* ── ISSUE ACCORDION ── */
+  .issue-block {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px var(--shadow);
+  }
+  .issue-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: background 0.15s;
+    user-select: none;
+  }
+  .issue-header:hover { background: var(--cream); }
+  .issue-num {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+  .issue-title { font-size: 15px; font-weight: 700; flex: 1; }
+  .issue-chevron {
+    font-size: 18px;
+    color: var(--muted);
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+  .issue-block.open .issue-chevron { transform: rotate(180deg); }
+
+  .issue-body {
+    display: none;
+    padding: 0 20px 20px;
+    border-top: 1px solid var(--border);
+  }
+  .issue-block.open .issue-body { display: block; }
+
+  .issue-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 14px;
+  }
+  @media (max-width: 640px) { .issue-cols { grid-template-columns: 1fr; } }
+
+  .col-box {
+    background: var(--cream);
+    border-radius: 5px;
+    padding: 14px;
+  }
+  .col-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .col-box p, .col-box li { font-size: 12.5px; color: #333; line-height: 1.6; }
+  .col-box ul { padding-left: 14px; }
+  .col-box li { margin-bottom: 3px; }
+
+  /* ── FORMULA CHIPS ── */
+  .chip-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .chip {
+    background: var(--gold-pale);
+    border: 1px solid #dcc87a;
+    color: #7a5a08;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  /* ── EXAMPLES TABLE ── */
+  .examples-table-wrap { overflow-x: auto; margin-bottom: 24px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  thead tr { background: var(--ink); color: var(--paper); }
+  thead th {
+    padding: 12px 14px;
+    text-align: left;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+  tbody tr { border-bottom: 1px solid var(--border); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:nth-child(even) { background: var(--cream); }
+  tbody tr:hover { background: var(--gold-pale); }
+  tbody td { padding: 12px 14px; vertical-align: top; line-height: 1.55; color: #333; }
+  .example-badge {
+    display: inline-block;
+    background: var(--teal-light);
+    color: var(--teal);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .ex-badge-red { background: var(--rust-light); color: var(--rust); }
+  .ex-badge-slate { background: var(--slate-light); color: var(--slate); }
+  .ex-badge-violet { background: var(--violet-light); color: var(--violet); }
+
+  /* ── RED FLAGS ── */
+  .redflag-item {
+    display: flex;
+    gap: 14px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--rust);
+    border-radius: 0 6px 6px 0;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 4px var(--shadow);
+  }
+  .flag-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+  .flag-content {}
+  .flag-title { font-weight: 700; font-size: 14px; margin-bottom: 5px; color: var(--rust); line-height: 1.4; }
+  .flag-why { font-size: 12.5px; color: #555; margin-bottom: 6px; line-height: 1.6; }
+  .flag-alt {
+    font-size: 12px;
+    color: var(--teal);
+    background: var(--teal-light);
+    padding: 6px 10px;
+    border-radius: 4px;
+    line-height: 1.55;
+  }
+  .flag-alt strong { font-weight: 700; }
+
+  /* ── CHECKLIST ── */
+  .checklist-item {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    box-shadow: 0 1px 4px var(--shadow);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .checklist-item:hover { background: var(--gold-pale); }
+  .checklist-item.checked { border-color: var(--teal); background: var(--teal-light); }
+  .check-box {
+    width: 22px; height: 22px;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    color: transparent;
+    transition: all 0.2s;
+    margin-top: 1px;
+  }
+  .checklist-item.checked .check-box {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: #fff;
+  }
+  .check-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    min-width: 24px;
+    padding-top: 2px;
+  }
+  .check-content {}
+  .check-element { font-weight: 700; font-size: 14px; margin-bottom: 4px; color: var(--ink); }
+  .check-why { font-size: 12.5px; color: var(--muted); margin-bottom: 6px; line-height: 1.5; }
+  .check-phrase {
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+    color: #333;
+    background: var(--cream);
+    border-radius: 4px;
+    padding: 8px 10px;
+    line-height: 1.6;
+  }
+  .checklist-item.checked .check-phrase { background: rgba(255,255,255,0.5); }
+
+  /* progress bar */
+  .progress-wrap { margin-bottom: 24px; }
+  .progress-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    display: flex; justify-content: space-between;
+  }
+  .progress-bar-bg {
+    height: 8px; background: var(--cream); border-radius: 4px;
+    border: 1px solid var(--border); overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%; background: var(--teal);
+    border-radius: 4px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+  .btn-reset {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    padding: 5px 12px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-reset:hover { border-color: var(--rust); color: var(--rust); }
+
+  /* ── FLOWCHART ── */
+  .flowchart-wrap {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 24px;
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+
+  /* ── CODE SNIPPETS ── */
+  .code-block {
+    background: #1a1916;
+    border-radius: 5px;
+    padding: 12px 16px;
+    overflow-x: auto;
+    margin-top: 8px;
+  }
+  .code-block code {
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+    color: #b8d4c8;
+    white-space: pre;
+    line-height: 1.7;
+  }
+
+  /* ── AUTHOR CARD ── */
+  .author-strip {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 14px 20px;
+    border-radius: 6px;
+    margin-top: 32px;
+    font-size: 12.5px;
+  }
+  .avatar {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: #1a6b5a;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: #d6ede8;
+    flex-shrink: 0;
+  }
+  .author-name { font-weight: 700; font-size: 13.5px; }
+  .author-role { color: rgba(245,242,235,0.55); }
+  .author-link {
+    margin-left: auto;
+    background: #0A66C2;
+    color: #fff;
+    text-decoration: none;
+    padding: 7px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+  .author-link:hover { background: #004182; }
+
+  /* ── SEARCH ── */
+  .search-wrap {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .search-input {
+    flex: 1;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 9px 14px;
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    background: #fff;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-input:focus { border-color: var(--gold); }
+  .search-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .highlight { background: var(--gold-light); border-radius: 2px; }
+
+  hr.divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+  @media (max-width: 600px) {
+    header { padding: 20px 16px 16px; }
+    main { padding: 20px 12px 48px; }
+    .tab-btn { font-size: 10px; padding: 7px 10px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-eyebrow">Statistical Reference Dashboard · Quantitative Research</div>
+    <h1>Interactive <em>Data Transformation</em> Guide</h1>
+    <div class="header-meta">Data Issues · Diagnostics · Examples · Red Flags · Reporting Checklist</div>
+    <nav class="nav-tabs">
+      <button class="tab-btn active" onclick="switchTab('issues')">① Data Issues &amp; Transforms</button>
+      <button class="tab-btn" onclick="switchTab('examples')">② Examples</button>
+      <button class="tab-btn" onclick="switchTab('redflags')">③ Red Flags</button>
+      <button class="tab-btn" onclick="switchTab('checklist')">④ Reporting Checklist</button>
+      <button class="tab-btn" onclick="switchTab('flowchart')">⑤ Decision Flowchart</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ─────────────────────────────────────────────────────
+     TAB 1: DATA ISSUES
+───────────────────────────────────────────────────── -->
+<div class="tab-panel active" id="tab-issues">
+  <h2 class="section-title">Data Issues, Diagnostics & Transformation Types</h2>
+  <p class="section-subtitle">Click any issue to expand diagnostics, recommended transformations, formulas, and R functions.</p>
+
+  <div class="search-wrap">
+    <input type="text" class="search-input" id="issueSearch" placeholder="Search issues, transforms, R functions…" oninput="searchIssues()">
+    <span class="search-count" id="issueCount"></span>
+  </div>
+
+  <!-- Issue 1 -->
+  <div class="issue-block" id="iss1">
+    <div class="issue-header" onclick="toggleIssue('iss1')">
+      <div class="issue-num tag-teal" style="background:var(--teal-light);color:var(--teal)">1</div>
+      <div class="issue-title">Normality &amp; Skewness</div>
+      <div class="issue-chevron">▾</div>
+    </div>
+    <div class="issue-body">
+      <div class="issue-cols">
+        <div class="col-box">
+          <div class="col-label">🔍 How to Identify</div>
+          <ul>
+            <li>Histogram/Density: Long tail, peak shifted</li>
+            <li>Q-Q Plot: Points deviate from diagonal at tails</li>
+            <li>Skewness: |skew| &gt; 1 (substantial), &gt; 2 (severe)</li>
+            <li>Shapiro-Wilk/AD Test: p &lt; 0.05 → non-normality</li>
+            <li>Boxplot: Asymmetric whiskers, one-sided outliers</li>
+          </ul>
+        </div>
+        <div class="col-box">
+          <div class="col-label">🔄 Recommended Transformations</div>
+          <div class="chip-list">
+            <span class="chip">Log (ln / log₁₀)</span>
+            <span class="chip">Square Root</span>
+            <span class="chip">Cube Root</span>
+            <span class="chip">Reciprocal</span>
+            <span class="chip">Box-Cox</span>
+            <span class="chip">Yeo-Johnson</span>
+          </div>
+        </div>
+      </div>
+      <div class="issue-cols">
+        <div class="col-box">
+          <div class="col-label">📐 Key Formulas</div>
+          <ul>
+            <li><b>Log:</b> y' = ln(y)</li>
+            <li><b>Sqrt:</b> y' = √y</li>
+            <li><b>Box-Cox:</b> y<sup>λ</sup> = (y<sup>λ</sup> − 1)/λ (λ≠0); ln(y) (λ=0)</li>
+            <li><b>Yeo-Johnson:</b> piecewise for y ≥ 0 and y &lt; 0</li>
+          </ul>
+        </div>
+        <div class="col-box">
+          <div class="col-label">💡 Interpretation Notes</div>
+          <ul>
+            <li>Log coefficients = semi-elasticities (%ΔX → unitΔY)</li>
+            <li>Box-Cox/Yeo-Johnson: always report λ</li>
+            <li>All: back-transform for substantive interpretation</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-box" style="margin-top:12px">
+        <div class="col-label">🧪 R Functions</div>
+        <div class="code-block"><code>bestNormalize::bestNormalize()
+car::powerTransform()
+MASS::boxcox()
+forecast::BoxCox.lambda()
+e1071::skewness()
+nortest::ad.test()</code></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Issue 2 -->
+  <div class="issue-block" id="iss2">
+    <div class="issue-header" onclick="toggleIssue('iss2')">
+      <div class="issue-num" style="background:var(--rust-light);color:var(--rust)">2</div>
+      <div class="issue-title">Variance Stabilization (Homoscedasticity)</div>
+      <div class="issue-chevron">▾</div>
+    </div>
+    <div class="issue-body">
+      <div class="issue-cols">
+        <div class="col-box">
+          <div class="col-label">🔍 How to Identify</div>
+          <ul>
+            <li>Residuals vs. Fitted Plot: Funnel shape (variance ↑ with fitted)</li>
+            <li>Scale-Location Plot: Trend in √|residuals| vs. fitted</li>
+            <li>Breusch-Pagan/White Test: p &lt; 0.05 → heteroscedasticity</li>
+            <li>Grouped Variance Check: SD scales with mean across categories</li>
+            <li>Plot of SD vs. Mean: Linear relationship → variance ∝ mean</li>
+          </ul>
+        </div>
+        <div class="col-box">
+          <div class="col-label">🔄 Recommended Transformations</div>
+          <div class="chip-list">
+            <span class="chip">Log</span>
+            <span class="chip">Square Root</span>
+            <span class="chip">Arcsine Square Root</span>
+            <span class="chip">Freeman-Tukey</span>
+            <span class="chip">Anscombe</span>
+            <span class="chip">Weighted Least Squares</span>
+          </div>
+        </div>
+      </div>
+      <div class="issue-cols">
+        <div class="col-box">
+          <div class="col-label">📐 Key Formulas</div>
+          <ul>
+            <li><b>Log:</b> ln(y) — when variance ∝ mean²</li>
+            <li><b>Sqrt:</b> √y — when variance ∝ mean (Poisson)</li>
+            <li><b>Arcsine:</b> sin⁻¹(√p) — for proportions</li>
+            <li><b>Freeman-Tukey:</b> √y + √(y+1) — low counts</li>
+          </ul>
+        </div>
+        <div class="col-box">
+          <div class="col-label">💡 Interpretation Notes</div>
+          <ul>
+            <li>Transformations stabilize variance but may not normalize data</li>
+            <li>Check residuals <b>after</b> transformation</li>
+            <li>If variance pattern is complex, consider robust SEs instead</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-box" style="margin-top:12px">
+        <div class="col-label">🧪 R Functions</div>
+        <div class="code-block"><code>lmtest::bptest()
+car::spreadLevelPlot()
+performance::check_heteroscedasticity()
+bestNormalize::bestNormalize()
+stats::weighted.mean()  # for WLS</code></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Issue 3 -->
+  <div class="issue-block" id="iss3">
+    <div class="issue-header" onclick="toggleIssue('iss3')">
+      <div class="issue-num" style="background:var(--slate-light);color:var(--slate)">3</div>
+      <div class="issue-title">Linearity &amp; Additivity</div>
+      <div class="issue-chevron">▾</div>
+    </div>
+    <div class="issue-body">
+      <div class="issue-cols">
+        <div class="col-box">
+          <div class="col-label">🔍 How to Identify</div>
+          <ul>
+            <li>Scatterplot + Loess Smooth: Curved pattern (U-shape, diminishing returns)</li>
+            <li>Component+Residual Plot: Non-flat smooth line</li>
+            <li>Added Variable Plot: Curvature after adjusting for covariates</li>
+            <li>RESET/Rainbow Test: p &lt; 0.05 → functional form misspecification</li>
+            <li>Cor(residuals, X²): Significant → quadratic term may help</li>
+          </ul>
+        </div>
+        <div class="col-box">
+          <div class="col-label">🔄 Recommended Transformations</div>
+          <div class="chip-list">
+            <span class="chip">Log-Log</span>
+            <span class="chip">Log-Level</span>
+            <span class="chip">Level-Log</span>
+            <span class="chip">Polynomial (X², X³)</span>
+            <span class="chip">Fractional Polynomials</span>
+            <span class="chip">Splines / GAMs</span>
+            <span class="chip">Box-Tidwell</span>
+          </div>
+        </div>
+      </div>
+      <div class="issue-cols">
+        <div class="col-box">
+          <div class="col-label">📐 Key Formulas</div>
+          <ul>
+            <li><b>Log-Log:</b> ln(Y) = β₀ + β₁ ln(X) + ε → elasticity</li>
+            <li><b>Log-Level:</b> ln(Y) = β₀ + β₁X + ε → semi-elasticity</li>
+            <li><b>Polynomial:</b> Y = β₀ + β₁X + β₂X² + ε</li>
+            <li><b>Splines:</b> Y = β₀ + f(X) + ε (f = smooth function)</li>
+          </ul>
+        </div>
+        <div class="col-box">
+          <div class="col-label">💡 Interpretation Notes</div>
+          <ul>
+            <li>Log-Log: β₁ = %ΔY / %ΔX (constant elasticity)</li>
+            <li>Polynomial: interpret via marginal effects or plots, not raw coefficients</li>
+            <li>Splines: report degrees of freedom, knot placement; visualize effect</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-box" style="margin-top:12px">
+        <div class="col-label">🧪 R Functions</div>
+        <div class="code-block"><code>car::crPlots()
+car::avPlots()
+lmtest::reset()
+mgcv::gam()           # for splines
+mfp::mfp()            # fractional polynomials
+car::boxTidwell()     # predictor transforms
+marginaleffects::plot_slopes()  # interpretation</code></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Issue 4 -->
+  <div class="issue-block" id="iss4">
+    <div class="issue-header" onclick="toggleIssue('iss4')">
+      <div class="issue-num" style="background:var(--violet-light);color:var(--violet)">4</div>
+      <div class="issue-title">Proportions, Rates &amp; Bounded Data</div>
+      <div class="issue-chevron">▾</div>
+    </div>
+    <div class="issue-body">
+      <div class="issue-cols">
+        <div class="col-box">
+          <div class="col-label">🔍 How to Identify</div>
+          <ul>
+            <li>Histogram: Piles up at 0 or 1 (boundary clustering)</li>
+            <li>Variance-Mean Relationship: For proportions, variance ≈ p(1−p)/n</li>
+            <li>Linear Model Predictions: Values &lt; 0 or &gt; 1 (impossible)</li>
+            <li>Residual Q-Q Plot: Skewness when outcome near boundaries</li>
+            <li>Beta Distribution Fit: Data bell-shaped within (0,1) but bounded</li>
+          </ul>
+        </div>
+        <div class="col-box">
+          <div class="col-label">🔄 Recommended Transformations</div>
+          <div class="chip-list">
+            <span class="chip">Logit</span>
+            <span class="chip">Probit</span>
+            <span class="chip">Comp. Log-Log</span>
+            <span class="chip">Arcsine Square Root</span>
+            <span class="chip">Folded Power</span>
+            <span class="chip">Beta Regression</span>
+            <span class="chip">Binomial GLM</span>
+          </div>
+        </div>
+      </div>
+      <div class="issue-cols">
+        <div class="col-box">
+          <div class="col-label">📐 Key Formulas</div>
+          <ul>
+            <li><b>Logit:</b> ln(p / (1−p)) → maps (0,1) → (−∞, +∞)</li>
+            <li><b>Probit:</b> Φ⁻¹(p) → assumes normal latent variable</li>
+            <li><b>Arcsine:</b> sin⁻¹(√p) — variance stabilization</li>
+            <li><b>Boundary:</b> p* = (p(n−1) + 0.5)/n (Cox adjustment)</li>
+          </ul>
+        </div>
+        <div class="col-box">
+          <div class="col-label">💡 Interpretation Notes</div>
+          <ul>
+            <li>Logit coefficients = log-odds; exponentiate for odds ratios</li>
+            <li>Beta regression: use predict(type = "response") for original metric</li>
+            <li>Boundary handling: adjust 0/1 values before logit</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-box" style="margin-top:12px">
+        <div class="col-label">🧪 R Functions</div>
+        <div class="code-block"><code>betareg::betareg()        # beta regression
+car::logit()
+stats::qlogis()           # built-in logit
+gamlss::gamlss()          # zero-inflated beta
+glm(..., family = binomial)  # binomial GLM
+performance::check_model()   # bounded outcome diagnostics</code></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────────────
+     TAB 2: EXAMPLES
+───────────────────────────────────────────────────── -->
+<div class="tab-panel" id="tab-examples">
+  <h2 class="section-title">Applied Examples</h2>
+  <p class="section-subtitle">Real-world illustrations of each issue type, diagnostic finding, transformation applied, and post-transformation interpretation.</p>
+
+  <div class="cards-grid">
+
+    <div class="card">
+      <span class="card-tag tag-teal">Skewness</span>
+      <h3>Scope 3 GHG Emissions (tons CO₂e)</h3>
+      <p style="margin-bottom:8px"><b>Diagnostic:</b> Skewness = 3.2; Shapiro-Wilk p &lt; 0.001; Q-Q plot shows heavy right tail.</p>
+      <p style="margin-bottom:8px"><b>Transformation:</b> Box-Cox, λ̂ = 0.19 (95% CI: 0.14–0.25)</p>
+      <p><b>Interpretation:</b> "A 10% increase in Shariah governance score associates with a 2.3-point increase in <i>transformed</i> emissions; back-transformed: ~1.8-ton reduction (95% CI: 0.4–3.2)"</p>
+    </div>
+
+    <div class="card">
+      <span class="card-tag tag-rust">Heteroscedasticity</span>
+      <h3>ESG Disclosure Score by Firm Size</h3>
+      <p style="margin-bottom:8px"><b>Diagnostic:</b> Breusch-Pagan p = 0.003; residual plot shows funnel shape (variance ↑ with size).</p>
+      <p style="margin-bottom:8px"><b>Transformation:</b> Log transformation of disclosure score.</p>
+      <p><b>Interpretation:</b> "Coefficients represent % change in disclosure per unit change in predictor; robust SEs used for inference."</p>
+    </div>
+
+    <div class="card">
+      <span class="card-tag tag-slate">Nonlinearity</span>
+      <h3>Shariah Board Independence → Greenwashing Ratio</h3>
+      <p style="margin-bottom:8px"><b>Diagnostic:</b> RESET test p = 0.008; partial residual plot shows diminishing returns.</p>
+      <p style="margin-bottom:8px"><b>Transformation:</b> Log-transform predictor: ln(independence + 1)</p>
+      <p><b>Interpretation:</b> "Each doubling of independence associates with β-unit change in greenwashing; effect strongest at low independence levels."</p>
+    </div>
+
+    <div class="card">
+      <span class="card-tag tag-violet">Bounded Proportion</span>
+      <h3>Greenwashing Ratio (misleading claims / total claims)</h3>
+      <p style="margin-bottom:8px"><b>Diagnostic:</b> 30% of firms at exact 0; linear model predicts −0.02 for small firms.</p>
+      <p style="margin-bottom:8px"><b>Transformation:</b> Zero-inflated beta regression (alternative modeling approach — no traditional transform needed).</p>
+      <p><b>Interpretation:</b> "Probability of any greenwashing: logit link; conditional mean of ratio: beta distribution with logit link."</p>
+    </div>
+
+  </div>
+
+  <hr class="divider">
+  <h2 class="section-title" style="margin-bottom:14px">Quick Reference Table</h2>
+  <div class="examples-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Issue Type</th>
+          <th>Example Variable</th>
+          <th>Diagnostic Finding</th>
+          <th>Transformation Applied</th>
+          <th>Interpretation After</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="example-badge">Skewness</span></td>
+          <td>Scope 3 emissions (tons CO₂e)</td>
+          <td>Skewness = 3.2; SW p &lt; 0.001; heavy right tail</td>
+          <td>Box-Cox, λ̂ = 0.19 (95% CI: 0.14–0.25)</td>
+          <td>10% ↑ governance → ~1.8-ton ↓ emissions (back-transformed)</td>
+        </tr>
+        <tr>
+          <td><span class="example-badge ex-badge-red">Heteroscedasticity</span></td>
+          <td>ESG disclosure score by firm size</td>
+          <td>Breusch-Pagan p = 0.003; funnel shape in residuals</td>
+          <td>Log transformation of disclosure score</td>
+          <td>Coefficients = % change in disclosure; robust SEs used</td>
+        </tr>
+        <tr>
+          <td><span class="example-badge ex-badge-slate">Nonlinearity</span></td>
+          <td>Shariah board independence → greenwashing ratio</td>
+          <td>RESET p = 0.008; diminishing returns pattern</td>
+          <td>Log-transform predictor: ln(independence + 1)</td>
+          <td>Each doubling of independence → β-unit change; strongest at low levels</td>
+        </tr>
+        <tr>
+          <td><span class="example-badge ex-badge-violet">Bounded Proportion</span></td>
+          <td>Greenwashing ratio (0–1)</td>
+          <td>30% at exact 0; LM predicts impossible −0.02</td>
+          <td>Zero-inflated beta regression</td>
+          <td>Logit link for P(any greenwashing); beta for conditional mean</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────────────
+     TAB 3: RED FLAGS
+───────────────────────────────────────────────────── -->
+<div class="tab-panel" id="tab-redflags">
+  <h2 class="section-title">Red Flags in Reporting</h2>
+  <p class="section-subtitle">Common methodological pitfalls when reporting transformed variables — and safer alternatives.</p>
+
+  <div class="redflag-item">
+    <div class="flag-icon">🚩</div>
+    <div class="flag-content">
+      <div class="flag-title">Reporting raw descriptive stats but transformed regression coefficients without explanation</div>
+      <div class="flag-why">Creates an interpretive disconnect; suggests carelessness or lack of transparency.</div>
+      <div class="flag-alt"><strong>✓ Safer:</strong> Report descriptives on raw scale with a clear footnote noting which transformation was used in analysis.</div>
+    </div>
+  </div>
+
+  <div class="redflag-item">
+    <div class="flag-icon">🚩</div>
+    <div class="flag-content">
+      <div class="flag-title">Using Box-Cox but omitting λ estimate and confidence interval</div>
+      <div class="flag-why">Prevents replication; obscures which transformation was actually applied to the data.</div>
+      <div class="flag-alt"><strong>✓ Safer:</strong> Always report: λ̂, estimation method (MLE/grid), 95% CI, and software used (e.g., MASS::boxcox in R).</div>
+    </div>
+  </div>
+
+  <div class="redflag-item">
+    <div class="flag-icon">🚩</div>
+    <div class="flag-content">
+      <div class="flag-title">Back-transforming without bias adjustment (when means are needed)</div>
+      <div class="flag-why">Yields the median, not the mean; systematically biased predictions that underestimate the true conditional mean.</div>
+      <div class="flag-alt"><strong>✓ Safer:</strong> Use <code>marginaleffects::predictions(type = "response")</code> or <code>bestNormalize(..., inverse = TRUE)</code> with bias correction (e.g., Taylor's approximation).</div>
+    </div>
+  </div>
+
+  <div class="redflag-item">
+    <div class="flag-icon">🚩</div>
+    <div class="flag-content">
+      <div class="flag-title">Transforming only Y but not checking X-linearity</div>
+      <div class="flag-why">May induce heteroscedasticity or nonlinearity in predictors, undermining the goals of the transformation.</div>
+      <div class="flag-alt"><strong>✓ Safer:</strong> Check partial residual plots for all covariates after transformation of the outcome variable.</div>
+    </div>
+  </div>
+
+  <div class="redflag-item">
+    <div class="flag-icon">🚩</div>
+    <div class="flag-content">
+      <div class="flag-title">Arbitrary dichotomization (e.g., median split) after transformation</div>
+      <div class="flag-why">Causes loss of statistical power, inflated Type I error, and distorted effect sizes — even when intended as a simplification.</div>
+      <div class="flag-alt"><strong>✓ Safer:</strong> Keep continuous; use splines or polynomial terms if nonlinearity is suspected in the relationship.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────────────
+     TAB 4: REPORTING CHECKLIST
+───────────────────────────────────────────────────── -->
+<div class="tab-panel" id="tab-checklist">
+  <h2 class="section-title">Reporting Checklist</h2>
+  <p class="section-subtitle">Six essential elements every methods section should include when reporting transformed variables. Click items to mark them complete.</p>
+
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Checklist Progress</span>
+      <span id="progressText">0 / 6</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+    <button class="btn-reset" onclick="resetChecklist()">Reset checklist</button>
+  </div>
+
+  <div class="checklist-item" onclick="toggleCheck(this)">
+    <div class="check-box">✓</div>
+    <div class="check-num">01</div>
+    <div class="check-content">
+      <div class="check-element">Rationale</div>
+      <div class="check-why">Justifies transformation choice beyond "it looked skewed"</div>
+      <div class="check-phrase">"Due to right-skewness in Scope 3 emissions (skewness = 3.2, Shapiro-Wilk p &lt; 0.001), we applied a Box-Cox transformation to meet OLS assumptions."</div>
+    </div>
+  </div>
+
+  <div class="checklist-item" onclick="toggleCheck(this)">
+    <div class="check-box">✓</div>
+    <div class="check-num">02</div>
+    <div class="check-content">
+      <div class="check-element">Exact Specification</div>
+      <div class="check-why">Enables replication; prevents ambiguity about which transform was applied</div>
+      <div class="check-phrase">"We used the natural logarithm (base e); for Box-Cox, λ was estimated by maximum likelihood over [−2.0, 2.0], yielding λ̂ = 0.19 (95% CI: 0.14–0.25)."</div>
+    </div>
+  </div>
+
+  <div class="checklist-item" onclick="toggleCheck(this)">
+    <div class="check-box">✓</div>
+    <div class="check-num">03</div>
+    <div class="check-content">
+      <div class="check-element">Boundary Handling</div>
+      <div class="check-why">Critical for log/Box-Cox (requires strictly positive values)</div>
+      <div class="check-phrase">"All emission values were shifted by +0.01 to ensure positivity prior to log-transformation; results were robust to alternative shifts (0.001–0.1)."</div>
+    </div>
+  </div>
+
+  <div class="checklist-item" onclick="toggleCheck(this)">
+    <div class="check-box">✓</div>
+    <div class="check-num">04</div>
+    <div class="check-content">
+      <div class="check-element">Diagnostic Improvement</div>
+      <div class="check-why">Shows the transformation actually achieved its intended purpose</div>
+      <div class="check-phrase">"Post-transformation, Shapiro-Wilk p increased to 0.38 and the Breusch-Pagan test was non-significant (p = 0.21), indicating improved normality and homoscedasticity."</div>
+    </div>
+  </div>
+
+  <div class="checklist-item" onclick="toggleCheck(this)">
+    <div class="check-box">✓</div>
+    <div class="check-num">05</div>
+    <div class="check-content">
+      <div class="check-element">Back-Transformation Method</div>
+      <div class="check-why">Enables substantive interpretation in the original metric</div>
+      <div class="check-phrase">"Marginal effects were back-transformed to the original metric using Taylor's bias-adjusted approximation (Taylor, 1986); 95% CIs were computed via the delta method."</div>
+    </div>
+  </div>
+
+  <div class="checklist-item" onclick="toggleCheck(this)">
+    <div class="check-box">✓</div>
+    <div class="check-num">06</div>
+    <div class="check-content">
+      <div class="check-element">Sensitivity Analysis</div>
+      <div class="check-why">Addresses concerns about λ instability or alternative specifications</div>
+      <div class="check-phrase">"Results were qualitatively unchanged when using square root transformation or when restricting λ to the 95% confidence interval (0.14–0.25)."</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────────────
+     TAB 5: FLOWCHART
+───────────────────────────────────────────────────── -->
+<div class="tab-panel" id="tab-flowchart">
+  <h2 class="section-title">Decision Flowchart</h2>
+  <p class="section-subtitle">A step-by-step diagnostic pathway to select the appropriate outcome variable transformation.</p>
+  <div class="flowchart-wrap">
+    <div id="chart" style="padding:1rem 0;min-height:400px"></div>
+  </div>
+</div>
+
+<!-- Author strip -->
+<div class="author-strip">
+  <div class="avatar">CFA</div>
+  <div>
+    <div class="author-name">Coky Fauzi Alfi, PhD</div>
+    <div class="author-role">Author of "Meta-Analysis for Beginners" · Researcher · PhD in Financial Criminology from Accounting Research Institute (ARI), Universiti Teknologi MARA (UiTM) Shah Alam Malaysia · Live in Palembang, Indonesia</div>
+  </div>
+  <a class="author-link" href="https://www.linkedin.com/in/cokyfauzialfi" target="_blank">View LinkedIn</a>
+</div>
+
+</main>
+
+<!-- Mermaid flowchart script -->
+<script type="module">
+import mermaid from 'https://esm.sh/mermaid@11/dist/mermaid.esm.min.mjs';
+const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+await document.fonts.ready;
+mermaid.initialize({
+  startOnLoad: false,
+  theme: 'base',
+  fontFamily: '"Lato", sans-serif',
+  themeVariables: {
+    darkMode: false,
+    fontSize: '12px',
+    fontFamily: '"Lato", sans-serif',
+    primaryColor: '#EEEDFE',
+    primaryTextColor: '#3C3489',
+    primaryBorderColor: '#534AB7',
+    lineColor: '#73726c',
+    secondaryColor: '#E1F5EE',
+    tertiaryColor: '#F1EFE8',
+    edgeLabelBackground: '#F1EFE8',
+    textColor: '#3d3d3a',
+    clusterBkg: '#EEEDFE',
+  },
+  flowchart: { curve: 'basis', padding: 20 }
+});
+const diagram = `flowchart TD
+    START([Examine outcome variable]):::gray --> Q1
+    Q1{Severely skewed or non-normal?\\nShapiro-Wilk p < 0.05}:::decision
+    Q1 -->|YES — strictly positive| A1[Log transform\\nthen Box-Cox / Yeo-Johnson]:::action
+    Q1 -->|YES — zeros or negatives| A2[Yeo-Johnson\\nor cube root]:::action
+    Q1 -->|NO| Q2
+    Q2{Variance increases with mean?\\nBreusch-Pagan p < 0.05}:::decision
+    Q2 -->|YES — var ∝ mean| B1[Square root\\ntransform]:::action
+    Q2 -->|YES — var ∝ mean²| B2[Log transform Y]:::action
+    Q2 -->|YES — proportions| B3[Arcsine √\\nor beta regression]:::action
+    Q2 -->|NO| Q3
+    Q3{Curved relationship\\nwith predictor?\\nRESET p < 0.05}:::decision
+    Q3 -->|YES — diminishing returns| C1[Log X\\nor Level-Log model]:::action
+    Q3 -->|YES — exponential growth| C2[Log-Log\\nor Log-Level model]:::action
+    Q3 -->|YES — complex curve| C3[Splines GAM\\nor fractional polynomials]:::action
+    Q3 -->|NO| Q4
+    Q4{Outcome bounded?\\ne.g. 0–1, proportion, rate}:::decision
+    Q4 -->|YES — strictly 0 to 1| D1[Beta regression\\nor logit transform]:::action
+    Q4 -->|YES — with exact 0 or 1| D2[Zero-inflated beta\\nor two-part model]:::action
+    Q4 -->|YES — count with denominator| D3[Binomial GLM]:::action
+    Q4 -->|NO| D4[OLS likely appropriate\\ncheck residuals]:::action
+    D4 --> END
+    END([Validate: post-transformation diagnostics]):::gray
+    classDef decision fill:#EEEDFE,stroke:#534AB7,color:#3C3489,stroke-width:1.5px
+    classDef action fill:#E1F5EE,stroke:#0F6E56,color:#085041,stroke-width:1px
+    classDef gray fill:#F1EFE8,stroke:#5F5E5A,color:#444441,stroke-width:1px
+`;
+try {
+  const { svg } = await mermaid.render('mermaid-flow', diagram);
+  document.getElementById('chart').innerHTML = svg;
+  const svgEl = document.querySelector('#chart svg');
+  if (svgEl) { svgEl.style.width = '100%'; svgEl.style.height = 'auto'; }
+} catch(e) {
+  document.getElementById('chart').innerHTML = '<p style="color:#888;padding:20px">Flowchart could not be rendered in this environment. Please open the file in a browser with internet access.</p>';
+}
+</script>
+
+<script>
+/* ── TAB SWITCHING ── */
+function switchTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+/* ── ACCORDION ── */
+function toggleIssue(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+}
+
+/* ── CHECKLIST ── */
+function toggleCheck(el) {
+  el.classList.toggle('checked');
+  updateProgress();
+}
+function updateProgress() {
+  const items = document.querySelectorAll('.checklist-item');
+  const done = document.querySelectorAll('.checklist-item.checked').length;
+  const total = items.length;
+  document.getElementById('progressText').textContent = done + ' / ' + total;
+  document.getElementById('progressFill').style.width = (done / total * 100) + '%';
+}
+function resetChecklist() {
+  document.querySelectorAll('.checklist-item.checked').forEach(el => el.classList.remove('checked'));
+  updateProgress();
+}
+
+/* ── SEARCH ── */
+function searchIssues() {
+  const q = document.getElementById('issueSearch').value.toLowerCase().trim();
+  const blocks = document.querySelectorAll('.issue-block');
+  let visible = 0;
+  blocks.forEach(b => {
+    const text = b.innerText.toLowerCase();
+    const match = !q || text.includes(q);
+    b.style.display = match ? '' : 'none';
+    if (match) visible++;
+    if (match && q) b.classList.add('open');
+  });
+  document.getElementById('issueCount').textContent = q ? visible + ' match' + (visible !== 1 ? 'es' : '') : '';
+}
+</script>
+</body>
+</html>
