@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedagogical Flow: Qualitative Accounting Research (Full Edition)</title>
+    <style>
+        :root {
+            --bg-color: #F8FAFC;
+            --text-main: #1E293B;
+            --text-muted: #64748B;
+            --card-bg: #FFFFFF;
+            --border-color: #E2E8F0;
+            
+            /* Bloom's Taxonomy Colors */
+            --c-understand: #2563EB; /* Blue */
+            --c-apply: #059669;      /* Green */
+            --c-analyze: #D97706;    /* Amber */
+            --c-evaluate: #DC2626;   /* Red */
+            --c-create: #7C3AED;     /* Purple */
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Header & Hero */
+        header {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--c-understand), var(--c-apply), var(--c-analyze), var(--c-evaluate), var(--c-create));
+        }
+        header h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem; }
+        header p { font-size: 1.1rem; color: #94A3B8; max-width: 800px; margin: 0 auto; }
+
+        /* Navigation */
+        nav {
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 1rem;
+        }
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        .nav-btn:hover { transform: translateY(-2px); }
+        .nav-btn.p1 { color: var(--c-understand); background: #EFF6FF; }
+        .nav-btn.p1:hover { border-color: var(--c-understand); }
+        .nav-btn.p2 { color: var(--c-apply); background: #ECFDF5; }
+        .nav-btn.p2:hover { border-color: var(--c-apply); }
+        .nav-btn.p3 { color: var(--c-analyze); background: #FFFBEB; }
+        .nav-btn.p3:hover { border-color: var(--c-analyze); }
+        .nav-btn.p4 { color: var(--c-evaluate); background: #FEF2F2; }
+        .nav-btn.p4:hover { border-color: var(--c-evaluate); }
+        .nav-btn.p5 { color: var(--c-create); background: #F5F3FF; }
+        .nav-btn.p5:hover { border-color: var(--c-create); }
+
+        /* Main Content */
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+            position: relative;
+        }
+
+        /* The "Spine" connecting the parts */
+        main::before {
+            content: '';
+            position: absolute;
+            left: 40px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, 
+                var(--c-understand) 0%, var(--c-understand) 20%, 
+                var(--c-apply) 20%, var(--c-apply) 45%, 
+                var(--c-analyze) 45%, var(--c-analyze) 70%, 
+                var(--c-evaluate) 70%, var(--c-evaluate) 85%, 
+                var(--c-create) 85%, var(--c-create) 100%);
+            border-radius: 2px;
+            z-index: -1;
+        }
+
+        /* Part Sections */
+        .part-section { margin-bottom: 4rem; position: relative; }
+        .part-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; }
+        .part-node {
+            width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 800; font-size: 1.2rem; flex-shrink: 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 4px solid var(--bg-color);
+        }
+        .part-title h2 { font-size: 1.5rem; font-weight: 800; }
+        .part-title span { font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Chapter Accordion Cards */
+        .chapter-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            margin-left: 60px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02), 0 4px 12px rgba(0,0,0,0.04);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .chapter-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.08); transform: translateX(4px); }
+
+        .accordion-toggle {
+            width: 100%; background: none; border: none;
+            padding: 1.25rem 1.5rem;
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; text-align: left; font-family: inherit;
+        }
+        .accordion-toggle h3 { font-size: 1.15rem; font-weight: 700; color: var(--text-main); }
+        .accordion-toggle .subtitle { font-size: 0.9rem; color: var(--text-muted); font-weight: 500; display: block; margin-top: 0.25rem; }
+        .chevron { width: 24px; height: 24px; transition: transform 0.3s ease; color: var(--text-muted); flex-shrink: 0; }
+        .chapter-card.active .chevron { transform: rotate(180deg); }
+
+        .accordion-content {
+            max-height: 0; overflow: hidden;
+            transition: max-height 0.5s ease-out;
+            background: #FAFAFA;
+            border-top: 1px solid transparent;
+        }
+        .chapter-card.active .accordion-content { border-top: 1px solid var(--border-color); }
+        .content-inner { padding: 1.5rem; }
+
+        /* Content Blocks */
+        .block-title {
+            font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+            margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;
+        }
+        .block-title::before { content: ''; display: inline-block; width: 12px; height: 12px; border-radius: 3px; }
+
+        .objective-list { list-style: none; margin-bottom: 2rem; }
+        .objective-list li { margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative; font-size: 0.95rem; color: #334155; }
+        .objective-list li::before { content: '→'; position: absolute; left: 0; font-weight: bold; }
+
+        .verb {
+            display: inline-block; padding: 0.1rem 0.5rem; border-radius: 4px;
+            font-weight: 700; font-size: 0.75rem; margin-right: 0.4rem;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .v-understand { background: #DBEAFE; color: var(--c-understand); }
+        .v-apply { background: #D1FAE5; color: var(--c-apply); }
+        .v-analyze { background: #FEF3C7; color: var(--c-analyze); }
+        .v-evaluate { background: #FEE2E2; color: var(--c-evaluate); }
+        .v-create { background: #EDE9FE; color: var(--c-create); }
+
+        /* Goal Box */
+        .goal-box {
+            padding: 1rem 1.25rem; border-radius: 8px; margin-bottom: 1.5rem;
+            border-left: 4px solid; font-style: italic; color: #475569; font-size: 0.95rem;
+        }
+
+        /* Outline Section */
+        .outline-section { margin-bottom: 1.5rem; }
+        .outline-section h4 { font-size: 1rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.5rem; border-bottom: 1px dashed var(--border-color); padding-bottom: 0.25rem;}
+        .outline-section ul { list-style-type: disc; margin-left: 1.5rem; color: #475569; font-size: 0.9rem; }
+        .outline-section li { margin-bottom: 0.4rem; }
+
+        /* Mentor Feature Box */
+        .mentor-box {
+            padding: 1.25rem; border-radius: 8px; border: 2px dashed;
+            background-color: #F8FAFC; margin-top: 1rem;
+        }
+        .mentor-box h4 { font-size: 0.95rem; font-weight: 800; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;}
+        .mentor-box p { font-size: 0.9rem; color: #334155; margin: 0; }
+
+        /* Controls */
+        .controls { display: flex; justify-content: flex-end; margin-bottom: 2rem; margin-left: 60px; }
+        .control-btn {
+            padding: 0.5rem 1rem; background: white; border: 1px solid var(--border-color);
+            border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer;
+            color: var(--text-muted); transition: all 0.2s;
+        }
+        .control-btn:hover { background: #F1F5F9; color: var(--text-main); }
+
+        footer { text-align: center; padding: 3rem; background: #0F172A; color: #94A3B8; font-size: 0.9rem; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            main::before { left: 20px; }
+            .part-header { gap: 1rem; }
+            .part-node { width: 32px; height: 32px; font-size: 1rem; }
+            .chapter-card { margin-left: 40px; }
+            .controls { margin-left: 40px; }
+            header h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>The Pedagogical Flow</h1>
+    <p>Mapping the Cognitive Journey of Qualitative Accounting Research: From Philosophical Foundations to Theorization</p>
+</header>
+
+<nav>
+    <div class="nav-container">
+        <a href="#part1" class="nav-btn p1">1. Understand</a>
+        <a href="#part2" class="nav-btn p2">2. Apply</a>
+        <a href="#part3" class="nav-btn p3">3. Analyze</a>
+        <a href="#part4" class="nav-btn p4">4. Evaluate</a>
+        <a href="#part5" class="nav-btn p5">5. Create</a>
+    </div>
+</nav>
+
+<main>
+    <div class="controls">
+        <button class="control-btn" id="toggleAll">Expand / Collapse All</button>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- PART I: FOUNDATIONS                        -->
+    <!-- ========================================== -->
+    <section class="part-section" id="part1">
+        <div class="part-header">
+            <div class="part-node" style="background: var(--c-understand);">1</div>
+            <div class="part-title">
+                <span style="color: var(--c-understand);">Bloom's: Understand</span>
+                <h2>Part I: Foundations</h2>
+            </div>
+        </div>
+
+        <!-- Ch 1 -->
+        <div class="chapter-card">
+            <button class="accordion-toggle">
+                <div>
+                    <h3>Ch 1: Beyond the Numbers</h3>
+                    <span class="subtitle">Philosophy & The Interpretive Shift</span>
+                </div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content">
+                <div class="content-inner">
+                    <div class="block-title" style="color: var(--c-understand);"><span style="background: var(--c-understand);" class="block-title::before"></span>Learning Objectives</div>
+                    <ul class="objective-list">
+                        <li><span class="verb v-understand">Contrast</span> positivist vs. interpretivist paradigms and explain how philosophy dictates methodology.</li>
+                        <li><span class="verb v-understand">Articulate</span> why contextual "stories" are essential for interpreting raw accounting data.</li>
+                        <li><span class="verb v-understand">Differentiate</span> between merely measuring accounting phenomena and interpreting their social/behavioral meanings.</li>
+                    </ul>
+
+                    <div class="block-title" style="color: var(--c-understand);">Section Goal</div>
+                    <div class="goal-box" style="border-color: var(--c-understand); background: #EFF6FF;">Demystify philosophical jargon (ontology/epistemology) and show exactly how underlying beliefs about "reality" change the actual methods used in the field.</div>
+
+                    <div class="block-title" style="color: var(--c-understand);">Topic Outlines</div>
+                    <div class="outline-section">
+                        <h4>1.1 - 1.2 Paradigms & Jargon</h4>
+                        <ul>
+                            <li>The Two Lenses: Positivist (objective science) vs. Interpretivist (social construct).</li>
+                            <li>Translating Jargon: Ontology & Epistemology explained for accountants.</li>
+                        </ul>
+                    </div>
+                    <div class="outline-section">
+                        <h4>1.3 - 1.4 Methodological Alignment</h4>
+                        <ul>
+                            <li>The "Accounting Equation" of Philosophy: How paradigms dictate methods (Scenario: Studying "Audit Quality").</li>
+                            <li>The "Frankenstein" Trap: Avoiding methodological mismatch.</li>
+                        </ul>
+                    </div>
+
+                    <div class="mentor-box" style="border-color: var(--c-understand);">
+                        <h4 style="color: var(--c-understand);">🛠️ Mentor Feature: The Alignment Checklist</h4>
+                        <p>A 5-point checklist to ensure the researcher's philosophy and methodology match before designing the study.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ch 2 -->
+        <div class="chapter-card">
+            <button class="accordion-toggle">
+                <div>
+                    <h3>Ch 2: The Five Objects Framework</h3>
+                    <span class="subtitle">Mapping Objects to Analytical Lenses</span>
+                </div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content">
+                <div class="content-inner">
+                    <div class="block-title" style="color: var(--c-understand);">Learning Objectives</div>
+                    <ul class="objective-list">
+                        <li><span class="verb v-understand">Identify</span> the 5 core objects: Humans, Texts, Systems, Institutions, and Numbers.</li>
+                        <li><span class="verb v-understand">Map</span> each object to its corresponding analytical lens (Behaviors, Themes, Cycles, Decisions, Patterns).</li>
+                        <li><span class="verb v-understand">Evaluate</span> research questions to select appropriate pairings and avoid methodological misalignment.</li>
+                    </ul>
+
+                    <div class="block-title" style="color: var(--c-understand);">Section Goal</div>
+                    <div class="goal-box" style="border-color: var(--c-understand); background: #EFF6FF;">Demystify what constitutes an "object" of study, moving beyond literal definitions to show how everyday accounting elements become valid targets for qualitative inquiry.</div>
+
+                    <div class="block-title" style="color: var(--c-understand);">Topic Outlines</div>
+                    <div class="outline-section">
+                        <h4>2.1 - 2.2 Defining the Objects</h4>
+                        <ul>
+                            <li>Why "Objects" and Not Just "Methods"?</li>
+                            <li>The Five Objects Defined: Humans, Texts, Systems, Institutions, Numbers.</li>
+                        </ul>
+                    </div>
+                    <div class="outline-section">
+                        <h4>2.3 - 2.4 The Analytical Lenses</h4>
+                        <ul>
+                            <li>The Concept of the "Analytical Lens".</li>
+                            <li>The 1:1 Mapping Matrix (Object → Lens → Core Question → Example Theory).</li>
+                        </ul>
+                    </div>
+                    <div class="outline-section">
+                        <h4>2.5 - 2.7 Application & Scoping</h4>
+                        <ul>
+                            <li>The "Frankenstein" Trap: Avoiding Misalignment.</li>
+                            <li>The Translation Workshop: From Idea to Framework (e.g., Greenwashing, Islamic Finance).</li>
+                            <li>Refining the Scope: The "Multi-Object" Problem.</li>
+                        </ul>
+                    </div>
+
+                    <div class="mentor-box" style="border-color: var(--c-understand);">
+                        <h4 style="color: var(--c-understand);">🛠️ Mentor Features</h4>
+                        <p><strong>1. Object Identification Cheat Sheet:</strong> Diagnostic quiz to find your natural research draw.<br>
+                        <strong>2. The 1:1 Mapping Matrix:</strong> Visual blueprint connecting Object → Lens → Theory.<br>
+                        <strong>3. Misalignment Diagnostic:</strong> 4-point checklist to test RQ alignment before fieldwork.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- PART II: THE CORE                          -->
+    <!-- ========================================== -->
+    <section class="part-section" id="part2">
+        <div class="part-header">
+            <div class="part-node" style="background: var(--c-apply);">2</div>
+            <div class="part-title">
+                <span style="color: var(--c-apply);">Bloom's: Apply</span>
+                <h2>Part II: The 5 Objects & Integrated Methods</h2>
+            </div>
+        </div>
+
+        <!-- Ch 3 -->
+        <div class="chapter-card">
+            <button class="accordion-toggle">
+                <div><h3>Ch 3: Humans & Behaviors</h3><span class="subtitle">Interviews & Identity Mapping</span></div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content"><div class="content-inner">
+                <div class="block-title" style="color: var(--c-apply);">Learning Objectives</div>
+                <ul class="objective-list">
+                    <li><span class="verb v-apply">Apply</span> Symbolic Interactionism and Social Identity Theory to analyze professional judgment.</li>
+                    <li><span class="verb v-apply">Design</span> and execute semi-structured interviews to uncover the "why" behind behaviors.</li>
+                    <li><span class="verb v-apply">Develop</span> qualitative questionnaires to capture behavioral insights at scale without losing nuance.</li>
+                </ul>
+                <div class="block-title" style="color: var(--c-apply);">Section Goal</div>
+                <div class="goal-box" style="border-color: var(--c-apply); background: #ECFDF5;">Demystify heavy sociological jargon and show exactly how to use these theories to understand how accountants negotiate ethics, roles, and "grey areas" in their daily work.</div>
+                <div class="block-title" style="color: var(--c-apply);">Topic Outlines</div>
+                <div class="outline-section"><h4>3.1 - 3.3 Theory & Application</h4><ul><li>Translating Symbolic Interactionism & Social Identity Theory for Accounting.</li><li>Analyzing the "Grey Areas" and rationalization of ethical dilemmas.</li><li>Case Application: Junior auditors facing ESG pressure or Shariah scholars balancing authority.</li></ul></div>
+                <div class="outline-section"><h4>3.4 - 3.6 Interview Execution</h4><ul><li>The Anatomy of an Interview Guide (Grand tour ➔ Probes ➔ Reflections).</li><li>The Art of the Probe: Active listening and detecting cognitive dissonance.</li><li>Navigating the Accounting Context: Building rapport with defensive professionals.</li></ul></div>
+                <div class="outline-section"><h4>3.7 - 3.9 Scaling Up</h4><ul><li>Why Qualitative Questionnaires? Avoiding "Likert-scale reductionism".</li><li>Designing for "Thick" Text and scenario-based vignettes.</li><li>Distribution strategies and thematic coding of survey responses.</li></ul></div>
+                <div class="mentor-box" style="border-color: var(--c-apply);">
+                    <h4 style="color: var(--c-apply);">🛠️ Mentor Features</h4>
+                    <p><strong>1. Theory-to-Field Matrix:</strong> Maps abstract concepts to observable behaviors.<br>
+                    <strong>2. "Anti-PR" Probe Checklist:</strong> Tactical pivots for rehearsed corporate answers.<br>
+                    <strong>3. Likert-to-Narrative Converter:</strong> Rewriting closed survey questions into rich qualitative prompts.</p>
+                </div>
+            </div></div>
+        </div>
+
+        <!-- Ch 4 -->
+        <div class="chapter-card">
+            <button class="accordion-toggle">
+                <div><h3>Ch 4: Texts & Themes</h3><span class="subtitle">Content Analysis & Rhetorical Critique</span></div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content"><div class="content-inner">
+                <div class="block-title" style="color: var(--c-apply);">Learning Objectives</div>
+                <ul class="objective-list">
+                    <li><span class="verb v-apply">Evaluate</span> how corporate disclosures construct legitimacy and manage impressions.</li>
+                    <li><span class="verb v-apply">Execute</span> conventional (inductive) and directed (deductive) content analysis.</li>
+                    <li><span class="verb v-apply">Decode</span> rhetorical strategies and impression management (e.g., identifying "greenwashing").</li>
+                </ul>
+                <div class="block-title" style="color: var(--c-apply);">Section Goal</div>
+                <div class="goal-box" style="border-color: var(--c-apply); background: #ECFDF5;">Demystify Legitimacy Theory and Impression Management, showing exactly how organizations use accounting narratives to secure their "social license to operate" and mask poor performance.</div>
+                <div class="block-title" style="color: var(--c-apply);">Topic Outlines</div>
+                <div class="outline-section"><h4>4.1 - 4.3 Legitimacy & IM</h4><ul><li>The "Social Contract" of Accounting and the "Legitimacy Gap".</li><li>Mechanics of IM: Selective disclosure, thematic manipulation, readability/tone.</li><li>Contextualizing Legitimacy across regions (Western ESG vs. ASEAN vs. Islamic).</li></ul></div>
+                <div class="outline-section"><h4>4.4 - 4.6 Content Analysis Mechanics</h4><ul><li>Conventional (Inductive) vs. Directed (Deductive) approaches.</li><li>Defining the "unit of analysis" and establishing inter-coder reliability.</li></ul></div>
+                <div class="outline-section"><h4>5.1 - 5.3 Rhetoric & Deception</h4><ul><li>Linguistic Tactics: Euphemisms, passive voice, visual rhetoric.</li><li>Systematically Identifying "Greenwashing" and "Shariah-Washing".</li><li>Triangulating Text with Reality (Counter-accounts, NGO reports).</li></ul></div>
+                <div class="mentor-box" style="border-color: var(--c-apply);">
+                    <h4 style="color: var(--c-apply);">🛠️ Mentor Features</h4>
+                    <p><strong>1. "Legitimacy Gap" Diagnostic Matrix:</strong> Maps actual performance vs. disclosure strategy.<br>
+                    <strong>2. Inductive vs. Deductive Flowchart:</strong> Decision guide for coding approach.<br>
+                    <strong>3. "Rhetorical Red Flag" Checklist:</strong> Markers for identifying greenwashing/ethical-washing.</p>
+                </div>
+            </div></div>
+        </div>
+
+        <!-- Ch 5 -->
+        <div class="chapter-card">
+            <button class="accordion-toggle">
+                <div><h3>Ch 5: Systems & Cycles</h3><span class="subtitle">Ethnography & Process Tracing</span></div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content"><div class="content-inner">
+                <div class="block-title" style="color: var(--c-apply);">Learning Objectives</div>
+                <ul class="objective-list">
+                    <li><span class="verb v-apply">Apply</span> Actor-Network Theory (ANT) and Structuration Theory to socio-technical networks.</li>
+                    <li><span class="verb v-apply">Conduct</span> ethnographic fieldwork to observe the "live" lifecycle of data and systems.</li>
+                    <li><span class="verb v-apply">Document</span> the friction between "perfect" technical designs and "messy" organizational workarounds.</li>
+                </ul>
+                <div class="block-title" style="color: var(--c-apply);">Section Goal</div>
+                <div class="goal-box" style="border-color: var(--c-apply); background: #ECFDF5;">Demystify complex sociological theories and show exactly how to map accounting systems as networks of equal human and non-human actors, revealing how rules and routines co-evolve.</div>
+                <div class="block-title" style="color: var(--c-apply);">Topic Outlines</div>
+                <div class="outline-section"><h4>5.1 - 5.3 Theory & Mapping</h4><ul><li>Translating ANT & Structuration for Accounting.</li><li>Mapping the Accounting Network (Humans, software, protocols as equal "actors").</li></ul></div>
+                <div class="outline-section"><h4>5.4 - 5.6 Ethnographic Fieldwork</h4><ul><li>Ethnography in the Back Office: Shadowing finance teams.</li><li>Mapping the Data Lifecycle in Real-Time (time-and-motion logs).</li><li>Ethical & Logistical Realities in secure environments.</li></ul></div>
+                <div class="outline-section"><h4>5.7 - 5.9 Friction & Workarounds</h4><ul><li>The Myth of the "Perfect" System.</li><li>Anatomy of a Workaround: Shadow IT, WhatsApp approvals, sticky-note controls.</li><li>Coding the Deviation without moralizing.</li></ul></div>
+                <div class="mentor-box" style="border-color: var(--c-apply);">
+                    <h4 style="color: var(--c-apply);">🛠️ Mentor Features</h4>
+                    <p><strong>1. Socio-Technical Actor Mapping Template:</strong> Plots human/non-human actors and translation points.<br>
+                    <strong>2. Field Observation Protocol:</strong> Checklist for tracking data flow and informal practices.<br>
+                    <strong>3. Workaround Documentation Matrix:</strong> Logs Official Rule ➔ Actual Practice ➔ Risk Implication.</p>
+                </div>
+            </div></div>
+        </div>
+
+        <!-- Ch 6 -->
+        <div class="chapter-card">
+            <button class="accordion-toggle">
+                <div><h3>Ch 6: Institutions & Decisions</h3><span class="subtitle">Historical Docs & Elite Interviews</span></div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content"><div class="content-inner">
+                <div class="block-title" style="color: var(--c-apply);">Learning Objectives</div>
+                <ul class="objective-list">
+                    <li><span class="verb v-apply">Apply</span> New Institutional Sociology (NIS) to map power dynamics and standard-setting politics.</li>
+                    <li><span class="verb v-apply">Conduct</span> historical document analysis (e.g., exposure drafts, comment letters).</li>
+                    <li><span class="verb v-apply">Formulate</span> protocols for and execute high-stakes "elite interviews" with regulators.</li>
+                </ul>
+                <div class="block-title" style="color: var(--c-apply);">Section Goal</div>
+                <div class="goal-box" style="border-color: var(--c-apply); background: #ECFDF5;">Demystify macro-sociological theories and show exactly how to use them to analyze why accounting rules change, who benefits, and how competing value systems clash in the regulatory arena.</div>
+                <div class="block-title" style="color: var(--c-apply);">Topic Outlines</div>
+                <div class="outline-section"><h4>6.1 - 6.3 NIS & Logics</h4><ul><li>Translating Coercive, Mimetic, and Normative Pressures.</li><li>Mapping Competing Institutional Logics (e.g., Profit vs. Shariah vs. Stewardship).</li></ul></div>
+                <div class="outline-section"><h4>6.4 - 6.6 Historical Analysis</h4><ul><li>The "Paper Trail" of Accounting Politics.</li><li>Systematic Document Analysis Protocol (Coding political vs. technical arguments).</li></ul></div>
+                <div class="outline-section"><h4>6.7 - 6.9 Elite Interviews</h4><ul><li>Defining and Accessing the "Elite" (Regulators, Standard-setters).</li><li>Designing the Elite Interview Protocol to uncover "unwritten rules".</li><li>Execution Tactics: Managing the "Official Narrative" and NDAs.</li></ul></div>
+                <div class="mentor-box" style="border-color: var(--c-apply);">
+                    <h4 style="color: var(--c-apply);">🛠️ Mentor Features</h4>
+                    <p><strong>1. "Institutional Pressure & Logic" Matrix:</strong> Maps controversies to competing pressures.<br>
+                    <strong>2. "Standard-Setting Autopsy" Protocol:</strong> Guide to dissecting comment letter campaigns.<br>
+                    <strong>3. "Elite Interview" Deflection Pivot Guide:</strong> Conversational pivots for PR-trained regulators.</p>
+                </div>
+            </div></div>
+        </div>
+
+        <!-- Ch 7 -->
+        <div class="chapter-card">
+            <button class="accordion-toggle">
+                <div><h3>Ch 7: Numbers & Patterns</h3><span class="subtitle">Interpretive Metric Analysis</span></div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content"><div class="content-inner">
+                <div class="block-title" style="color: var(--c-apply);">Learning Objectives</div>
+                <ul class="objective-list">
+                    <li><span class="verb v-apply">Reconceptualize</span> quantitative metrics (ratios, ESG data) as socially constructed artifacts.</li>
+                    <li><span class="verb v-apply">Interpret</span> financial patterns and trends without relying on inferential statistics.</li>
+                    <li><span class="verb v-apply">Triangulate</span> numerical data with textual/observational context to explain the "meaning" of a metric.</li>
+                </ul>
+                <div class="block-title" style="color: var(--c-apply);">Section Goal</div>
+                <div class="goal-box" style="border-color: var(--c-apply); background: #ECFDF5;">Shatter the illusion of the "neutral" number. Teach the researcher to see financial and non-financial metrics not as objective facts, but as human constructions shaped by rules, estimates, and managerial intent.</div>
+                <div class="block-title" style="color: var(--c-apply);">Topic Outlines</div>
+                <div class="outline-section"><h4>7.1 - 7.3 The Social Construction of Metrics</h4><ul><li>The Myth of the "Objective" Number and "Number Worship".</li><li>Campbell’s Law: How measuring a metric changes behavior.</li><li>The Semiotics of Numbers: What ratios and scores *signal*.</li></ul></div>
+                <div class="outline-section"><h4>7.4 - 7.6 Narrative Pattern Analysis</h4><ul><li>Moving Beyond the P-Value: Explaining variance qualitatively.</li><li>"Reading" a trendline as a story (inflection points, suspicious plateaus).</li><li>Contextualizing the Variance (e.g., drops in Islamic financing ratios).</li></ul></div>
+                <div class="outline-section"><h4>7.7 - 7.9 Triangulation</h4><ul><li>Contrasting the "Official" Number with the "Lived" Reality.</li><li>Exposing the Gap: Detecting earnings management or ethical-washing.</li></ul></div>
+                <div class="mentor-box" style="border-color: var(--c-apply);">
+                    <h4 style="color: var(--c-apply);">🛠️ Mentor Features</h4>
+                    <p><strong>1. "Metric Deconstruction" Matrix:</strong> Traces a metric back to human choices and rules.<br>
+                    <strong>2. "Trend-to-Narrative" Framework:</strong> Step-by-step guide to writing about financial trends.<br>
+                    <strong>3. "Triangulation Web" Visualizer:</strong> Connects numerical artifacts to textual/observational evidence.</p>
+                </div>
+            </div></div>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- PART III: TOOLKIT                          -->
+    <!-- ========================================== -->
+    <section class="part-section" id="part3">
+        <div class="part-header">
+            <div class="part-node" style="background: var(--c-analyze);">3</div>
+            <div class="part-title">
+                <span style="color: var(--c-analyze);">Bloom's: Analyze</span>
+                <h2>Part III: Overarching Design & Advanced Toolkit</h2>
+            </div>
+        </div>
+
+        <!-- Ch 8 -->
+        <div class="chapter-card">
+            <button class="accordion-toggle">
+                <div><h3>Ch 8: Research Design & Sampling</h3><span class="subtitle">Incl. Interventionist/Action Research</span></div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content"><div class="content-inner">
+                <div class="block-title" style="color: var(--c-analyze);">Learning Objectives</div>
+                <ul class="objective-list">
+                    <li><span class="verb v-analyze">Formulate</span> open-ended qualitative research questions scoped for deep inquiry.</li>
+                    <li><span class="verb v-analyze">Justify</span> purposeful/information-rich sampling over random sampling.</li>
+                    <li><span class="verb v-analyze">Design</span> Interventionist/Action Research studies, balancing the "consultant" role with scholarly objectivity.</li>
+                </ul>
+                <div class="block-title" style="color: var(--c-analyze);">Section Goal</div>
+                <div class="goal-box" style="border-color: var(--c-analyze); background: #FFFBEB;">Shift the researcher’s mindset from hypothesis-testing to meaning-making, ensuring questions are scoped perfectly for deep analysis and defended against positivist-trained reviewers.</div>
+                <div class="block-title" style="color: var(--c-analyze);">Topic Outlines</div>
+                <div class="outline-section"><h4>8.1 - 8.3 Formulating RQs</h4><ul><li>The Anatomy of a Qualitative RQ (Avoiding the "Descriptive Trap").</li><li>Scoping the Inquiry: Avoiding "Boiling the Ocean".</li><li>Aligning the RQ with the Five Objects Framework.</li></ul></div>
+                <div class="outline-section"><h4>8.4 - 8.6 Sampling Strategies</h4><ul><li>The Paradigm Shift: Statistical vs. Theoretical Representativeness.</li><li>Strategies: Extreme/Deviant, Snowball, Maximum Variation.</li><li>The Myth of "Sample Size" and the Reality of "Saturation".</li></ul></div>
+                <div class="outline-section"><h4>8.7 - 8.9 Interventionist Research</h4><ul><li>The Mechanics of the IVR Cycle (Co-diagnosing, co-designing).</li><li>The Dual-Role Dilemma: Consultant vs. Scholar.</li><li>Managing Power and Expectations in the Field.</li></ul></div>
+                <div class="mentor-box" style="border-color: var(--c-analyze);">
+                    <h4 style="color: var(--c-analyze);">🛠️ Mentor Features</h4>
+                    <p><strong>1. "RQ Translation & Scoping" Matrix:</strong> Translates positivist ideas to interpretivist phrasing.<br>
+                    <strong>2. "Reviewer 2 Defense" Sampling Template:</strong> Justifies non-random, small-sample strategies.<br>
+                    <strong>3. "Consultant vs. Scholar" Boundary Agreement:</strong> Negotiation script for host organizations.</p>
+                </div>
+            </div></div>
+        </div>
+
+        <!-- Ch 9 -->
+        <div class="chapter-card">
+            <button class="accordion-toggle">
+                <div><h3>Ch 9: Data Collection & Management</h3><span class="subtitle">Field Logistics & Software (NVivo)</span></div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content"><div class="content-inner">
+                <div class="block-title" style="color: var(--c-analyze);">Learning Objectives</div>
+                <ul class="objective-list">
+                    <li><span class="verb v-analyze">Implement</span> robust data management protocols using CAQDAS (NVivo/Atlas.ti).</li>
+                    <li><span class="verb v-analyze">Navigate</span> fieldwork logistics, gatekeepers, and secure recording/transcription.</li>
+                    <li><span class="verb v-analyze">Establish</span> comprehensive audit trails to support rigorous qualitative coding.</li>
+                </ul>
+                <div class="block-title" style="color: var(--c-analyze);">Section Goal</div>
+                <div class="goal-box" style="border-color: var(--c-analyze); background: #FFFBEB;">Demystify qualitative software and provide "street-smart" tactical advice for surviving the physical and logistical realities of accounting fieldwork.</div>
+                <div class="block-title" style="color: var(--c-analyze);">Topic Outlines</div>
+                <div class="outline-section"><h4>9.1 - 9.3 CAQDAS Mastery</h4><ul><li>The CAQDAS Mindset: Software as a Filing Cabinet, Not an Analyst.</li><li>Architecting Your Project for the "Five Objects".</li><li>Data Security & Anonymization in Accounting.</li></ul></div>
+                <div class="outline-section"><h4>9.4 - 9.6 Field Logistics</h4><ul><li>Bypassing the Gatekeepers: The "Value Proposition".</li><li>The Logistics of "Thick Description" & Recording.</li><li>The Transcription Trap in Accounting Research (AI vs. Manual).</li></ul></div>
+                <div class="outline-section"><h4>9.7 - 9.9 Audit Trails</h4><ul><li>What is a Qualitative Audit Trail?</li><li>Memoing as the Backbone (Methodological, Analytic, Reflexive).</li><li>Version Control & Data Hygiene.</li></ul></div>
+                <div class="mentor-box" style="border-color: var(--c-analyze);">
+                    <h4 style="color: var(--c-analyze);">🛠️ Mentor Features</h4>
+                    <p><strong>1. "CAQDAS Architecture" Blueprint:</strong> Visual template for NVivo/Atlas.ti folder/node setup.<br>
+                    <strong>2. "Gatekeeper Negotiation" Email Template:</strong> Scripts for securing elite access.<br>
+                    <strong>3. "Qualitative Audit Trail" Log:</strong> Tabular template for logging analytical decisions.</p>
+                </div>
+            </div></div>
+        </div>
+
+        <!-- Ch 10 -->
+        <div class="chapter-card">
+            <button class="accordion-toggle">
+                <div><h3>Ch 10: The Coding Process</h3><span class="subtitle">Description to Theorization</span></div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content"><div class="content-inner">
+                <div class="block-title" style="color: var(--c-analyze);">Learning Objectives</div>
+                <ul class="objective-list">
+                    <li><span class="verb v-analyze">Execute</span> systematic open, axial, and thematic coding procedures.</li>
+                    <li><span class="verb v-analyze">Bridge</span> the gap between interpretivist philosophy and mechanical software coding.</li>
+                    <li><span class="verb v-analyze">Ensure</span> trustworthiness via credibility, transferability, dependability, and confirmability.</li>
+                </ul>
+                <div class="block-title" style="color: var(--c-analyze);">Section Goal</div>
+                <div class="goal-box" style="border-color: var(--c-analyze); background: #FFFBEB;">Demystify the coding process, prevent the "software trap," and provide the exact tools needed to prove methodological rigor to skeptical reviewers.</div>
+                <div class="block-title" style="color: var(--c-analyze);">Topic Outlines</div>
+                <div class="outline-section"><h4>10.1 - 10.4 Systematic Coding</h4><ul><li>The Coding Mindset: Fracturing the Data.</li><li>Open Coding (Line-by-Line) ➔ Axial Coding (Connections) ➔ Thematic Coding (Synthesis).</li></ul></div>
+                <div class="outline-section"><h4>10.5 - 10.7 Bridging Philosophy & Software</h4><ul><li>The "Software Trap": Why Clicking ≠ Analyzing.</li><li>Preserving "Thick Description" in a Digital Environment.</li><li>The Human-in-the-Loop & Visualizing the Mess.</li></ul></div>
+                <div class="outline-section"><h4>10.9 - 10.12 Trustworthiness</h4><ul><li>The Qualitative "Gold Standard" (Lincoln & Guba).</li><li>Proving Credibility, Transferability, Dependability, Confirmability.</li><li>The Reflexivity Check.</li></ul></div>
+                <div class="mentor-box" style="border-color: var(--c-analyze);">
+                    <h4 style="color: var(--c-analyze);">🛠️ Mentor Features</h4>
+                    <p><strong>1. "Coding Ladder" Visual Template:</strong> Maps Raw Quote ➔ Open ➔ Axial ➔ Theme.<br>
+                    <strong>2. "Context-Anchor" Protocol:</strong> Ensures codes are linked to reflexive memos.<br>
+                    <strong>3. "Reviewer 2 Trustworthiness" Matrix:</strong> Fill-in-the-blank methodology defense.</p>
+                </div>
+            </div></div>
+        </div>
+
+        <!-- Ch 11 -->
+        <div class="chapter-card">
+            <button class="accordion-toggle">
+                <div><h3>Ch 11: Hybrid & Computational Methods</h3><span class="subtitle">AI, Text Mining & Big Data</span></div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content"><div class="content-inner">
+                <div class="block-title" style="color: var(--c-analyze);">Learning Objectives</div>
+                <ul class="objective-list">
+                    <li><span class="verb v-analyze">Integrate</span> computational text mining and topic modeling with qualitative interpretation.</li>
+                    <li><span class="verb v-analyze">Design</span> hybrid methodologies combining "Big Data" outputs with "Thick Description."</li>
+                    <li><span class="verb v-analyze">Critique</span> the epistemological limitations and "black box" biases of AI tools.</li>
+                </ul>
+                <div class="block-title" style="color: var(--c-analyze);">Section Goal</div>
+                <div class="goal-box" style="border-color: var(--c-analyze); background: #FFFBEB;">Demystify computational tools. Show how algorithms can handle massive text corpora while keeping the researcher in control of the meaning-making process.</div>
+                <div class="block-title" style="color: var(--c-analyze);">Topic Outlines</div>
+                <div class="outline-section"><h4>11.1 - 11.3 Text Mining & AI</h4><ul><li>The "Scale" Problem in Qualitative Accounting.</li><li>Text Mining & Topic Modeling 101 (LDA, Sentiment Analysis).</li><li>The "Human-in-the-Loop" Workflow.</li></ul></div>
+                <div class="outline-section"><h4>11.4 - 11.6 Hybrid Designs</h4><ul><li>Defining the Hybrid Approach (Macro vs. Micro).</li><li>Sequential vs. Concurrent Hybrid Designs.</li><li>Triangulating the Macro and the Micro.</li></ul></div>
+                <div class="outline-section"><h4>11.7 - 11.9 Critiquing AI</h4><ul><li>The Epistemological Clash (Positivist AI vs. Interpretivist Research).</li><li>Unmasking the "Black Box" & Algorithmic Bias (e.g., failing at Islamic jargon).</li><li>The "Illusion of Objectivity" in Reporting.</li></ul></div>
+                <div class="mentor-box" style="border-color: var(--c-analyze);">
+                    <h4 style="color: var(--c-analyze);">🛠️ Mentor Features</h4>
+                    <p><strong>1. "Algorithm-to-Insight" Workflow Diagram:</strong> Corpus ➔ Clusters ➔ Deep-dive.<br>
+                    <strong>2. "Macro-Micro Triangulation" Matrix:</strong> Maps Big Data findings to Thick Description follow-ups.<br>
+                    <strong>3. "AI Bias & Limitations" Disclosure Checklist:</strong> Mandatory methodology section add-on.</p>
+                </div>
+            </div></div>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- PART IV: FIELD NAVIGATION                  -->
+    <!-- ========================================== -->
+    <section class="part-section" id="part4">
+        <div class="part-header">
+            <div class="part-node" style="background: var(--c-evaluate);">4</div>
+            <div class="part-title">
+                <span style="color: var(--c-evaluate);">Bloom's: Evaluate</span>
+                <h2>Part IV: Navigating the Field (Ethics & Power)</h2>
+            </div>
+        </div>
+
+        <!-- Ch 12 -->
+        <div class="chapter-card">
+            <button class="accordion-toggle">
+                <div><h3>Ch 12: Ethics & Fraud Discovery</h3><span class="subtitle">IRBs, Relational Ethics & The Accounting Conflict</span></div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content"><div class="content-inner">
+                <div class="block-title" style="color: var(--c-evaluate);">Learning Objectives</div>
+                <ul class="objective-list">
+                    <li><span class="verb v-evaluate">Navigate</span> IRB protocols and accounting-specific confidentiality concerns.</li>
+                    <li><span class="verb v-evaluate">Apply</span> relational ethics and anonymization in tightly knit professional networks (e.g., Big 4).</li>
+                    <li><span class="verb v-evaluate">Develop</span> contingency protocols for the "Accounting Conflict": handling the discovery of fraud or irregularities.</li>
+                </ul>
+                <div class="block-title" style="color: var(--c-evaluate);">Section Goal</div>
+                <div class="goal-box" style="border-color: var(--c-evaluate); background: #FEF2F2;">Demystify the IRB process and prepare the researcher for the ultimate fieldwork crisis: stumbling upon actual financial fraud, severe greenwashing, or regulatory evasion.</div>
+                <div class="block-title" style="color: var(--c-evaluate);">Topic Outlines</div>
+                <div class="outline-section"><h4>12.1 - 12.3 IRB & Confidentiality</h4><ul><li>The IRB Mindset vs. Corporate Reality.</li><li>Drafting the Accounting-Specific Ethics Application.</li><li>The "No Surprises" Rule and managing NDAs.</li></ul></div>
+                <div class="outline-section"><h4>12.4 - 12.6 Relational Ethics</h4><ul><li>The Myth of Standard Anonymization (The "Small World" problem).</li><li>Tactics for Deep Obfuscation (Composite characters, masking fingerprints).</li><li>Relational Ethics in Elite Circles (Handling the "Member Check" dilemma).</li></ul></div>
+                <div class="outline-section"><h4>12.7 - 12.9 The Accounting Conflict</h4><ul><li>Defining the Conflict: Academic privilege vs. Legal obligations.</li><li>The "Stop and Assess" Protocol.</li><li>The Decision Matrix: Publish, Bury, or Report?</li></ul></div>
+                <div class="mentor-box" style="border-color: var(--c-evaluate);">
+                    <h4 style="color: var(--c-evaluate);">🛠️ Mentor Features</h4>
+                    <p><strong>1. "IRB-Proofing" Accounting Checklist:</strong> Anticipates ethics committee questions.<br>
+                    <strong>2. "Deductive Disclosure" Stress-Test Matrix:</strong> Views anonymization through an insider's eyes.<br>
+                    <strong>3. "Fraud Discovery" Contingency Flowchart:</strong> Step-by-step decision tree for uncovering irregularities.</p>
+                </div>
+            </div></div>
+        </div>
+
+        <!-- Ch 13 -->
+        <div class="chapter-card">
+            <button class="accordion-toggle">
+                <div><h3>Ch 13: Practical Issues & Power</h3><span class="subtitle">Access, Power Dynamics & Reflexivity</span></div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content"><div class="content-inner">
+                <div class="block-title" style="color: var(--c-evaluate);">Learning Objectives</div>
+                <ul class="objective-list">
+                    <li><span class="verb v-evaluate">Implement</span> strategies to gain organizational access to time-constrained professionals.</li>
+                    <li><span class="verb v-evaluate">Manage</span> hierarchical power dynamics when interviewing "up" (CEOs) vs. "down" (junior staff).</li>
+                    <li><span class="verb v-evaluate">Apply</span> reflexive journaling to identify, track, and mitigate researcher bias and positionality.</li>
+                </ul>
+                <div class="block-title" style="color: var(--c-evaluate);">Section Goal</div>
+                <div class="goal-box" style="border-color: var(--c-evaluate); background: #FEF2F2;">Demystify the "gatekeeping" process and move reflexivity from an abstract philosophical concept to a daily, mechanical habit to catch assumptions before they contaminate data.</div>
+                <div class="block-title" style="color: var(--c-evaluate);">Topic Outlines</div>
+                <div class="outline-section"><h4>13.1 - 13.3 Gaining Access</h4><ul><li>The Reality of the "Busy Professional".</li><li>Crafting the "Value Proposition" (What do you offer in return?).</li><li>Navigating Gatekeepers and PR Departments.</li></ul></div>
+                <div class="outline-section"><h4>13.4 - 13.6 Power Dynamics</h4><ul><li>Interviewing "Up": The Elite Interrogation (Handling PR answers).</li><li>Interviewing "Down": The Subordinate's Dilemma (Fear of reprisal).</li><li>The "Middle" and Peer Dynamics.</li></ul></div>
+                <div class="outline-section"><h4>13.7 - 13.9 Reflexivity</h4><ul><li>Defining Positionality in Accounting Research (Professional Blindness).</li><li>The Mechanics of the Reflexive Journal (Pre, In, and Post-field).</li><li>Mitigating Bias via Negative Case Analysis and Peer Debriefing.</li></ul></div>
+                <div class="mentor-box" style="border-color: var(--c-evaluate);">
+                    <h4 style="color: var(--c-evaluate);">🛠️ Mentor Features</h4>
+                    <p><strong>1. "Gatekeeper Bypass" Pitch Templates:</strong> Email scripts for different targets.<br>
+                    <strong>2. "Power-Dynamic Pivot" Cheat Sheet:</strong> Conversational phrases for the field.<br>
+                    <strong>3. "Positionality & Reflexivity" Log Template:</strong> Structured journal with specific prompts.</p>
+                </div>
+            </div></div>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- PART V: SYNTHESIS                          -->
+    <!-- ========================================== -->
+    <section class="part-section" id="part5">
+        <div class="part-header">
+            <div class="part-node" style="background: var(--c-create);">5</div>
+            <div class="part-title">
+                <span style="color: var(--c-create);">Bloom's: Create</span>
+                <h2>Part V: Reporting & Future Horizons</h2>
+            </div>
+        </div>
+
+        <!-- Ch 14 -->
+        <div class="chapter-card">
+            <button class="accordion-toggle">
+                <div><h3>Ch 14: Writing the Qualitative Report</h3><span class="subtitle">Storytelling, Evidence & Theorization</span></div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content"><div class="content-inner">
+                <div class="block-title" style="color: var(--c-create);">Learning Objectives</div>
+                <ul class="objective-list">
+                    <li><span class="verb v-create">Structure</span> qualitative manuscripts to align with high-impact (Scopus Q1) journal expectations.</li>
+                    <li><span class="verb v-create">Strategically Integrate</span> participant quotes and evidence, avoiding "quote dumping."</li>
+                    <li><span class="verb v-create">Elevate</span> descriptive findings into broader theoretical contributions.</li>
+                </ul>
+                <div class="block-title" style="color: var(--c-create);">Section Goal</div>
+                <div class="goal-box" style="border-color: var(--c-create); background: #F5F3FF;">Demystify the architecture of a top-tier paper. Shift the researcher’s mindset from writing a "descriptive thesis report" to crafting a "punchy, theory-driven journal article."</div>
+                <div class="block-title" style="color: var(--c-create);">Topic Outlines</div>
+                <div class="outline-section"><h4>14.1 - 14.4 Structuring the Paper</h4><ul><li>The Anatomy of a Q1 Qualitative Paper (Thematic vs. Gioia).</li><li>Writing the "Hook" Introduction and the "Elevator Pitch".</li><li>The "Methods as a Story" Section.</li><li>Structuring the Findings for Maximum Impact.</li></ul></div>
+                <div class="outline-section"><h4>14.5 - 14.8 Integrating Evidence</h4><ul><li>The "Quote Dumping" Trap.</li><li>The "Claim-Evidence-Interpretation" (CEI) Paragraph.</li><li>Curating, Editing, and Weaving Non-Interview Data.</li></ul></div>
+                <div class="outline-section"><h4>14.9 - 14.11 Theorization</h4><ul><li>Description vs. Theorization (Passing the "So What?" test).</li><li>Dialoguing with the Literature (Confirm, Complicate, Contradict).</li><li>Visualizing the Contribution (Conceptual models).</li></ul></div>
+                <div class="mentor-box" style="border-color: var(--c-create);">
+                    <h4 style="color: var(--c-create);">🛠️ Mentor Features</h4>
+                    <p><strong>1. "Q1 Journal Blueprint" Checklist:</strong> Section-by-section structural template.<br>
+                    <strong>2. "CEI Paragraph" Formula & Template:</strong> Before & After examples of analytical writing.<br>
+                    <strong>3. "Theory-Elevation" Matrix:</strong> Maps Raw Theme ➔ Literature ➔ Theoretical Contribution.</p>
+                </div>
+            </div></div>
+        </div>
+
+        <!-- Ch 15 -->
+        <div class="chapter-card">
+            <button class="accordion-toggle">
+                <div><h3>Ch 15: The Future of Qualitative Acct.</h3><span class="subtitle">Netnography, DeFi & AI Governance</span></div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content"><div class="content-inner">
+                <div class="block-title" style="color: var(--c-create);">Learning Objectives</div>
+                <ul class="objective-list">
+                    <li><span class="verb v-create">Design</span> netnographic studies for digital financial communities (e.g., DeFi, Reddit forums).</li>
+                    <li><span class="verb v-create">Critically Assess</span> how AI and algorithmic governance transform accounting cycles.</li>
+                    <li><span class="verb v-create">Advocate</span> for human-centric, critical qualitative research in an increasingly digital profession.</li>
+                </ul>
+                <div class="block-title" style="color: var(--c-create);">Section Goal</div>
+                <div class="goal-box" style="border-color: var(--c-create); background: #F5F3FF;">Teach the researcher how to conduct ethnography in digital spaces, address the unique methodological/ethical challenges of online communities, and maintain a critical, human-centric edge.</div>
+                <div class="block-title" style="color: var(--c-create);">Topic Outlines</div>
+                <div class="outline-section"><h4>15.1 - 15.3 Digital Netnography</h4><ul><li>The Digital Back-Office: Defining Netnography in Accounting.</li><li>The Mechanics of Digital Fieldwork (Lurking vs. Participating).</li><li>The "Public" Forum Dilemma: Digital Ethics & Anonymity.</li></ul></div>
+                <div class="outline-section"><h4>15.4 - 15.6 Algorithmic Governance</h4><ul><li>The Algorithmic Accountant: AI and the "Cycles" Object.</li><li>Unpacking the "Black Box" (Interviewing tech teams & auditors).</li><li>Algorithmic Bias and Accountability.</li></ul></div>
+                <div class="outline-section"><h4>15.7 - 15.9 Human-Centric Advocacy</h4><ul><li>The Danger of Technological Determinism & "AI-washing".</li><li>Qualitative Research as a Critical Intervention.</li><li>Future-Proofing Your Scholarly Identity.</li></ul></div>
+                <div class="mentor-box" style="border-color: var(--c-create);">
+                    <h4 style="color: var(--c-create);">🛠️ Mentor Features</h4>
+                    <p><strong>1. "Digital Fieldwork & Ethics" Protocol:</strong> Checklist for public data extraction and anonymization.<br>
+                    <strong>2. "Algorithmic Audit" Interview Guide:</strong> Probing questions for opaque AI systems.<br>
+                    <strong>3. "Human-in-the-Machine" Positioning Statement:</strong> Template for framing papers as critical interventions.</p>
+                </div>
+            </div></div>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <p>Interactive Pedagogical Flow (Full Edition) | Based on the Restructured Outline for Qualitative Accounting Research</p>
+</footer>
+
+<script>
+    // Accordion Logic
+    document.querySelectorAll('.accordion-toggle').forEach(button => {
+        button.addEventListener('click', () => {
+            const card = button.parentElement;
+            const content = button.nextElementSibling;
+            
+            card.classList.toggle('active');
+            
+            if (card.classList.contains('active')) {
+                content.style.maxHeight = content.scrollHeight + "px";
+            } else {
+                content.style.maxHeight = 0;
+            }
+        });
+    });
+
+    // Toggle All Logic
+    const toggleAllBtn = document.getElementById('toggleAll');
+    let allExpanded = false;
+
+    toggleAllBtn.addEventListener('click', () => {
+        const cards = document.querySelectorAll('.chapter-card');
+        allExpanded = !allExpanded;
+
+        cards.forEach(card => {
+            const content = card.querySelector('.accordion-content');
+            if (allExpanded) {
+                card.classList.add('active');
+                content.style.maxHeight = content.scrollHeight + "px";
+            } else {
+                card.classList.remove('active');
+                content.style.maxHeight = 0;
+            }
+        });
+    });
+
+    // Smooth Scroll for Navigation
+    document.querySelectorAll('.nav-btn').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            
+            window.scrollTo({
+                top: targetSection.offsetTop - 80,
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
