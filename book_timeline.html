@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Five Pillars: 12-Month Publishing Timeline</title>
+    <style>
+        :root {
+            --bg-main: #F8FAFC;
+            --bg-card: #FFFFFF;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --border: #E2E8F0;
+            
+            /* Bloom's Taxonomy Palette */
+            --c-understand: #3B82F6; /* Blue */
+            --c-apply: #10B981;      /* Green */
+            --c-analyze: #F59E0B;    /* Amber */
+            --c-evaluate: #EF4444;   /* Red */
+            --c-create: #8B5CF6;     /* Purple */
+            
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        /* Header & Progress */
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            border-top: 5px solid var(--c-create);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, var(--c-understand), var(--c-apply), var(--c-analyze), var(--c-evaluate), var(--c-create));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 1.5rem; }
+
+        .progress-container {
+            background: #E2E8F0;
+            border-radius: 99px;
+            height: 24px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--c-understand), var(--c-create));
+            border-radius: 99px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: white;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        /* Timeline Phases */
+        .phase {
+            margin-bottom: 2.5rem;
+        }
+
+        .phase-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .phase-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 1.2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .phase-title h2 { font-size: 1.5rem; font-weight: 700; }
+        .phase-title span { color: var(--text-secondary); font-size: 0.9rem; }
+
+        /* Month Cards */
+        .month-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 1rem;
+            border-left: 6px solid var(--border);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .month-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+        
+        .month-card.active { border-left-width: 8px; }
+
+        .month-header {
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .month-header h3 { font-size: 1.15rem; font-weight: 600; }
+        
+        .month-meta { display: flex; align-items: center; gap: 1rem; }
+        
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 99px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-draft { background: #DBEAFE; color: #1E40AF; }
+        .badge-review { background: #FEF3C7; color: #92400E; }
+        .badge-final { background: #D1FAE5; color: #065F46; }
+
+        .chevron {
+            transition: transform 0.3s ease;
+            color: var(--text-secondary);
+        }
+        .month-card.active .chevron { transform: rotate(180deg); }
+
+        .month-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            background: #F8FAFC;
+            border-top: 1px solid transparent;
+        }
+
+        .month-card.active .month-content {
+            max-height: 600px;
+            padding: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .task-list { list-style: none; }
+        
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .task-item input[type="checkbox"] {
+            margin-top: 4px;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--c-create);
+            cursor: pointer;
+        }
+
+        .task-item label { cursor: pointer; flex: 1; }
+        .task-item input:checked + label { 
+            text-decoration: line-through; 
+            color: #94A3B8; 
+        }
+
+        .lit-tag {
+            display: inline-block;
+            background: #E2E8F0;
+            color: #334155;
+            padding: 0.1rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-family: monospace;
+            margin-left: 0.25rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            header h1 { font-size: 1.6rem; }
+            .month-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>The Five Pillars: 12-Month Publishing Timeline</h1>
+        <p>From Philosophical Foundations to Theorization & Publication</p>
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar">0%</div>
+        </div>
+    </header>
+
+    <!-- PHASE 1: UNDERSTAND -->
+    <div class="phase">
+        <div class="phase-header">
+            <div class="phase-icon" style="background: var(--c-understand);">1</div>
+            <div class="phase-title">
+                <h2>Phase 1: UNDERSTAND</h2>
+                <span>Foundations, Paradigms & The Five Objects Framework</span>
+            </div>
+        </div>
+
+        <div class="month-card" style="border-left-color: var(--c-understand);">
+            <div class="month-header" onclick="toggleMonth(this)">
+                <h3>Month 1: The Philosophical Armour</h3>
+                <div class="month-meta">
+                    <span class="badge badge-draft">Drafting</span>
+                    <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+            </div>
+            <div class="month-content">
+                <ul class="task-list">
+                    <li class="task-item"><input type="checkbox" id="m1t1" onchange="updateProgress()"><label for="m1t1">Finalize book proposal and chapter outlines.</label></li>
+                    <li class="task-item"><input type="checkbox" id="m1t2" onchange="updateProgress()"><label for="m1t2">Draft <strong>Ch 1: Beyond the Numbers</strong> (Positivist vs. Interpretivist paradigms). <span class="lit-tag">Parker, Chua, Basri</span></label></li>
+                    <li class="task-item"><input type="checkbox" id="m1t3" onchange="updateProgress()"><label for="m1t3">Draft <strong>Ch 2: The Five Objects Framework</strong> (Mapping Objects to Lenses). <span class="lit-tag">Breton, Baxter & Chua</span></label></li>
+                    <li class="task-item"><input type="checkbox" id="m1t4" onchange="updateProgress()"><label for="m1t4">Create the "Paradigm Shift Matrix" and "Frankenstein Trap" mentor features.</label></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- PHASE 2: APPLY -->
+    <div class="phase">
+        <div class="phase-header">
+            <div class="phase-icon" style="background: var(--c-apply);">2</div>
+            <div class="phase-title">
+                <h2>Phase 2: APPLY</h2>
+                <span>The 5 Objects & Integrated Qualitative Methods</span>
+            </div>
+        </div>
+
+        <div class="month-card" style="border-left-color: var(--c-apply);">
+            <div class="month-header" onclick="toggleMonth(this)">
+                <h3>Month 2: Humans & Texts</h3>
+                <div class="month-meta">
+                    <span class="badge badge-draft">Drafting</span>
+                    <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+            </div>
+            <div class="month-content">
+                <ul class="task-list">
+                    <li class="task-item"><input type="checkbox" id="m2t1" onchange="updateProgress()"><label for="m2t1">Draft <strong>Ch 3: Humans & Behaviors</strong> (Identity, Symbolic Interactionism, Elite Interviews). <span class="lit-tag">Alvesson, Morales, Nguyen</span></label></li>
+                    <li class="task-item"><input type="checkbox" id="m2t2" onchange="updateProgress()"><label for="m2t2">Draft <strong>Ch 4: Texts & Themes</strong> (Legitimacy, Impression Mgt, Qualitative Content Analysis). <span class="lit-tag">Cho, Brennan, Gray</span></label></li>
+                    <li class="task-item"><input type="checkbox" id="m2t3" onchange="updateProgress()"><label for="m2t3">Develop the "Cognitive Interview" and "Greenwashing Decoder" templates.</label></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="month-card" style="border-left-color: var(--c-apply);">
+            <div class="month-header" onclick="toggleMonth(this)">
+                <h3>Month 3: Systems, Institutions & Numbers</h3>
+                <div class="month-meta">
+                    <span class="badge badge-draft">Drafting</span>
+                    <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+            </div>
+            <div class="month-content">
+                <ul class="task-list">
+                    <li class="task-item"><input type="checkbox" id="m3t1" onchange="updateProgress()"><label for="m3t1">Draft <strong>Ch 5: Systems & Cycles</strong> (ANT, Ethnography, Workarounds). <span class="lit-tag">Quattrone, Ahrens</span></label></li>
+                    <li class="task-item"><input type="checkbox" id="m3t2" onchange="updateProgress()"><label for="m3t2">Draft <strong>Ch 6: Institutions & Decisions</strong> (NIS, Standard-setting, Elite Docs). <span class="lit-tag">Ribeiro, Gendron</span></label></li>
+                    <li class="task-item"><input type="checkbox" id="m3t3" onchange="updateProgress()"><label for="m3t3">Draft <strong>Ch 7: Numbers & Patterns</strong> (Social Construction of Metrics, Triangulation). <span class="lit-tag">Power, Ohlson</span></label></li>
+                    <li class="task-item"><input type="checkbox" id="m3t4" onchange="updateProgress()"><label for="m3t4">Review Part II for flow, ensuring the "Five Objects" mapping is consistent.</label></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- PHASE 3: ANALYZE -->
+    <div class="phase">
+        <div class="phase-header">
+            <div class="phase-icon" style="background: var(--c-analyze);">3</div>
+            <div class="phase-title">
+                <h2>Phase 3: ANALYZE</h2>
+                <span>Research Design, Data Collection & The Coding Engine</span>
+            </div>
+        </div>
+
+        <div class="month-card" style="border-left-color: var(--c-analyze);">
+            <div class="month-header" onclick="toggleMonth(this)">
+                <h3>Month 4: Design & The Digital Toolkit</h3>
+                <div class="month-meta">
+                    <span class="badge badge-draft">Drafting</span>
+                    <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+            </div>
+            <div class="month-content">
+                <ul class="task-list">
+                    <li class="task-item"><input type="checkbox" id="m4t1" onchange="updateProgress()"><label for="m4t1">Draft <strong>Ch 8: Research Design</strong> (Sampling, IVR, The "Boiling the Ocean" trap). <span class="lit-tag">Eisenhardt, Lodhia</span></label></li>
+                    <li class="task-item"><input type="checkbox" id="m4t2" onchange="updateProgress()"><label for="m4t2">Draft <strong>Ch 9: Data Collection</strong> (NVivo/CAQDAS, Gatekeepers, Transcription). <span class="lit-tag">Irvine, Bazeley</span></label></li>
+                    <li class="task-item"><input type="checkbox" id="m4t3" onchange="updateProgress()"><label for="m4t3">Draft <strong>Ch 10: The Coding Process</strong> (Open/Axial/Thematic, Gioia Method). <span class="lit-tag">Saldaña, Steccolini</span></label></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="month-card" style="border-left-color: var(--c-analyze);">
+            <div class="month-header" onclick="toggleMonth(this)">
+                <h3>Month 5: Hybrid Methods & Advanced Analysis</h3>
+                <div class="month-meta">
+                    <span class="badge badge-draft">Drafting</span>
+                    <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+            </div>
+            <div class="month-content">
+                <ul class="task-list">
+                    <li class="task-item"><input type="checkbox" id="m5t1" onchange="updateProgress()"><label for="m5t1">Draft <strong>Ch 11: Hybrid & Computational Methods</strong> (Text Mining, Netnography, AI). <span class="lit-tag">Jeacle, Wei, Grafton</span></label></li>
+                    <li class="task-item"><input type="checkbox" id="m5t2" onchange="updateProgress()"><label for="m5t2">Create the "SLR Protocol" and "Human-in-the-Loop" workflow diagrams.</label></li>
+                    <li class="task-item"><input type="checkbox" id="m5t3" onchange="updateProgress()"><label for="m5t3">Mid-point structural review: Ensure transition from Methods (Part III) to Field Realities (Part IV).</label></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- PHASE 4: EVALUATE -->
+    <div class="phase">
+        <div class="phase-header">
+            <div class="phase-icon" style="background: var(--c-evaluate);">4</div>
+            <div class="phase-title">
+                <h2>Phase 4: EVALUATE</h2>
+                <span>Ethics, Power, Reflexivity & The Messy Reality of Fieldwork</span>
+            </div>
+        </div>
+
+        <div class="month-card" style="border-left-color: var(--c-evaluate);">
+            <div class="month-header" onclick="toggleMonth(this)">
+                <h3>Month 6: Navigating the Field & Ethical Dilemmas</h3>
+                <div class="month-meta">
+                    <span class="badge badge-draft">Drafting</span>
+                    <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+            </div>
+            <div class="month-content">
+                <ul class="task-list">
+                    <li class="task-item"><input type="checkbox" id="m6t1" onchange="updateProgress()"><label for="m6t1">Draft <strong>Ch 12: Ethics & Fraud</strong> (IRBs, NDAs, The "Accounting Conflict"). <span class="lit-tag">Gendron, Suddaby</span></label></li>
+                    <li class="task-item"><input type="checkbox" id="m6t2" onchange="updateProgress()"><label for="m6t2">Draft <strong>Ch 13: Practical Issues</strong> (Elite Access, Reflexivity, Positionality). <span class="lit-tag">Alvesson, Abdul Khalid</span></label></li>
+                    <li class="task-item"><input type="checkbox" id="m6t3" onchange="updateProgress()"><label for="m6t3">Develop the "Decision Matrix: Publish, Bury, or Report?" feature.</label></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- PHASE 5: CREATE -->
+    <div class="phase">
+        <div class="phase-header">
+            <div class="phase-icon" style="background: var(--c-create);">5</div>
+            <div class="phase-title">
+                <h2>Phase 5: CREATE</h2>
+                <span>Writing the Report, Future Horizons & Publication</span>
+            </div>
+        </div>
+
+        <div class="month-card" style="border-left-color: var(--c-create);">
+            <div class="month-header" onclick="toggleMonth(this)">
+                <h3>Month 7: Storytelling & Theorization</h3>
+                <div class="month-meta">
+                    <span class="badge badge-draft">Drafting</span>
+                    <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+            </div>
+            <div class="month-content">
+                <ul class="task-list">
+                    <li class="task-item"><input type="checkbox" id="m7t1" onchange="updateProgress()"><label for="m7t1">Draft <strong>Ch 14: Writing the Report</strong> (CEI Formula, Quote Dumping, Gioia Diagrams). <span class="lit-tag">Brennan, Chapman, Richardson</span></label></li>
+                    <li class="task-item"><input type="checkbox" id="m7t2" onchange="updateProgress()"><label for="m7t2">Draft <strong>Ch 15: The Future</strong> (Netnography, AI Governance, Algorithmic Bias). <span class="lit-tag">Jeacle, Munro</span></label></li>
+                    <li class="task-item"><input type="checkbox" id="m7t3" onchange="updateProgress()"><label for="m7t3">Write the Book Introduction and Conclusion (The "Pragmatic Mentor" manifesto).</label></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="month-card" style="border-left-color: #64748B;">
+            <div class="month-header" onclick="toggleMonth(this)">
+                <h3>Month 8: Synthesis & Mentor Features</h3>
+                <div class="month-meta">
+                    <span class="badge badge-review">Refining</span>
+                    <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+            </div>
+            <div class="month-content">
+                <ul class="task-list">
+                    <li class="task-item"><input type="checkbox" id="m8t1" onchange="updateProgress()"><label for="m8t1">Compile all "Mentor Features" (Checklists, Matrices, Templates) into appendices.</label></li>
+                    <li class="task-item"><input type="checkbox" id="m8t2" onchange="updateProgress()"><label for="m8t2">Generate the Master Literature Mapping Table (Linking files 001-088 to chapters).</label></li>
+                    <li class="task-item"><input type="checkbox" id="m8t3" onchange="updateProgress()"><label for="m8t3">Complete first full manuscript draft. Send to peer reviewers / academic editor.</label></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="month-card" style="border-left-color: #64748B;">
+            <div class="month-header" onclick="toggleMonth(this)">
+                <h3>Month 9: Peer Review & Structural Editing</h3>
+                <div class="month-meta">
+                    <span class="badge badge-review">Refining</span>
+                    <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+            </div>
+            <div class="month-content">
+                <ul class="task-list">
+                    <li class="task-item"><input type="checkbox" id="m9t1" onchange="updateProgress()"><label for="m9t1">Incorporate feedback from peer reviewers and publisher editorial board.</label></li>
+                    <li class="task-item"><input type="checkbox" id="m9t2" onchange="updateProgress()"><label for="m9t2">Ensure consistent "voice" and "Pragmatic Mentor" tone across all 15 chapters.</label></li>
+                    <li class="task-item"><input type="checkbox" id="m9t3" onchange="updateProgress()"><label for="m9t3">Verify all search strings, Boolean queries, and literature citations.</label></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="month-card" style="border-left-color: #64748B;">
+            <div class="month-header" onclick="toggleMonth(this)">
+                <h3>Month 10: Formatting & Visual Design</h3>
+                <div class="month-meta">
+                    <span class="badge badge-review">Refining</span>
+                    <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+            </div>
+            <div class="month-content">
+                <ul class="task-list">
+                    <li class="task-item"><input type="checkbox" id="m10t1" onchange="updateProgress()"><label for="m10t1">Format manuscript according to publisher guidelines.</label></li>
+                    <li class="task-item"><input type="checkbox" id="m10t2" onchange="updateProgress()"><label for="m10t2">Finalize all diagrams.</label></li>
+                    <li class="task-item"><input type="checkbox" id="m10t3" onchange="updateProgress()"><label for="m10t3">Secure permissions for any reproduced figures or lengthy adapted quotes.</label></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="month-card" style="border-left-color: #0F172A;">
+            <div class="month-header" onclick="toggleMonth(this)">
+                <h3>Month 11: Indexing, Proofs & Marketing</h3>
+                <div class="month-meta">
+                    <span class="badge badge-final">Finalizing</span>
+                    <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+            </div>
+            <div class="month-content">
+                <ul class="task-list">
+                    <li class="task-item"><input type="checkbox" id="m11t1" onchange="updateProgress()"><label for="m11t1">Review page proofs (Galley proofs). Check for typesetting errors and broken links.</label></li>
+                    <li class="task-item"><input type="checkbox" id="m11t2" onchange="updateProgress()"><label for="m11t2">Compile the comprehensive Subject and Author Index.</label></li>
+                    <li class="task-item"><input type="checkbox" id="m11t3" onchange="updateProgress()"><label for="m11t3">Draft book blurb, author bio, and marketing copy for the publisher's catalog.</label></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="month-card" style="border-left-color: #0F172A;">
+            <div class="month-header" onclick="toggleMonth(this)">
+                <h3>Month 12: Publication & Launch</h3>
+                <div class="month-meta">
+                    <span class="badge badge-final">Published</span>
+                    <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+            </div>
+            <div class="month-content">
+                <ul class="task-list">
+                    <li class="task-item"><input type="checkbox" id="m12t1" onchange="updateProgress()"><label for="m12t1">Final sign-off on ISBN assignment and metadata.</label></li>
+                    <li class="task-item"><input type="checkbox" id="m12t2" onchange="updateProgress()"><label for="m12t2">Official Publication Date! Book goes live on publisher platform.</label></li>
+                    <li class="task-item"><input type="checkbox" id="m12t3" onchange="updateProgress()"><label for="m12t3">Launch Webinar, Academic Twitter/LinkedIn campaign, and Conference keynotes.</label></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function toggleMonth(header) {
+        const card = header.parentElement;
+        const isActive = card.classList.contains('active');
+        
+        // Optional: Close others in the same phase (Accordion style)
+        // const phase = card.closest('.phase');
+        // phase.querySelectorAll('.month-card').forEach(c => c.classList.remove('active'));
+        
+        if (!isActive) {
+            card.classList.add('active');
+        } else {
+            card.classList.remove('active');
+        }
+    }
+
+    function updateProgress() {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const checked = document.querySelectorAll('input[type="checkbox"]:checked');
+        const percentage = Math.round((checked.length / checkboxes.length) * 100);
+        
+        const bar = document.getElementById('progressBar');
+        bar.style.width = percentage + '%';
+        bar.textContent = percentage + '%';
+    }
+
+    // Initialize progress on load
+    document.addEventListener('DOMContentLoaded', updateProgress);
+</script>
+
+</body>
+</html>
