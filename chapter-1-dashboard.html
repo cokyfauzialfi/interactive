@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 1: Beyond the Numbers - Master Dashboard</title>
+    <style>
+        :root {
+            --sidebar-bg: #0f172a;
+            --sidebar-hover: #1e293b;
+            --sidebar-active: #38bdf8;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --divider-color: #334155;
+        }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #f1f5f9;
+        }
+        #sidebar {
+            width: 300px;
+            background: var(--sidebar-bg);
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        #sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--divider-color);
+            background: #020617;
+        }
+        #sidebar-header h1 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--sidebar-active);
+        }
+        #sidebar-header p {
+            margin: 8px 0 0;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        #menu {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px 0;
+        }
+        .menu-divider {
+            padding: 15px 20px 5px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        .menu-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-left: 4px solid transparent;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #cbd5e1;
+        }
+        .menu-item:hover {
+            background: var(--sidebar-hover);
+            color: white;
+        }
+        .menu-item.active {
+            background: var(--sidebar-hover);
+            border-left-color: var(--sidebar-active);
+            color: var(--sidebar-active);
+            font-weight: 600;
+        }
+        .menu-icon {
+            font-size: 1.1rem;
+            width: 24px;
+            text-align: center;
+        }
+        #main-content {
+            flex: 1;
+            position: relative;
+            background: #ffffff;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+        /* Scrollbar styling for sidebar */
+        #menu::-webkit-scrollbar { width: 6px; }
+        #menu::-webkit-scrollbar-track { background: var(--sidebar-bg); }
+        #menu::-webkit-scrollbar-thumb { background: var(--divider-color); border-radius: 3px; }
+    </style>
+</head>
+<body>
+
+    <div id="sidebar">
+        <div id="sidebar-header">
+            <h1> Chapter 1 Dashboard</h1>
+            <p>Beyond the Numbers: Interactive Toolkit</p>
+        </div>
+        <div id="menu">
+            <div class="menu-item active" onclick="loadModule('welcome', this)">
+                <span class="menu-icon">🏠</span> Dashboard Home
+            </div>
+            
+            <div class="menu-divider">Interactive Modules</div>
+            <div class="menu-item" onclick="loadModule('t1', this)">
+                <span class="menu-icon">🧩</span> 1. Paradigm Sorter
+            </div>
+            <div class="menu-item" onclick="loadModule('t2', this)">
+                <span class="menu-icon">🕵️</span> 2. Frankenstein Trap
+            </div>
+            <div class="menu-item" onclick="loadModule('t3', this)">
+                <span class="menu-icon">📝</span> 3. Thick Description Builder
+            </div>
+            <div class="menu-item" onclick="loadModule('t4', this)">
+                <span class="menu-icon">🔍</span> 4. Objective Number Myth Buster
+            </div>
+            <div class="menu-item" onclick="loadModule('t5', this)">
+                <span class="menu-icon">🔄</span> 5. Question Translator
+            </div>
+            <div class="menu-item" onclick="loadModule('t6', this)">
+                <span class="menu-icon">🎮</span> 6. Messy Field RPG
+            </div>
+
+            <div class="menu-divider">Independent Worksheets</div>
+            <div class="menu-item" onclick="loadModule('w1', this)">
+                <span class="menu-icon">🧠</span> W1. Paradigm Decoder
+            </div>
+            <div class="menu-item" onclick="loadModule('w2', this)">
+                <span class="menu-icon">🔧</span> W2. Frankenstein Diagnostic
+            </div>
+            <div class="menu-item" onclick="loadModule('w3', this)">
+                <span class="menu-icon">📖</span> W3. Thin to Thick Expander
+            </div>
+            <div class="menu-item" onclick="loadModule('w4', this)">
+                <span class="menu-icon">✍️</span> W4. Question Translator
+            </div>
+            <div class="menu-item" onclick="loadModule('w5', this)">
+                <span class="menu-icon"></span> W5. Context-to-Metric
+            </div>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <iframe id="content-frame" title="Interactive Content"></iframe>
+    </div>
+
+    <script>
+        // Unified database of all 11 modules
+        const modules = {
+            welcome: `
+                <html><head><style>
+                    body { font-family: 'Segoe UI', sans-serif; padding: 40px; background: #f8fafc; color: #1e293b; }
+                    .hero { background: linear-gradient(135deg, #0f172a, #334155); color: white; padding: 40px; border-radius: 12px; margin-bottom: 30px; }
+                    .hero h1 { margin: 0 0 10px; font-size: 2.2rem; }
+                    .hero p { font-size: 1.1rem; opacity: 0.9; margin: 0; }
+                    .section-title { font-size: 1.2rem; font-weight: 700; color: #475569; margin: 30px 0 15px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+                    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+                    .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-left: 4px solid #3b82f6; transition: transform 0.2s; }
+                    .card:hover { transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+                    .card h3 { margin-top: 0; color: #1e293b; font-size: 1.1rem; }
+                    .card p { color: #64748b; font-size: 0.9rem; margin-bottom: 0; }
+                    .card.worksheet { border-left-color: #10b981; }
+                </style></head><body>
+                    <div class="hero">
+                        <h1>Welcome to Chapter 1: Beyond the Numbers</h1>
+                        <p>Master the shift from positivist accounting to interpretive qualitative research. Select a module from the left menu to begin.</p>
+                    </div>
+                    
+                    <div class="section-title">🎮 Interactive Learning Modules</div>
+                    <div class="grid">
+                        <div class="card"><h3> Paradigm Sorter</h3><p>Drag-and-drop activity to master Positivist vs. Interpretivist ontologies and epistemologies.</p></div>
+                        <div class="card"><h3>🕵️ Frankenstein Trap</h3><p>Branching scenario to avoid methodological mismatches in your research design.</p></div>
+                        <div class="card"><h3>📝 Thick Description Builder</h3><p>Interactive sliders to transform thin facts into rich, contextualized qualitative data.</p></div>
+                        <div class="card"><h3>🔍 Objective Number Myth Buster</h3><p>Clickable infographic to uncover the hidden "thick description" behind corporate metrics.</p></div>
+                        <div class="card"><h3>🔄 Question Translator</h3><p>Input tool to practice rewriting positivist research questions into interpretivist ones.</p></div>
+                        <div class="card"><h3>🎮 Messy Field RPG</h3><p>Text-based RPG to survive the realities of fieldwork, gatekeepers, and ethical dilemmas.</p></div>
+                    </div>
+
+                    <div class="section-title">📝 Independent Worksheets (with PDF Export)</div>
+                    <div class="grid">
+                        <div class="card worksheet"><h3>🧠 W1. Paradigm Decoder</h3><p>Sort statements into paradigms and dimensions. Includes auto-grading and answer key.</p></div>
+                        <div class="card worksheet"><h3>🔧 W2. Frankenstein Diagnostic</h3><p>Identify and fix methodological mismatches in flawed research scenarios.</p></div>
+                        <div class="card worksheet"><h3>📖 W3. Thin to Thick Expander</h3><p>Brainstorm layers of context to transform spreadsheet facts into qualitative evidence.</p></div>
+                        <div class="card worksheet"><h3>✍️ W4. Question Translator</h3><p>Use the translation formula to rewrite positivist questions into interpretivist ones.</p></div>
+                        <div class="card worksheet"><h3>🔬 W5. Context-to-Metric</h3><p>Reverse-engineer corporate metrics to uncover the hidden social and political context.</p></div>
+                    </div>
+                </body></html>
+            `,
+            t1: `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Paradigm Sorter</title><style>
+                body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; padding: 20px; color: #1e293b; }
+                h2 { text-align: center; color: #1e293b; }
+                .container { max-width: 900px; margin: 0 auto; }
+                .buckets { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+                .bucket { background: white; border: 2px dashed #cbd5e1; border-radius: 8px; padding: 15px; min-height: 120px; }
+                .bucket h3 { margin: 0 0 10px; font-size: 1rem; text-align: center; }
+                .b-pos-onto h3 { color: #2563eb; } .b-int-onto h3 { color: #059669; }
+                .b-pos-epi h3 { color: #2563eb; } .b-int-epi h3 { color: #059669; }
+                .cards { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+                .card { background: #f1f5f9; border: 1px solid #e2e8f0; padding: 10px; border-radius: 6px; cursor: grab; font-size: 0.85rem; width: 200px; user-select: none; }
+                .card:active { cursor: grabbing; opacity: 0.7; }
+                .card.sorted { cursor: default; border-left: 4px solid; width: 100%; max-width: 300px; }
+                .feedback { text-align: center; padding: 10px; border-radius: 6px; margin-top: 15px; font-weight: 500; min-height: 20px; }
+                .fb-success { background: #dcfce7; color: #166534; } .fb-error { background: #fee2e2; color: #991b1b; }
+            </style></head><body>
+                <div class="container">
+                    <h2>🧩 The Paradigm Sorter</h2>
+                    <p style="text-align:center; color:#64748b;">Drag each statement into the correct paradigm bucket.</p>
+                    <div id="feedback" class="feedback"></div>
+                    <div class="buckets">
+                        <div class="bucket b-pos-onto" data-accept="pos-onto"><h3>Positivist Ontology<br><small>(What is real?)</small></h3></div>
+                        <div class="bucket b-int-onto" data-accept="int-onto"><h3>Interpretivist Ontology<br><small>(What is real?)</small></h3></div>
+                        <div class="bucket b-pos-epi" data-accept="pos-epi"><h3>Positivist Epistemology<br><small>(How do we know?)</small></h3></div>
+                        <div class="bucket b-int-epi" data-accept="int-epi"><h3>Interpretivist Epistemology<br><small>(How do we know?)</small></h3></div>
+                    </div>
+                    <div class="cards" id="cards-container"></div>
+                </div>
+                <script>
+                    const data = [
+                        {id:1, text:"Reality exists 'out there' independently.", cat:"pos-onto", hint:"Think about fixed vs constructed reality."},
+                        {id:2, text:"Reality is socially constructed by actors.", cat:"int-onto", hint:"Think about fixed vs constructed reality."},
+                        {id:3, text:"Audit quality is a fixed, measurable object.", cat:"pos-onto", hint:"Is it an objective object or a social agreement?"},
+                        {id:4, text:"Audit quality exists because we agree it does.", cat:"int-onto", hint:"Is it an objective object or a social agreement?"},
+                        {id:5, text:"Researcher must remain a detached outsider.", cat:"pos-epi", hint:"Think about the researcher's relationship to data."},
+                        {id:6, text:"Researcher interacts to co-create meaning.", cat:"int-epi", hint:"Think about the researcher's relationship to data."},
+                        {id:7, text:"Knowledge comes from statistical counts.", cat:"pos-epi", hint:"How is the knowledge actually measured?"},
+                        {id:8, text:"Knowledge comes from interviews & language.", cat:"int-epi", hint:"How is the knowledge actually measured?"}
+                    ];
+                    let sorted = 0;
+                    const fb = document.getElementById('feedback');
+                    const cc = document.getElementById('cards-container');
+                    data.sort(() => Math.random() - 0.5).forEach(d => {
+                        const el = document.createElement('div');
+                        el.className = 'card'; el.draggable = true; el.dataset.cat = d.cat; el.dataset.hint = d.hint; el.id = 'c'+d.id; el.innerText = d.text;
+                        el.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', e.target.id); setTimeout(()=>e.target.style.opacity='0.5',0); });
+                        el.addEventListener('dragend', e => e.target.style.opacity='1');
+                        cc.appendChild(el);
+                    });
+                    document.querySelectorAll('.bucket').forEach(b => {
+                        b.addEventListener('dragover', e => e.preventDefault());
+                        b.addEventListener('drop', e => {
+                            e.preventDefault();
+                            const card = document.getElementById(e.dataTransfer.getData('text/plain'));
+                            if(!card) return;
+                            if(card.dataset.cat === b.dataset.accept) {
+                                b.appendChild(card); card.classList.add('sorted'); card.draggable = false;
+                                card.style.borderLeftColor = b.dataset.accept.includes('pos') ? '#2563eb' : '#059669';
+                                sorted++; fb.className = 'feedback fb-success'; fb.innerText = "Spot on!";
+                                if(sorted===8) fb.innerText = "🌟 Fantastic! You've mastered the paradigms!";
+                            } else {
+                                fb.className = 'feedback fb-error'; fb.innerText = "Not quite. Hint: " + card.dataset.hint;
+                            }
+                        });
+                    });
+                <\/script>
+            </body></html>`,
+            t2: `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Frankenstein Trap</title><style>
+                body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; padding: 30px; color: #1e293b; }
+                .container { max-width: 700px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+                h2 { color: #1e293b; margin-top: 0; }
+                .story { font-size: 1.05rem; line-height: 1.6; margin-bottom: 25px; min-height: 80px; }
+                .choices { display: flex; flex-direction: column; gap: 12px; }
+                .btn { background: #f1f5f9; border: 2px solid #e2e8f0; padding: 15px; border-radius: 8px; cursor: pointer; text-align: left; font-size: 0.95rem; transition: 0.2s; }
+                .btn:hover { background: #3b82f6; color: white; border-color: #3b82f6; }
+                .feedback { margin-top: 20px; padding: 15px; border-radius: 8px; display: none; }
+                .fb-danger { background: #fee2e2; border-left: 5px solid #ef4444; display: block; color: #991b1b; }
+                .fb-success { background: #dcfce7; border-left: 5px solid #22c55e; display: block; color: #166534; }
+                .reset { margin-top: 20px; background: #1e293b; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; display: none; }
+            </style></head><body>
+                <div class="container">
+                    <h2>🕵️ The "Frankenstein Trap" Detective</h2>
+                    <div id="story" class="story"></div>
+                    <div id="choices" class="choices"></div>
+                    <div id="feedback" class="feedback"></div>
+                    <button id="reset" class="reset" onclick="start()">Restart Scenario</button>
+                </div>
+                <script>
+                    const nodes = {
+                        start: { text: "You are designing a study on <strong>'The impact of a new ERP system on employee well-being.'</strong> What is your primary research goal?", choices: [
+                            {text: "Positivist: Objectively measure the statistical correlation between ERP usage hours and stress levels.", next: "pos_meth"},
+                            {text: "Interpretivist: Explore how employees socially construct meaning around the new ERP system.", next: "int_meth"}
+                        ]},
+                        pos_meth: { text: "You've chosen Positivism. How will you collect data to test your hypothesis?", choices: [
+                            {text: "Distribute a standardized Likert-scale survey to 300 employees.", next: "pos_end"},
+                            {text: "Conduct unstructured, open-ended interviews with 10 employees for 'richer' data.", next: "trap_warn"}
+                        ]},
+                        int_meth: { text: "You've chosen Interpretivism. How will you collect data?", choices: [
+                            {text: "Conduct semi-structured interviews and observe daily workflows.", next: "int_end"},
+                            {text: "Distribute a rigid 50-question survey to get 'hard numbers'.", next: "trap_warn"}
+                        ]},
+                        trap_warn: { text: "⚠️ <strong>Methodological Mismatch!</strong> You are mixing an interpretivist question with a positivist tool (or vice versa). Let's see how you analyze this messy data...", choices: [
+                            {text: "Force the qualitative interview transcripts into a statistical regression to get a p-value.", next: "trap_end"},
+                            {text: "Ignore the survey numbers and just do a thematic analysis on the open-ended text.", next: "int_end"}
+                        ]},
+                        pos_end: { text: "✅ <strong>Success!</strong> You maintained alignment between your positivist ontology, survey method, and statistical analysis. Your study provides valid, generalizable insights.", choices: [] },
+                        int_end: { text: "✅ <strong>Success!</strong> You maintained alignment between your interpretivist ontology, qualitative methods, and thematic analysis. You successfully captured the 'lived experience' of the employees.", choices: [] },
+                        trap_end: { text: "❌ <strong>GAME OVER: THE FRANKENSTEIN TRAP.</strong> Reviewer 2 destroys your paper: <em>'The author promises deep contextual understanding but reduces rich human narratives to shallow word counts. The ontology is totally confused.'</em> You built a methodological monster!", choices: [] }
+                    };
+                    function render(id) {
+                        const n = nodes[id];
+                        document.getElementById('story').innerHTML = n.text;
+                        const cDiv = document.getElementById('choices'); cDiv.innerHTML = '';
+                        const fb = document.getElementById('feedback'); fb.className = 'feedback'; fb.style.display='none';
+                        const rst = document.getElementById('reset');
+                        if(n.choices.length === 0) {
+                            rst.style.display = 'block';
+                            fb.style.display = 'block';
+                            if(id.includes('trap')) { fb.className += ' fb-danger'; fb.innerText = n.text; }
+                            else { fb.className += ' fb-success'; fb.innerText = n.text; }
+                        } else {
+                            rst.style.display = 'none';
+                            n.choices.forEach(c => {
+                                const b = document.createElement('button'); b.className = 'btn'; b.innerText = c.text;
+                                b.onclick = () => render(c.next); cDiv.appendChild(b);
+                            });
+                        }
+                    }
+                    function start() { render('start'); }
+                    start();
+                <\/script>
+            </body></html>`,
+            t3: `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Thick Description</title><style>
+                body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; padding: 30px; color: #1e293b; }
+                .container { max-width: 800px; margin: 0 auto; }
+                h2 { text-align: center; margin-bottom: 10px; }
+                .subtitle { text-align: center; color: #64748b; margin-bottom: 30px; }
+                .card { background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); padding: 25px; margin-bottom: 20px; }
+                .section-title { font-size: 1.1rem; font-weight: 600; margin-top: 0; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+                .badge { font-size: 0.75rem; padding: 4px 8px; border-radius: 9999px; font-weight: 600; text-transform: uppercase; }
+                .badge-thin { background: #e2e8f0; color: #475569; } .badge-thick { background: #dbeafe; color: #1e40af; }
+                .text-display { font-size: 1.1rem; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0; background: #f8fafc; min-height: 60px; display: flex; align-items: center; }
+                .text-display.thick { background: #eff6ff; border-color: #bfdbfe; color: #1e3a8a; font-weight: 500; }
+                .controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 20px; }
+                .control-group { display: flex; flex-direction: column; }
+                label { font-weight: 600; margin-bottom: 8px; font-size: 0.95rem; }
+                select { padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 1rem; background: white; cursor: pointer; }
+                .reset-btn { background: #64748b; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; }
+                .reset-btn:hover { background: #475569; }
+            </style></head><body>
+                <div class="container">
+                    <h2>📝 The "Thick Description" Builder</h2>
+                    <p class="subtitle">Transform a thin factual statement into a rich, contextualized qualitative account.</p>
+                    <div class="card">
+                        <h3 class="section-title"><span class="badge badge-thin">Thin Description</span> The Baseline Fact</h3>
+                        <div class="text-display" id="thin-text">The CFO signed the ESG report.</div>
+                    </div>
+                    <div class="card">
+                        <h3 class="section-title">Add Contextual Layers</h3>
+                        <div class="controls">
+                            <div class="control-group"><label>1. Tone / Emotion</label><select id="tone"><option value="calmly and without hesitation">Calm and confident</option><option value="paused, his hand trembling slightly, and">Hesitant and anxious</option><option value="sighed heavily, avoiding eye contact, and">Resigned and defeated</option></select></div>
+                            <div class="control-group"><label>2. Power Dynamics</label><select id="power"><option value="alone in his office">Alone in his office</option><option value="while the General Counsel stood silently in the doorway">Under silent legal pressure</option><option value="in front of the entire executive board">Under public board scrutiny</option></select></div>
+                            <div class="control-group"><label>3. Context / Motive</label><select id="context"><option value="as part of the standard quarterly filing procedure.">Routine quarterly filing</option><option value="knowing the company's survival depended on securing green bond financing.">Desperate for green financing</option><option value="just minutes before the regulatory deadline, hoping to deflect scrutiny.">Rushing to beat a deadline</option></select></div>
+                        </div>
+                        <button class="reset-btn" id="reset">Reset to Default</button>
+                    </div>
+                    <div class="card">
+                        <h3 class="section-title"><span class="badge badge-thick">Thick Description</span> The Rich Context</h3>
+                        <div class="text-display thick" id="thick-text"></div>
+                    </div>
+                </div>
+                <script>
+                    const t = document.getElementById('tone'), p = document.getElementById('power'), c = document.getElementById('context'), out = document.getElementById('thick-text');
+                    function update() { out.innerText = "The CFO " + t.value + " signed the ESG report " + p.value + ", " + c.value; }
+                    t.addEventListener('change', update); p.addEventListener('change', update); c.addEventListener('change', update);
+                    document.getElementById('reset').onclick = () => { t.selectedIndex=0; p.selectedIndex=0; c.selectedIndex=0; update(); };
+                    update();
+                <\/script>
+            </body></html>`,
+            t4: `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Myth Buster</title><style>
+                body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; padding: 30px; color: #1e293b; }
+                .container { max-width: 900px; margin: 0 auto; }
+                h2 { text-align: center; margin-bottom: 10px; }
+                .subtitle { text-align: center; color: #64748b; margin-bottom: 30px; }
+                .dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+                .metric-card { background: white; border-radius: 12px; padding: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); position: relative; cursor: pointer; transition: transform 0.2s; border: 1px solid #e2e8f0; }
+                .metric-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.1); }
+                .metric-value { font-size: 2rem; font-weight: 700; color: #059669; margin-bottom: 5px; }
+                .metric-label { font-size: 0.9rem; color: #64748b; font-weight: 500; }
+                .pulse-dot { position: absolute; top: 15px; right: 15px; width: 16px; height: 16px; background: #ef4444; border-radius: 50%; animation: pulse 1.5s infinite; }
+                @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+                .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 100; }
+                .modal { background: white; padding: 30px; border-radius: 12px; max-width: 500px; width: 90%; box-shadow: 0 20px 25px rgba(0,0,0,0.1); }
+                .modal h3 { margin-top: 0; color: #ef4444; }
+                .modal p { line-height: 1.6; color: #475569; }
+                .close-btn { background: #1e293b; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; margin-top: 15px; }
+            </style></head><body>
+                <div class="container">
+                    <h2>🔍 The "Objective Number" Myth Buster</h2>
+                    <p class="subtitle">Click the pulsing red dots to uncover the "thick description" hiding behind the metrics.</p>
+                    <div class="dashboard">
+                        <div class="metric-card" onclick="showModal(0)"><div class="pulse-dot"></div><div class="metric-value">-15%</div><div class="metric-label">Carbon Emissions (YoY)</div></div>
+                        <div class="metric-card" onclick="showModal(1)"><div class="pulse-dot"></div><div class="metric-value">100%</div><div class="metric-label">Tier 1 Suppliers Audited</div></div>
+                        <div class="metric-card" onclick="showModal(2)"><div class="pulse-dot"></div><div class="metric-value">98%</div><div class="metric-label">Operational Efficiency</div></div>
+                        <div class="metric-card" onclick="showModal(3)"><div class="pulse-dot"></div><div class="metric-value">50k Tons</div><div class="metric-label">CO2 Offsets Purchased</div></div>
+                    </div>
+                </div>
+                <div class="modal-overlay" id="modal">
+                    <div class="modal">
+                        <h3 id="m-title"></h3>
+                        <p id="m-text"></p>
+                        <button class="close-btn" onclick="closeModal()">Close</button>
+                    </div>
+                </div>
+                <script>
+                    const data = [
+                        {t: "The Reality of '-15% Emissions'", d: "<strong>Thick Description:</strong> The company didn't actually reduce emissions at their main factories. Instead, they outsourced their dirtiest, most carbon-intensive manufacturing processes to a third-party contractor in a country with lax environmental laws. The metric is technically true for the parent company, but the physical reality of the carbon footprint remains unchanged."},
+                        {t: "The Reality of '100% Audited'", d: "<strong>Thick Description:</strong> The 'audit' was conducted by a firm hired and paid for by the suppliers themselves. The auditors spent only 2 hours on-site and relied entirely on paperwork provided by the supplier's management. No workers were interviewed privately, and the 'shadow' overtime logs were never seen."},
+                        {t: "The Reality of '98% Efficiency'", d: "<strong>Thick Description:</strong> To achieve this metric, factory managers implemented a strict 'no-bathroom-break' policy and skipped mandatory safety maintenance on the assembly line. The 'efficiency' is built on employee burnout and a high risk of future industrial accidents."},
+                        {t: "The Reality of '50k Tons Offsets'", d: "<strong>Thick Description:</strong> The company purchased cheap carbon credits from a reforestation project that was later proven to be a 'phantom forest'—the trees were never actually planted. The money was spent, the metric was achieved, but no actual carbon was removed from the atmosphere."}
+                    ];
+                    function showModal(i) { document.getElementById('m-title').innerText = data[i].t; document.getElementById('m-text').innerHTML = data[i].d; document.getElementById('modal').style.display = 'flex'; }
+                    function closeModal() { document.getElementById('modal').style.display = 'none'; }
+                <\/script>
+            </body></html>`,
+            t5: `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Question Translator</title><style>
+                body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; padding: 30px; color: #1e293b; }
+                .container { max-width: 800px; margin: 0 auto; }
+                h2 { text-align: center; margin-bottom: 20px; }
+                .card { background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); padding: 25px; margin-bottom: 20px; }
+                label { display: block; font-weight: 600; margin-bottom: 10px; }
+                textarea { width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1rem; font-family: inherit; resize: vertical; min-height: 80px; box-sizing: border-box; }
+                textarea:focus { outline: none; border-color: #3b82f6; }
+                .btn-group { display: flex; gap: 10px; margin-top: 15px; }
+                button { padding: 12px 24px; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+                .btn-primary { background: #3b82f6; color: white; } .btn-primary:hover { background: #2563eb; }
+                .btn-secondary { background: #e2e8f0; color: #1e293b; } .btn-secondary:hover { background: #cbd5e1; }
+                .feedback { margin-top: 20px; padding: 20px; border-radius: 8px; display: none; border-left: 5px solid transparent; }
+                .fb-pos { background: #fee2e2; border-left-color: #ef4444; color: #991b1b; display: block; }
+                .fb-int { background: #dcfce7; border-left-color: #22c55e; color: #166534; display: block; }
+                .fb-neu { background: #fef3c7; border-left-color: #f59e0b; color: #92400e; display: block; }
+                .highlight { background: #fca5a5; padding: 2px 4px; border-radius: 4px; font-weight: bold; }
+                .examples { margin-top: 10px; }
+                .chip { display: inline-block; background: #e2e8f0; padding: 8px 16px; border-radius: 20px; margin: 5px; font-size: 0.9rem; cursor: pointer; }
+                .chip:hover { background: #cbd5e1; }
+            </style></head><body>
+                <div class="container">
+                    <h2>🔄 The Research Question Translator</h2>
+                    <div class="card">
+                        <label>Enter your draft research question:</label>
+                        <textarea id="rq" placeholder="e.g., What is the impact of ESG scores on firm performance?"></textarea>
+                        <div class="btn-group">
+                            <button class="btn-primary" onclick="translate()">Translate & Analyze</button>
+                            <button class="btn-secondary" onclick="clearAll()">Clear</button>
+                        </div>
+                        <div id="fb" class="feedback"></div>
+                    </div>
+                    <div class="card">
+                        <label>Stuck? Try one of these positivist examples:</label>
+                        <div class="examples" id="ex-container"></div>
+                    </div>
+                </div>
+                <script>
+                    const posTriggers = ["impact of", "impact on", "effect of", "effect on", "relationship between", "determinants of", "influence of", "predict", "correlation", "cause", "variable", "factor", "extent to which", "association"];
+                    const intTriggers = ["how do", "how does", "why do", "why does", "experience", "perceive", "construct", "negotiate", "navigate", "make sense", "meaning", "process", "mechanism", "lived experience", "role of"];
+                    const examples = ["What is the impact of remote work on employee productivity?", "What are the determinants of greenwashing in corporate sustainability reports?", "How does the implementation of a new ERP system affect internal control effectiveness?"];
+                    const exCont = document.getElementById('ex-container');
+                    examples.forEach(ex => { const c = document.createElement('span'); c.className='chip'; c.innerText=ex; c.onclick=()=>{document.getElementById('rq').value=ex; translate();}; exCont.appendChild(c); });
+                    function clearAll() { document.getElementById('rq').value=''; document.getElementById('fb').className='feedback'; document.getElementById('fb').style.display='none'; }
+                    function translate() {
+                        const input = document.getElementById('rq').value.trim().toLowerCase();
+                        const fb = document.getElementById('fb');
+                        if(!input) { fb.className='feedback fb-neu'; fb.innerHTML="Please enter a research question first."; return; }
+                        const foundPos = posTriggers.filter(t => input.includes(t));
+                        const foundInt = intTriggers.filter(t => input.includes(t));
+                        let html = "";
+                        if(foundPos.length > 0 && foundInt.length === 0) {
+                            fb.className = 'feedback fb-pos';
+                            let highlighted = document.getElementById('rq').value;
+                            foundPos.forEach(t => { highlighted = highlighted.replace(new RegExp(t, 'gi'), '<span class="highlight">$&</span>'); });
+                            html = "<strong>⚠️ This sounds like a Positivist/Quantitative question.</strong><br><br>You used triggers: <strong>" + foundPos.join(', ') + "</strong>. These imply measuring variance or testing a hypothesis.<br><br><strong>How to translate it:</strong> Shift focus from <em>measuring an outcome</em> to <em>explaining a mechanism</em>. Use words like: <strong>how, why, experience, construct, negotiate, meaning</strong>.<br><br><em>Example rewrite: 'How do managers navigate the tensions between...'</em><br><br><strong>Your original:</strong><br>" + highlighted;
+                        } else if(foundInt.length > 0 && foundPos.length === 0) {
+                            fb.className = 'feedback fb-int';
+                            html = "<strong>✅ Excellent! This is a strong Interpretivist/Qualitative question.</strong><br><br>You used interpretivist triggers like: <strong>" + foundInt.join(', ') + "</strong>. This question focuses on understanding mechanisms, meanings, and social processes. You are ready to design a qualitative methodology!";
+                        } else if(foundPos.length > 0 && foundInt.length > 0) {
+                            fb.className = 'feedback fb-neu';
+                            html = "<strong>🔄 This is a mixed question.</strong><br><br>You have both positivist triggers (<strong>" + foundPos.join(', ') + "</strong>) and interpretivist triggers (<strong>" + foundInt.join(', ') + "</strong>). For a purely qualitative study, try removing the positivist triggers to sharpen your focus.";
+                        } else {
+                            fb.className = 'feedback fb-neu';
+                            html = "<strong>🤔 This question is neutral.</strong><br><br>I didn't detect strong paradigm-specific keywords. To make it explicitly interpretivist, try starting with <strong>'How'</strong> or <strong>'Why'</strong> and include words like <strong>experience, construct, negotiate, or meaning</strong>.";
+                        }
+                        fb.innerHTML = html;
+                    }
+                <\/script>
+            </body></html>`,
+            t6: `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Messy Field RPG</title><style>
+                body { font-family: 'Segoe UI', sans-serif; background: #1e293b; color: #f8fafc; padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
+                .container { max-width: 800px; width: 100%; background: #334155; border-radius: 12px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); display: flex; flex-direction: column; }
+                h2 { color: #38bdf8; margin-top: 0; text-align: center; }
+                .scene { font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px; min-height: 100px; }
+                .choices { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; }
+                .btn { background: #1e293b; border: 2px solid #38bdf8; color: #f8fafc; padding: 15px; border-radius: 8px; font-size: 1rem; cursor: pointer; text-align: left; transition: 0.2s; }
+                .btn:hover:not(:disabled) { background: #38bdf8; color: #1e293b; }
+                .btn:disabled { opacity: 0.5; cursor: not-allowed; border-color: #64748b; }
+                .feedback { padding: 20px; border-radius: 8px; margin-bottom: 20px; display: none; }
+                .fb-good { background: rgba(74, 222, 128, 0.1); border-left: 5px solid #4ade80; display: block; }
+                .fb-bad { background: rgba(248, 113, 113, 0.1); border-left: 5px solid #f87171; display: block; }
+                .fb-title { font-weight: bold; margin-bottom: 10px; font-size: 1.1rem; }
+                .next-btn { background: #38bdf8; color: #1e293b; border: none; padding: 12px 24px; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; align-self: flex-end; display: none; }
+                .next-btn:hover { background: #7dd3fc; }
+                .end-screen { text-align: center; display: none; }
+            </style></head><body>
+                <div class="container">
+                    <h2>🎮 The "Messy Field" Survival Simulator</h2>
+                    <div id="game-area">
+                        <div class="scene" id="scene-text"></div>
+                        <div class="choices" id="choices-container"></div>
+                        <div class="feedback" id="feedback-box"><div class="fb-title" id="fb-title"></div><div id="fb-text"></div></div>
+                        <button class="next-btn" id="next-btn" onclick="nextScene()">Continue to Next Scene ️</button>
+                    </div>
+                    <div class="end-screen" id="end-screen">
+                        <h2>Fieldwork Complete!</h2>
+                        <p class="scene">You have successfully navigated the messy realities of the qualitative field! Remember: embrace the mess, build rapport, protect your ethics, and always look for the shadow practices behind the official metrics.</p>
+                        <button class="next-btn" style="display:inline-block" onclick="resetGame()">Play Again 🔄</button>
+                    </div>
+                </div>
+                <script>
+                    const scenes = [
+                        { text: "You are a qualitative researcher studying 'The Social Construction of ESG Metrics' at TechCorp. Your first hurdle: Access. The Executive Assistant (EA) to the CFO is blocking your request, citing the CFO's 'packed schedule.' How do you handle this gatekeeper?", choices: [
+                            { text: "A: Assert your authority. Tell the EA you are from a major university and demand they find a slot.", fb: "You burned a bridge! Gatekeepers hold the keys to the 'contact zone.' Being aggressive makes you a threat, not a guest.", type: "bad" },
+                            { text: "B: Offer a 'Value Proposition'. Ask for just 20 minutes, and offer to share a tailored executive summary of industry ESG trends.", fb: "Excellent! You successfully navigated the gatekeeper by offering a strategic exchange rather than asking for a favor.", type: "good" },
+                            { text: "C: Bypass the CFO entirely. Ask the EA to set up interviews with the junior accounting staff instead.", fb: "A mixed bag. While bottom-up perspectives are valuable, bypassing the elite entirely might miss the institutional power dynamics you need to study.", type: "bad" }
+                        ]},
+                        { text: "Scene 2: The Interview. You are finally sitting with the CFO. Ten minutes in, they start reading verbatim from the company's glossy, rehearsed ESG sustainability report. They are giving you the 'official narrative.' What do you do?", choices: [
+                            { text: "A: Interrupt them politely but firmly. Say, 'I've read the report. I need to know what actually happens behind closed doors.'", fb: "Risky. Interrupting a powerful elite can destroy rapport and make them defensive. You might lose the rest of the interview.", type: "bad" },
+                            { text: "B: Use the 'Power of Silence'. Let them finish. Wait 3-4 seconds in silence, then ask a specific probe: 'That's the public vision. How are you allocating internal headcount to actually achieve that metric?'", fb: "Perfect! You avoided the Neopositivist trap of just extracting data. You used silence to break the script and probed for the 'contact zone' reality.", type: "good" },
+                            { text: "C: Nod along, take notes, and move to the next question on your structured interview guide to ensure you cover all your variables.", fb: "You fell into the Neopositivist trap! By sticking rigidly to your script, you treated the interview as a data-extraction pipeline and missed the social construction of the metric.", type: "bad" }
+                        ]},
+                        { text: "Scene 3: The Shadow Reality. During an observation session in the back office, a junior accountant whispers: 'The official ERP system is too rigid. We actually use a shadow Excel spreadsheet to track the real carbon offsets, otherwise we'd miss our targets.' How do you respond?", choices: [
+                            { text: "A: Dismiss it. Tell them your research is strictly about the official ERP system implementation, not unofficial workarounds.", fb: "Major missed opportunity! In qualitative research, the 'messy' workarounds and friction are often where the real theoretical insights live.", type: "bad" },
+                            { text: "B: Ask to see the shadow spreadsheet. Ask how it bridges the gap between the official rules and their daily practice.", fb: "Brilliant! You are capturing 'thick description' and mapping the 'context-to-metric' reality. This shadow system is the actual 'lived' accounting practice.", type: "good" },
+                            { text: "C: Immediately report the shadow spreadsheet to the CFO as a breach of internal controls.", fb: "You just violated the core ethics of qualitative fieldwork! You are a researcher, not an internal auditor. This will destroy your access and trust instantly.", type: "bad" }
+                        ]}
+                    ];
+                    let current = 0;
+                    function render() {
+                        const s = scenes[current];
+                        document.getElementById('scene-text').innerText = s.text;
+                        document.getElementById('feedback-box').style.display = 'none';
+                        document.getElementById('next-btn').style.display = 'none';
+                        const cc = document.getElementById('choices-container'); cc.innerHTML = '';
+                        s.choices.forEach((c, i) => {
+                            const b = document.createElement('button'); b.className = 'btn'; b.innerText = c.text; b.onclick = () => handle(i); cc.appendChild(b);
+                        });
+                    }
+                    function handle(i) {
+                        const c = scenes[current].choices[i];
+                        document.querySelectorAll('.btn').forEach(b => b.disabled = true);
+                        const fb = document.getElementById('feedback-box'); const ft = document.getElementById('fb-title'); const ftx = document.getElementById('fb-text');
+                        fb.className = 'feedback ' + (c.type === 'good' ? 'fb-good' : 'fb-bad');
+                        ft.innerText = c.type === 'good' ? "✅ Great Researcher Move!" : "❌ Fieldwork Faux Pas";
+                        ft.style.color = c.type === 'good' ? "#4ade80" : "#f87171";
+                        ftx.innerText = c.fb; fb.style.display = 'block';
+                        document.getElementById('next-btn').style.display = 'block';
+                    }
+                    function nextScene() { current++; if(current < scenes.length) render(); else { document.getElementById('game-area').style.display='none'; document.getElementById('end-screen').style.display='block'; } }
+                    function resetGame() { current = 0; document.getElementById('game-area').style.display='block'; document.getElementById('end-screen').style.display='none'; render(); }
+                    render();
+                <\/script>
+            </body></html>`,
+            w1: `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Worksheet 1</title><style>
+                :root { --primary: #2563eb; --primary-dark: #1d4ed8; --success: #10b981; --error: #ef4444; --bg: #f8fafc; --card-bg: #ffffff; --text: #1e293b; --border: #e2e8f0; }
+                body { font-family: system-ui, -apple-system, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 40px 20px; line-height: 1.6; }
+                .worksheet-container { max-width: 900px; margin: 0 auto; background: var(--card-bg); padding: 40px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+                header { border-bottom: 2px solid var(--primary); padding-bottom: 20px; margin-bottom: 30px; }
+                h1 { color: var(--primary); margin: 0 0 10px 0; font-size: 2rem; }
+                .subtitle { color: #64748b; font-size: 1.1rem; margin: 0; }
+                .instructions { background-color: #f0f9ff; border-left: 4px solid var(--primary); padding: 15px 20px; margin-bottom: 30px; border-radius: 4px; }
+                .instructions h3 { margin-top: 0; color: var(--primary-dark); }
+                .matrix-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+                .matrix-table th, .matrix-table td { border: 1px solid var(--border); padding: 15px; text-align: left; vertical-align: top; }
+                .matrix-table th { background-color: #f8fafc; font-weight: 600; color: #475569; }
+                .matrix-table td:first-child { width: 50%; font-weight: 500; }
+                select { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.95rem; background-color: white; cursor: pointer; }
+                select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+                select.correct { border-color: var(--success); background-color: #ecfdf5; }
+                select.incorrect { border-color: var(--error); background-color: #fef2f2; }
+                .controls { display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
+                button { padding: 12px 24px; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+                .btn-reveal { background-color: var(--primary); color: white; }
+                .btn-reveal:hover { background-color: var(--primary-dark); }
+                .btn-pdf { background-color: #475569; color: white; }
+                .btn-pdf:hover { background-color: #334155; }
+                .answer-key { display: none; background-color: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 25px; margin-top: 20px; }
+                .answer-key.visible { display: block; animation: fadeIn 0.5s ease; }
+                .answer-key h3 { margin-top: 0; color: var(--primary-dark); border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+                .answer-item { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed var(--border); }
+                .answer-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+                .answer-item strong { color: var(--text); }
+                .answer-item .explanation { color: #64748b; font-size: 0.95rem; margin-top: 5px; }
+                @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+                @media print { body { background: white; padding: 0; margin: 0; } .worksheet-container { box-shadow: none; border-radius: 0; padding: 20px; max-width: 100%; } .controls { display: none !important; } select { border: none; background: transparent; appearance: none; padding: 0; font-weight: 600; } select.correct { color: var(--success); } select.incorrect { color: var(--error); } .answer-key { display: block !important; border: 1px solid #ccc; } h1 { font-size: 1.8rem; } }
+            </style></head><body>
+            <div class="worksheet-container">
+                <header><h1>Worksheet 1: The Paradigm Decoder</h1><p class="subtitle">Mastering Positivist vs. Interpretivist Ontologies and Epistemologies</p></header>
+                <div class="instructions"><h3>Instructions</h3><p>Read the 6 statements below. For each statement, use the dropdown menus to identify: 1) <strong>The Paradigm:</strong> Positivist or Interpretivist? 2) <strong>The Dimension:</strong> Ontology (What is real?) or Epistemology (How do we know it?)?</p></div>
+                <table class="matrix-table">
+                    <thead><tr><th>Statement</th><th style="width: 25%;">Paradigm</th><th style="width: 25%;">Dimension</th></tr></thead>
+                    <tbody>
+                        <tr><td>1. "Audit quality is a fixed, measurable object waiting to be discovered."</td><td><select data-q="1" data-type="paradigm"><option value="">-- Select --</option><option value="pos">Positivist</option><option value="int">Interpretivist</option></select></td><td><select data-q="1" data-type="dimension"><option value="">-- Select --</option><option value="onto">Ontology</option><option value="epi">Epistemology</option></select></td></tr>
+                        <tr><td>2. "I must remain a detached, value-free outsider to avoid contaminating the facts."</td><td><select data-q="2" data-type="paradigm"><option value="">-- Select --</option><option value="pos">Positivist</option><option value="int">Interpretivist</option></select></td><td><select data-q="2" data-type="dimension"><option value="">-- Select --</option><option value="onto">Ontology</option><option value="epi">Epistemology</option></select></td></tr>
+                        <tr><td>3. "Reality is multiple, emergent, and socially constructed by the actors."</td><td><select data-q="3" data-type="paradigm"><option value="">-- Select --</option><option value="pos">Positivist</option><option value="int">Interpretivist</option></select></td><td><select data-q="3" data-type="dimension"><option value="">-- Select --</option><option value="onto">Ontology</option><option value="epi">Epistemology</option></select></td></tr>
+                        <tr><td>4. "I will use interviews to understand the language auditors use to describe 'doing a good job'."</td><td><select data-q="4" data-type="paradigm"><option value="">-- Select --</option><option value="pos">Positivist</option><option value="int">Interpretivist</option></select></td><td><select data-q="4" data-type="dimension"><option value="">-- Select --</option><option value="onto">Ontology</option><option value="epi">Epistemology</option></select></td></tr>
+                        <tr><td>5. "Humans are passive receptors of discrete, atomic impressions from the outside."</td><td><select data-q="5" data-type="paradigm"><option value="">-- Select --</option><option value="pos">Positivist</option><option value="int">Interpretivist</option></select></td><td><select data-q="5" data-type="dimension"><option value="">-- Select --</option><option value="onto">Ontology</option><option value="epi">Epistemology</option></select></td></tr>
+                        <tr><td>6. "Knowledge is co-created through the interaction between the researcher and the participant."</td><td><select data-q="6" data-type="paradigm"><option value="">-- Select --</option><option value="pos">Positivist</option><option value="int">Interpretivist</option></select></td><td><select data-q="6" data-type="dimension"><option value="">-- Select --</option><option value="onto">Ontology</option><option value="epi">Epistemology</option></select></td></tr>
+                    </tbody>
+                </table>
+                <div class="controls"><button class="btn-reveal" id="revealBtn">️ Click to Reveal Answers</button><button class="btn-pdf" id="pdfBtn">📄 Save to PDF</button></div>
+                <div class="answer-key" id="answerKey">
+                    <h3>Answer Key & Explanations</h3>
+                    <div class="answer-item"><strong>1. "Audit quality is a fixed, measurable object..."</strong><br><span style="color: var(--success); font-weight: bold;">Positivist / Ontology</span><p class="explanation">Defines the nature of reality (Ontology). Assumes audit quality is a concrete, physical thing existing independently of human perception.</p></div>
+                    <div class="answer-item"><strong>2. "I must remain a detached, value-free outsider..."</strong><br><span style="color: var(--success); font-weight: bold;">Positivist / Epistemology</span><p class="explanation">Defines how we gain knowledge (Epistemology). Insists on strict separation between researcher and data to maintain objectivity.</p></div>
+                    <div class="answer-item"><strong>3. "Reality is multiple, emergent, and socially constructed..."</strong><br><span style="color: var(--success); font-weight: bold;">Interpretivist / Ontology</span><p class="explanation">An Ontological statement defining reality as fluid and built by the people living it, the foundation of Interpretivism.</p></div>
+                    <div class="answer-item"><strong>4. "I will use interviews to understand the language..."</strong><br><span style="color: var(--success); font-weight: bold;">Interpretivist / Epistemology</span><p class="explanation">An Epistemological statement about how to gather knowledge using immersive tools to capture subjective, insider meanings.</p></div>
+                    <div class="answer-item"><strong>5. "Humans are passive receptors..."</strong><br><span style="color: var(--success); font-weight: bold;">Positivist / Ontology</span><p class="explanation">Defines the nature of human reality (Ontology). Treats humans as passive objects reacting to external forces.</p></div>
+                    <div class="answer-item"><strong>6. "Knowledge is co-created through the interaction..."</strong><br><span style="color: var(--success); font-weight: bold;">Interpretivist / Epistemology</span><p class="explanation">Defines how knowledge is generated (Epistemology). Rejects the detached observer, arguing researcher and participant build knowledge together.</p></div>
+                </div>
+            </div>
+            <script>
+                const correctAnswers = { 1: { paradigm: 'pos', dimension: 'onto' }, 2: { paradigm: 'pos', dimension: 'epi' }, 3: { paradigm: 'int', dimension: 'onto' }, 4: { paradigm: 'int', dimension: 'epi' }, 5: { paradigm: 'pos', dimension: 'onto' }, 6: { paradigm: 'int', dimension: 'epi' } };
+                const revealBtn = document.getElementById('revealBtn'); const pdfBtn = document.getElementById('pdfBtn'); const answerKey = document.getElementById('answerKey'); let isRevealed = false;
+                revealBtn.addEventListener('click', () => { if (!isRevealed) { for (let i = 1; i <= 6; i++) { const p = document.querySelector('select[data-q="'+i+'"][data-type="paradigm"]'); const d = document.querySelector('select[data-q="'+i+'"][data-type="dimension"]'); p.classList.toggle('correct', p.value === correctAnswers[i].paradigm); p.classList.toggle('incorrect', p.value !== correctAnswers[i].paradigm); d.classList.toggle('correct', d.value === correctAnswers[i].dimension); d.classList.toggle('incorrect', d.value !== correctAnswers[i].dimension); } answerKey.classList.add('visible'); revealBtn.innerHTML = '✅ Answers Revealed'; revealBtn.style.backgroundColor = 'var(--success)'; isRevealed = true; answerKey.scrollIntoView({ behavior: 'smooth', block: 'start' }); } else { answerKey.classList.remove('visible'); revealBtn.innerHTML = '️ Click to Reveal Answers'; revealBtn.style.backgroundColor = 'var(--primary)'; isRevealed = false; document.querySelectorAll('select').forEach(s => s.classList.remove('correct', 'incorrect')); } });
+                pdfBtn.addEventListener('click', () => window.print());
+            <\/script></body></html>`,
+            w2: `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Worksheet 2</title><style>
+                :root { --primary: #2563eb; --primary-dark: #1d4ed8; --success: #10b981; --bg: #f8fafc; --card-bg: #ffffff; --text: #1e293b; --border: #e2e8f0; }
+                body { font-family: system-ui, -apple-system, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 40px 20px; line-height: 1.6; }
+                .worksheet-container { max-width: 900px; margin: 0 auto; background: var(--card-bg); padding: 40px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+                header { border-bottom: 2px solid var(--primary); padding-bottom: 20px; margin-bottom: 30px; }
+                h1 { color: var(--primary); margin: 0 0 10px 0; font-size: 2rem; }
+                .subtitle { color: #64748b; font-size: 1.1rem; margin: 0; }
+                .instructions { background-color: #f0f9ff; border-left: 4px solid var(--primary); padding: 15px 20px; margin-bottom: 30px; border-radius: 4px; }
+                .instructions h3 { margin-top: 0; color: var(--primary-dark); }
+                .scenario-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 25px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+                .scenario-title { font-size: 1.2rem; font-weight: 700; color: var(--primary-dark); margin-top: 0; margin-bottom: 15px; }
+                .scenario-text { background-color: #eff6ff; padding: 15px; border-radius: 6px; font-style: italic; margin-bottom: 20px; border-left: 3px solid var(--primary); }
+                .input-group { margin-bottom: 20px; }
+                label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--text); }
+                textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; font-family: inherit; resize: vertical; min-height: 80px; box-sizing: border-box; }
+                textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+                .controls { display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
+                button { padding: 12px 24px; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+                .btn-reveal { background-color: var(--primary); color: white; }
+                .btn-reveal:hover { background-color: var(--primary-dark); }
+                .btn-pdf { background-color: #475569; color: white; }
+                .btn-pdf:hover { background-color: #334155; }
+                .answer-key { display: none; background-color: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 25px; margin-top: 20px; animation: fadeIn 0.5s ease; }
+                .answer-key.visible { display: block; }
+                .answer-key h3 { margin-top: 0; color: var(--success); border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+                .answer-item { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px dashed var(--border); }
+                .answer-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+                .answer-item h4 { margin: 0 0 10px 0; color: var(--text); }
+                .model-answer { background-color: #ecfdf5; border-left: 4px solid var(--success); padding: 12px 15px; border-radius: 4px; margin-top: 10px; color: #064e3b; }
+                @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+                @media print { body { background: white; padding: 0; margin: 0; } .worksheet-container { box-shadow: none; border-radius: 0; padding: 20px; max-width: 100%; } .controls { display: none !important; } .answer-key { display: block !important; border: 1px solid #ccc; page-break-inside: avoid; } textarea { border: 1px solid #ccc; background: #fafafa; } h1 { font-size: 1.8rem; } }
+            </style></head><body>
+            <div class="worksheet-container">
+                <header><h1>Worksheet 2: The "Frankenstein" Diagnostic</h1><p class="subtitle">Identifying and Fixing Methodological Mismatches</p></header>
+                <div class="instructions"><h3>Instructions</h3><p>Below are three flawed research designs. Each has accidentally built a "Frankenstein's monster" by stitching together a research question from one paradigm with a method from another. Answer the two diagnostic questions for each, then click <strong>"Click to Reveal"</strong> to see the model fixes.</p></div>
+                <div class="scenario-card"><h3 class="scenario-title">Scenario A: The Auditor Stress Study</h3><div class="scenario-text">"I want to understand <strong>how</strong> junior auditors emotionally cope with the pressure of tight deadlines. I will distribute a 50-question Likert-scale survey to 500 auditors to measure their stress levels."</div><div class="input-group"><label>1. The Mismatch: What is the conflict between the research question and the method?</label><textarea></textarea></div><div class="input-group"><label>2. The Fix: Rewrite the methodology to match the research question.</label><textarea></textarea></div></div>
+                <div class="scenario-card"><h3 class="scenario-title">Scenario B: The IFRS Adoption Impact</h3><div class="scenario-text">"I want to test the <strong>objective impact</strong> of mandatory IFRS adoption on stock market volatility. I will conduct 10 in-depth, unstructured interviews with local CFOs to explore their feelings about the change."</div><div class="input-group"><label>1. The Mismatch: What is the conflict between the research question and the method?</label><textarea></textarea></div><div class="input-group"><label>2. The Fix: Rewrite the methodology to match the research question.</label><textarea></textarea></div></div>
+                <div class="scenario-card"><h3 class="scenario-title">Scenario C: The Whistleblower Experience</h3><div class="scenario-text">"I want to explore the <strong>lived experience</strong> and social isolation of whistleblowers in corporate fraud cases. I will run a multiple regression analysis on their financial compensation packages and tenure length."</div><div class="input-group"><label>1. The Mismatch: What is the conflict between the research question and the method?</label><textarea></textarea></div><div class="input-group"><label>2. The Fix: Rewrite the methodology to match the research question.</label><textarea></textarea></div></div>
+                <div class="controls"><button class="btn-reveal" id="revealBtn">️ Click to Reveal Answers</button><button class="btn-pdf" id="pdfBtn">📄 Save to PDF</button></div>
+                <div class="answer-key" id="answerKey">
+                    <h3>✅ Answer Key & Model Fixes</h3>
+                    <div class="answer-item"><h4>Scenario A: The Auditor Stress Study</h4><p><strong>The Mismatch:</strong> The question asks "how" (interpretivist, seeking deep contextual understanding), but the method is a Likert-scale survey (positivist, designed to measure variance and generalize).</p><div class="model-answer"><strong>The Fix:</strong> "I will conduct semi-structured, in-depth interviews with 15-20 junior auditors to explore their lived experiences and coping mechanisms regarding deadline pressure."</div></div>
+                    <div class="answer-item"><h4>Scenario B: The IFRS Adoption Impact</h4><p><strong>The Mismatch:</strong> The question asks to "test the objective impact" on "stock market volatility" (positivist, seeking statistical generalization), but the method uses unstructured interviews (interpretivist, cannot measure objective market volatility).</p><div class="model-answer"><strong>The Fix:</strong> "I will collect archival financial data from 200 firms for 5 years pre- and post-IFRS adoption, and run a multiple regression analysis to measure the statistical impact on stock market volatility."</div></div>
+                    <div class="answer-item"><h4>Scenario C: The Whistleblower Experience</h4><p><strong>The Mismatch:</strong> The question seeks to explore "lived experience and social isolation" (interpretivist, focusing on human meaning), but the method uses multiple regression on financial data (positivist, treating humans as passive data points).</p><div class="model-answer"><strong>The Fix:</strong> "I will use a narrative inquiry approach, conducting longitudinal, in-depth interviews with 8-10 whistleblowers to document their personal journeys and the emotional toll of reporting corporate fraud."</div></div>
+                </div>
+            </div>
+            <script>
+                const revealBtn = document.getElementById('revealBtn'); const pdfBtn = document.getElementById('pdfBtn'); const answerKey = document.getElementById('answerKey'); let isRevealed = false;
+                revealBtn.addEventListener('click', () => { if (!isRevealed) { answerKey.classList.add('visible'); revealBtn.innerHTML = '✅ Answers Revealed'; revealBtn.style.backgroundColor = 'var(--success)'; isRevealed = true; setTimeout(() => answerKey.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100); } else { answerKey.classList.remove('visible'); revealBtn.innerHTML = '️ Click to Reveal Answers'; revealBtn.style.backgroundColor = 'var(--primary)'; isRevealed = false; } });
+                pdfBtn.addEventListener('click', () => window.print());
+            <\/script></body></html>`,
+            w3: `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Worksheet 3</title><style>
+                :root { --primary: #2563eb; --primary-dark: #1d4ed8; --success: #10b981; --bg: #f8fafc; --card-bg: #ffffff; --text: #1e293b; --text-muted: #64748b; --border: #e2e8f0; }
+                body { font-family: system-ui, -apple-system, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 40px 20px; line-height: 1.6; }
+                .worksheet-container { max-width: 900px; margin: 0 auto; background: var(--card-bg); padding: 40px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+                header { border-bottom: 2px solid var(--primary); padding-bottom: 20px; margin-bottom: 30px; }
+                h1 { color: var(--primary); margin: 0 0 10px 0; font-size: 2rem; }
+                .subtitle { color: var(--text-muted); font-size: 1.1rem; margin: 0; }
+                .instructions { background-color: #f0f9ff; border-left: 4px solid var(--primary); padding: 15px 20px; margin-bottom: 30px; border-radius: 4px; }
+                .instructions h3 { margin-top: 0; color: var(--primary-dark); }
+                .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 25px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+                .section-title { font-size: 1.2rem; font-weight: 700; color: var(--text); margin-top: 0; margin-bottom: 15px; }
+                .thin-statement { background-color: #f8fafc; padding: 20px; border-radius: 6px; font-size: 1.1rem; font-weight: 500; border-left: 4px solid #94a3b8; }
+                .input-group { margin-bottom: 20px; }
+                label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--text); }
+                .helper-text { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px; font-style: italic; }
+                textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; font-family: inherit; resize: vertical; box-sizing: border-box; }
+                textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+                .controls { display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
+                button { padding: 12px 24px; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+                .btn-reveal { background-color: var(--primary); color: white; }
+                .btn-reveal:hover { background-color: var(--primary-dark); }
+                .btn-pdf { background-color: #475569; color: white; }
+                .btn-pdf:hover { background-color: #334155; }
+                .model-answer { display: none; background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 25px; margin-top: 20px; animation: fadeIn 0.5s ease; }
+                .model-answer.visible { display: block; }
+                .model-answer h3 { margin-top: 0; color: #166534; border-bottom: 1px solid #bbf7d0; padding-bottom: 10px; }
+                .model-layer { margin-bottom: 15px; }
+                .model-layer strong { color: #14532d; }
+                .model-narrative { background: white; padding: 15px; border-radius: 6px; border-left: 4px solid var(--success); margin-top: 15px; font-size: 1.05rem; line-height: 1.7; }
+                @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+                @media print { body { background: white; padding: 0; margin: 0; } .worksheet-container { box-shadow: none; border-radius: 0; padding: 20px; max-width: 100%; } .controls { display: none !important; } .model-answer { display: block !important; border: 1px solid #ccc; page-break-inside: avoid; } textarea { border: 1px solid #ccc; background: #fafafa; min-height: 60px; } h1 { font-size: 1.8rem; } }
+            </style></head><body>
+            <div class="worksheet-container">
+                <header><h1>Worksheet 3: The "Thin to Thick" Description Expander</h1><p class="subtitle">Transforming Spreadsheet Facts into Rich Qualitative Evidence</p></header>
+                <div class="instructions"><h3>Instructions</h3><p>A "thin" description is just a factual statement. A "thick" description captures what that moment meant, the power dynamics, and the unspoken context. Read the "Thin Statement" below. Use the four text boxes to brainstorm the missing layers, then synthesize them into a single "Thick Narrative" paragraph. Click <strong>"Click to Reveal"</strong> to compare with a model answer.</p></div>
+                <div class="card"><h2 class="section-title">The Baseline Fact</h2><div class="thin-statement">"The CFO signed the ESG report."</div></div>
+                <div class="card">
+                    <h2 class="section-title">Expand the Layers of Context</h2>
+                    <div class="input-group"><label>1. The Setting & Atmosphere</label><p class="helper-text">Where did this happen? What was the mood, tone, or physical environment?</p><textarea></textarea></div>
+                    <div class="input-group"><label>2. The Power Dynamics</label><p class="helper-text">Who was watching? Who held the leverage? Who was being pressured?</p><textarea></textarea></div>
+                    <div class="input-group"><label>3. The Unspoken Motive</label><p class="helper-text">Why did they sign it *now*? What were they protecting or trying to achieve behind the scenes?</p><textarea></textarea></div>
+                    <div class="input-group"><label>4. The Combined "Thick" Narrative</label><p class="helper-text">Synthesize layers 1, 2, and 3 into one rich, cohesive paragraph.</p><textarea style="min-height: 120px;"></textarea></div>
+                </div>
+                <div class="controls"><button class="btn-reveal" id="revealBtn">👁️ Click to Reveal Model Answer</button><button class="btn-pdf" id="pdfBtn">📄 Save to PDF</button></div>
+                <div class="model-answer" id="modelAnswer">
+                    <h3>✅ Model Answer: The "Thick" Description</h3>
+                    <div class="model-layer"><strong>1. Setting & Atmosphere:</strong> In a dimly lit, freezing boardroom late on a Friday afternoon.</div>
+                    <div class="model-layer"><strong>2. Power Dynamics:</strong> The General Counsel stood silently in the doorway, while the lead external auditor watched the CFO's every move.</div>
+                    <div class="model-layer"><strong>3. Unspoken Motive:</strong> Knowing the company's survival depended on securing a crucial green bond financing by Monday morning.</div>
+                    <div class="model-narrative"><strong>Final Thick Narrative:</strong><br>"Late on a Friday afternoon, in a dimly lit and freezing boardroom, the CFO hesitated before signing the ESG report. The General Counsel stood silently in the doorway, while the lead external auditor watched his every move. Knowing the company's survival depended on securing a crucial green bond financing by Monday morning, he signed not out of conviction, but out of desperation to maintain the illusion of progress."</div>
+                    <p style="margin-top: 20px; font-size: 0.9rem; color: #166534;"><strong>Why this works:</strong> It moves beyond the spreadsheet fact to reveal the social construction of the metric, showing the friction, power imbalance, and economic incentives that actually drove the action.</p>
+                </div>
+            </div>
+            <script>
+                const revealBtn = document.getElementById('revealBtn'); const pdfBtn = document.getElementById('pdfBtn'); const modelAnswer = document.getElementById('modelAnswer'); let isRevealed = false;
+                revealBtn.addEventListener('click', () => { if (!isRevealed) { modelAnswer.classList.add('visible'); revealBtn.innerHTML = '✅ Model Answer Revealed'; revealBtn.style.backgroundColor = 'var(--success)'; isRevealed = true; setTimeout(() => modelAnswer.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100); } else { modelAnswer.classList.remove('visible'); revealBtn.innerHTML = '️ Click to Reveal Model Answer'; revealBtn.style.backgroundColor = 'var(--primary)'; isRevealed = false; } });
+                pdfBtn.addEventListener('click', () => window.print());
+            <\/script></body></html>`,
+            w4: `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Worksheet 4</title><style>
+                :root { --primary: #2563eb; --primary-dark: #1d4ed8; --success: #10b981; --bg: #f8fafc; --card-bg: #ffffff; --text: #1e293b; --text-muted: #64748b; --border: #e2e8f0; }
+                body { font-family: system-ui, -apple-system, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 40px 20px; line-height: 1.6; }
+                .worksheet-container { max-width: 900px; margin: 0 auto; background: var(--card-bg); padding: 40px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+                header { border-bottom: 2px solid var(--primary); padding-bottom: 20px; margin-bottom: 30px; }
+                h1 { color: var(--primary); margin: 0 0 10px 0; font-size: 2rem; }
+                .subtitle { color: var(--text-muted); font-size: 1.1rem; margin: 0; }
+                .instructions { background-color: #f0f9ff; border-left: 4px solid var(--primary); padding: 15px 20px; margin-bottom: 30px; border-radius: 4px; }
+                .instructions h3 { margin-top: 0; color: var(--primary-dark); }
+                .formula-box { background-color: #eff6ff; border: 2px dashed #bfdbfe; border-radius: 8px; padding: 20px; margin-bottom: 30px; text-align: center; }
+                .formula-box h3 { margin-top: 0; color: var(--primary-dark); font-size: 1.1rem; }
+                .formula-text { font-size: 1.2rem; font-weight: 600; color: var(--primary-dark); font-style: italic; }
+                .practice-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 25px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+                .practice-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+                .practice-title { font-size: 1.2rem; font-weight: 700; color: var(--text); margin: 0; }
+                .badge { font-size: 0.75rem; padding: 4px 8px; border-radius: 9999px; font-weight: 600; text-transform: uppercase; }
+                .badge-pos { background: #fee2e2; color: #991b1b; }
+                .positivist-question { background-color: #f8fafc; padding: 15px; border-radius: 6px; font-size: 1.05rem; font-weight: 500; border-left: 4px solid #ef4444; margin-bottom: 20px; }
+                .input-group { margin-bottom: 15px; }
+                label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--text); }
+                textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; font-family: inherit; resize: vertical; box-sizing: border-box; }
+                textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+                .controls { display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
+                button { padding: 12px 24px; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+                .btn-reveal { background-color: var(--primary); color: white; }
+                .btn-reveal:hover { background-color: var(--primary-dark); }
+                .btn-pdf { background-color: #475569; color: white; }
+                .btn-pdf:hover { background-color: #334155; }
+                .answer-key { display: none; background-color: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 25px; margin-top: 20px; animation: fadeIn 0.5s ease; }
+                .answer-key.visible { display: block; }
+                .answer-key h3 { margin-top: 0; color: var(--success); border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+                .model-answer-item { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px dashed var(--border); }
+                .model-answer-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+                .model-answer-item h4 { margin: 0 0 10px 0; color: var(--text); }
+                .model-text { background-color: #ecfdf5; border-left: 4px solid var(--success); padding: 12px 15px; border-radius: 4px; color: #064e3b; font-weight: 500; }
+                .explanation { margin-top: 10px; font-size: 0.95rem; color: var(--text-muted); }
+                @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+                @media print { body { background: white; padding: 0; margin: 0; } .worksheet-container { box-shadow: none; border-radius: 0; padding: 20px; max-width: 100%; } .controls { display: none !important; } .answer-key { display: block !important; border: 1px solid #ccc; page-break-inside: avoid; } textarea { border: 1px solid #ccc; background: #fafafa; min-height: 80px; } h1 { font-size: 1.8rem; } .practice-card { page-break-inside: avoid; } }
+            </style></head><body>
+            <div class="worksheet-container">
+                <header><h1>Worksheet 4: The Research Question Translator</h1><p class="subtitle">Rewriting Positivist Questions into Interpretivist Ones</p></header>
+                <div class="instructions"><h3>Instructions</h3><p>Positivist questions ask <em>"What is the effect of X on Y?"</em> Interpretivist questions ask <em>"How do actors negotiate X?"</em> Use the Translation Formula below to rewrite the three positivist questions. Click <strong>"Click to Reveal"</strong> to see the model answers.</p></div>
+                <div class="formula-box"><h3>The Translation Formula</h3><p class="formula-text">"How do [Specific Actors] navigate / make sense of / construct [Phenomenon] in the context of [Specific Setting]?"</p></div>
+                <div class="practice-card"><div class="practice-header"><h3 class="practice-title">Practice 1: The ERP Implementation</h3><span class="badge badge-pos">Positivist</span></div><div class="positivist-question">"What is the impact of the new ERP system on employee productivity?"</div><div class="input-group"><label>Your Interpretivist Translation:</label><textarea></textarea></div></div>
+                <div class="practice-card"><div class="practice-header"><h3 class="practice-title">Practice 2: Islamic Finance Governance</h3><span class="badge badge-pos">Positivist</span></div><div class="positivist-question">"What is the relationship between Shariah board size and bank financial performance?"</div><div class="input-group"><label>Your Interpretivist Translation:</label><textarea></textarea></div></div>
+                <div class="practice-card"><div class="practice-header"><h3 class="practice-title">Practice 3: ESG and Greenwashing</h3><span class="badge badge-pos">Positivist</span></div><div class="positivist-question">"What is the effect of ESG disclosure volume on firm market value?"</div><div class="input-group"><label>Your Interpretivist Translation:</label><textarea></textarea></div></div>
+                <div class="controls"><button class="btn-reveal" id="revealBtn">👁️ Click to Reveal Model Answers</button><button class="btn-pdf" id="pdfBtn">📄 Save to PDF</button></div>
+                <div class="answer-key" id="answerKey">
+                    <h3>✅ Model Answers & Explanations</h3>
+                    <div class="model-answer-item"><h4>Practice 1: The ERP Implementation</h4><div class="model-text">"How do manufacturing employees make sense of and adapt their daily workflows to accommodate the new ERP system in the context of high-pressure production targets?"</div><p class="explanation"><strong>Why this works:</strong> Shifts focus from measuring a statistical "impact" to understanding the human mechanism (making sense, adapting workflows) within a specific context.</p></div>
+                    <div class="model-answer-item"><h4>Practice 2: Islamic Finance Governance</h4><div class="model-text">"How do Shariah scholars navigate the tension between the moral accountability demanded by Islamic principles and the profit-maximization expectations of conventional shareholders in the context of modern banking?"</div><p class="explanation"><strong>Why this works:</strong> Moves away from correlating two variables to exploring the lived experience, power dynamics, and conflicting institutional logics that the actors actually face.</p></div>
+                    <div class="model-answer-item"><h4>Practice 3: ESG and Greenwashing</h4><div class="model-text">"How do CFOs and sustainability officers construct and communicate ESG narratives to manage investor expectations in the context of increasing regulatory scrutiny and internal resource constraints?"</div><p class="explanation"><strong>Why this works:</strong> Treats ESG disclosure as a socially constructed narrative rather than a neutral, objective volume metric, investigating the "how" and "why" of impression management.</p></div>
+                </div>
+            </div>
+            <script>
+                const revealBtn = document.getElementById('revealBtn'); const pdfBtn = document.getElementById('pdfBtn'); const answerKey = document.getElementById('answerKey'); let isRevealed = false;
+                revealBtn.addEventListener('click', () => { if (!isRevealed) { answerKey.classList.add('visible'); revealBtn.innerHTML = '✅ Model Answers Revealed'; revealBtn.style.backgroundColor = 'var(--success)'; isRevealed = true; setTimeout(() => answerKey.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100); } else { answerKey.classList.remove('visible'); revealBtn.innerHTML = '👁️ Click to Reveal Model Answers'; revealBtn.style.backgroundColor = 'var(--primary)'; isRevealed = false; } });
+                pdfBtn.addEventListener('click', () => window.print());
+            <\/script></body></html>`,
+            w5: `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Worksheet 5</title><style>
+                :root { --primary: #2563eb; --primary-dark: #1d4ed8; --success: #10b981; --bg: #f8fafc; --card-bg: #ffffff; --text: #1e293b; --text-muted: #64748b; --border: #e2e8f0; }
+                body { font-family: system-ui, -apple-system, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 40px 20px; line-height: 1.6; }
+                .worksheet-container { max-width: 900px; margin: 0 auto; background: var(--card-bg); padding: 40px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+                header { border-bottom: 2px solid var(--primary); padding-bottom: 20px; margin-bottom: 30px; }
+                h1 { color: var(--primary); margin: 0 0 10px 0; font-size: 2rem; }
+                .subtitle { color: var(--text-muted); font-size: 1.1rem; margin: 0; }
+                .instructions { background-color: #f0f9ff; border-left: 4px solid var(--primary); padding: 15px 20px; margin-bottom: 30px; border-radius: 4px; }
+                .instructions h3 { margin-top: 0; color: var(--primary-dark); }
+                .metric-display { background-color: #eff6ff; border: 2px solid #bfdbfe; border-radius: 8px; padding: 25px; text-align: center; margin-bottom: 30px; }
+                .metric-label { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 600; margin-bottom: 10px; }
+                .metric-value { font-size: 2rem; font-weight: 700; color: var(--primary-dark); }
+                .input-group { margin-bottom: 25px; }
+                label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--text); }
+                .helper-text { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px; font-style: italic; }
+                textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; font-family: inherit; resize: vertical; box-sizing: border-box; }
+                textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+                .controls { display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
+                button { padding: 12px 24px; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+                .btn-reveal { background-color: var(--primary); color: white; }
+                .btn-reveal:hover { background-color: var(--primary-dark); }
+                .btn-pdf { background-color: #475569; color: white; }
+                .btn-pdf:hover { background-color: #334155; }
+                .answer-key { display: none; background-color: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 25px; margin-top: 20px; animation: fadeIn 0.5s ease; }
+                .answer-key.visible { display: block; }
+                .answer-key h3 { margin-top: 0; color: var(--success); border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+                .model-step { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px dashed var(--border); }
+                .model-step:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+                .model-step h4 { margin: 0 0 8px 0; color: var(--text); }
+                .model-text { background-color: #ecfdf5; border-left: 4px solid var(--success); padding: 12px 15px; border-radius: 4px; color: #064e3b; font-weight: 500; }
+                .explanation { margin-top: 8px; font-size: 0.9rem; color: var(--text-muted); }
+                @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+                @media print { body { background: white; padding: 0; margin: 0; } .worksheet-container { box-shadow: none; border-radius: 0; padding: 20px; max-width: 100%; } .controls { display: none !important; } .answer-key { display: block !important; border: 1px solid #ccc; page-break-inside: avoid; } textarea { border: 1px solid #ccc; background: #fafafa; min-height: 60px; } h1 { font-size: 1.8rem; } .model-step { page-break-inside: avoid; } }
+            </style></head><body>
+            <div class="worksheet-container">
+                <header><h1>Worksheet 5: Context-to-Metric Reverse Engineer</h1><p class="subtitle">Tracing the Hidden Chain of Context Behind Corporate Numbers</p></header>
+                <div class="instructions"><h3>Instructions</h3><p>Every metric printed in an annual report sits at the end of a chain of context. <strong>Context-to-metric mapping</strong> is the discipline of tracing that chain backward. Look at the shiny corporate metric below. Use the four text boxes to reverse-engineer the messy reality behind it. Click <strong>"Click to Reveal"</strong> to compare your logic with a model answer.</p></div>
+                <div class="metric-display"><div class="metric-label">Official Corporate Dashboard Metric</div><div class="metric-value">"Scope 1 & 2 Carbon Emissions reduced by 15% (Year-over-Year)"</div></div>
+                <div class="input-group"><label>1. The Origin</label><p class="helper-text">Who originally decided that this specific metric was the right one to track, and what alternative metrics were ignored?</p><textarea></textarea></div>
+                <div class="input-group"><label>2. The Boundary</label><p class="helper-text">What activities, costs, or emissions had to be excluded or pushed to a third party to make this number look good?</p><textarea></textarea></div>
+                <div class="input-group"><label>3. The Incentive</label><p class="helper-text">How is the compensation, promotion, or KPI evaluation of the management team tied to this specific number?</p><textarea></textarea></div>
+                <div class="input-group"><label>4. The Friction</label><p class="helper-text">What happens on the factory floor or in daily operations when the physical reality doesn't match this dashboard target?</p><textarea></textarea></div>
+                <div class="controls"><button class="btn-reveal" id="revealBtn">👁️ Click to Reveal Model Answer</button><button class="btn-pdf" id="pdfBtn">📄 Save to PDF</button></div>
+                <div class="answer-key" id="answerKey">
+                    <h3>✅ Model Answer: The Reverse-Engineered Context</h3>
+                    <div class="model-step"><h4>1. The Origin</h4><div class="model-text">The metric was championed by the Chief Sustainability Officer to align with upcoming EU disclosure mandates, while intentionally ignoring "Scope 3" (supply chain) emissions, which are much harder to control and would have shown a net increase.</div><p class="explanation"><strong>Why this matters:</strong> Metrics are not neutral; they are political choices. Choosing to measure Scope 1 & 2 while ignoring Scope 3 is a strategic decision to make the company look better.</p></div>
+                    <div class="model-step"><h4>2. The Boundary</h4><div class="model-text">To achieve the 15% reduction, the company outsourced its most carbon-intensive manufacturing processes and trucking routes to independent, third-party contractors.</div><p class="explanation"><strong>Why this matters:</strong> The physical carbon footprint of the product hasn't actually decreased. The emissions were simply pushed outside the artificial boundary of the company's official accounting grid.</p></div>
+                    <div class="model-step"><h4>3. The Incentive</h4><div class="model-text">The executive team's annual short-term bonus pool is explicitly tied to hitting this specific 15% reduction target, creating immense pressure to manipulate the boundary rather than invest in actual green technology.</div><p class="explanation"><strong>Why this matters:</strong> Campbell's Law states that when a measure becomes a target, it ceases to be a good measure. The financial incentive drives the "greenwashing" behaviour.</p></div>
+                    <div class="model-step"><h4>4. The Friction</h4><div class="model-text">On the factory floor, plant managers are forced to maintain "shadow Excel spreadsheets" to track the real operational data, because the official ERP system cannot reconcile the gap between the mandated dashboard targets and physical reality.</div><p class="explanation"><strong>Why this matters:</strong> This is the "thick description." The friction reveals the decoupling between the formal, sanitized metric and the messy, adaptive workarounds required to keep the business running.</p></div>
+                </div>
+            </div>
+            <script>
+                const revealBtn = document.getElementById('revealBtn'); const pdfBtn = document.getElementById('pdfBtn'); const answerKey = document.getElementById('answerKey'); let isRevealed = false;
+                revealBtn.addEventListener('click', () => { if (!isRevealed) { answerKey.classList.add('visible'); revealBtn.innerHTML = '✅ Model Answer Revealed'; revealBtn.style.backgroundColor = 'var(--success)'; isRevealed = true; setTimeout(() => answerKey.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100); } else { answerKey.classList.remove('visible'); revealBtn.innerHTML = '👁️ Click to Reveal Model Answer'; revealBtn.style.backgroundColor = 'var(--primary)'; isRevealed = false; } });
+                pdfBtn.addEventListener('click', () => window.print());
+            <\/script></body></html>`
+        };
+
+        function loadModule(id, el) {
+            document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+            el.classList.add('active');
+            const iframe = document.getElementById('content-frame');
+            iframe.srcdoc = modules[id];
+        }
+
+        window.onload = () => {
+            document.getElementById('content-frame').srcdoc = modules['welcome'];
+        };
+    </script>
+</body>
+</html>
