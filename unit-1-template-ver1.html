@@ -1,0 +1,2919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 1: Pragmatics & Digital Communication</title>
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.8/index.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/amiri@5.0.8/index.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/plus-jakarta-sans@5.0.3/index.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a6b4a;
+            --primary-light: #2d9b6e;
+            --primary-dark: #0f4a33;
+            --accent: #c8a951;
+            --accent-light: #e8d48b;
+            --bg: #f8f6f0;
+            --bg-card: #ffffff;
+            --text: #2c2c2c;
+            --text-light: #6b6b6b;
+            --border: #e2ddd3;
+            --shadow: 0 4px 24px rgba(0,0,0,0.06);
+            --shadow-lg: 0 8px 40px rgba(0,0,0,0.1);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --chat-bubble-student: #e8f5ee;
+            --chat-bubble-lecturer: #f0e8d8;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --sidebar-width: 270px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Geometric Pattern Background */
+        .pattern-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%231a6b4a' stroke-width='1'%3E%3Cpath d='M40 0L80 40L40 80L0 40Z'/%3E%3Cpath d='M40 10L70 40L40 70L10 40Z'/%3E%3Cpath d='M40 20L60 40L40 60L20 40Z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: var(--sidebar-width);
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            z-index: 998;
+            transition: width 0.2s ease;
+        }
+
+        /* ===== VERTICAL SIDEBAR NAVIGATION ===== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: linear-gradient(180deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: white;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 24px rgba(0,0,0,0.08);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='rgba(255,255,255,0.04)' stroke-width='1'%3E%3Cpath d='M30 0L60 30L30 60L0 30Z'/%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .sidebar-header {
+            padding: 28px 24px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-brand .icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(255,255,255,0.12);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-brand-text h2 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: white;
+            line-height: 1.2;
+        }
+
+        .sidebar-brand-text p {
+            font-family: 'Amiri', serif;
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.6);
+            font-style: italic;
+            margin-top: 2px;
+        }
+
+        .sidebar-unit-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(200, 169, 81, 0.2);
+            border: 1px solid rgba(200, 169, 81, 0.3);
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--accent-light);
+            margin-top: 12px;
+        }
+
+        .sidebar-unit-badge .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .sidebar-nav::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.15);
+            border-radius: 2px;
+        }
+
+        .nav-section-label {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: rgba(255,255,255,0.4);
+            font-weight: 700;
+            padding: 12px 12px 8px;
+            margin-top: 8px;
+        }
+
+        .nav-section-label:first-child {
+            margin-top: 0;
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            color: rgba(255,255,255,0.75);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            border-radius: 10px;
+            transition: var(--transition);
+            margin-bottom: 2px;
+            position: relative;
+        }
+
+        .sidebar-nav a:hover {
+            background: rgba(255,255,255,0.08);
+            color: white;
+            transform: translateX(2px);
+        }
+
+        .sidebar-nav a.active {
+            background: rgba(255,255,255,0.14);
+            color: white;
+            font-weight: 600;
+        }
+
+        .sidebar-nav a.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 0 3px 3px 0;
+        }
+
+        .sidebar-nav a .nav-icon {
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            border-radius: 7px;
+            background: rgba(255,255,255,0.06);
+        }
+
+        .sidebar-nav a.active .nav-icon {
+            background: rgba(200, 169, 81, 0.25);
+        }
+
+        .sidebar-nav a .nav-num {
+            margin-left: auto;
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.35);
+            font-weight: 600;
+        }
+
+        .sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .sidebar-progress {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .sidebar-progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.72rem;
+            color: rgba(255,255,255,0.6);
+            font-weight: 600;
+        }
+
+        .sidebar-progress-bar {
+            height: 5px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .sidebar-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        /* Mobile Toggle */
+        .mobile-toggle {
+            display: none;
+            position: fixed;
+            top: 14px;
+            left: 14px;
+            z-index: 1001;
+            width: 44px;
+            height: 44px;
+            background: var(--primary);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-toggle:hover {
+            background: var(--primary-dark);
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 998;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .sidebar-overlay.show {
+            opacity: 1;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            padding: 80px 40px 80px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -20%;
+            width: 140%;
+            height: 200%;
+            background: radial-gradient(ellipse at center, rgba(26,107,74,0.06) 0%, transparent 60%);
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(26, 107, 74, 0.1);
+            color: var(--primary);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            border: 1px solid rgba(26, 107, 74, 0.15);
+        }
+
+        .hero-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .hero h1 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            color: var(--primary-dark);
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-family: 'Amiri', serif;
+            font-size: 1.15rem;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .hero-desc {
+            font-size: 1.05rem;
+            color: var(--text-light);
+            max-width: 640px;
+            margin: 0 auto 32px;
+            line-height: 1.8;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat .num {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .hero-stat .label {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Section Styles */
+        .section {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .section-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: white;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 32px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Learning Outcomes */
+        .outcomes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .outcome-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 28px;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .outcome-card:hover {
+            border-color: var(--primary-light);
+            box-shadow: var(--shadow);
+            transform: translateY(-2px);
+        }
+
+        .outcome-card.completed {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(26,107,74,0.03), rgba(200,169,81,0.03));
+        }
+
+        .outcome-num {
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .outcome-card.completed .outcome-num {
+            background: linear-gradient(135deg, var(--accent), #d4b85c);
+        }
+
+        .outcome-card.completed .outcome-num::after {
+            content: '✓';
+        }
+
+        .outcome-card.completed .outcome-num span {
+            display: none;
+        }
+
+        .outcome-text {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .outcome-text strong {
+            color: var(--primary);
+        }
+
+        /* Chat Snapshot */
+        .chat-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #ece5dd;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .chat-header {
+            background: var(--primary-dark);
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-avatar {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .chat-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .chat-status {
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+
+        .chat-body {
+            padding: 20px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .chat-date-divider {
+            text-align: center;
+            margin: 8px 0;
+        }
+
+        .chat-date-divider span {
+            background: rgba(0,0,0,0.08);
+            padding: 4px 14px;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            color: var(--text-light);
+        }
+
+        .chat-bubble {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .chat-bubble.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .chat-bubble.student {
+            background: var(--chat-bubble-student);
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-bubble.lecturer {
+            background: var(--chat-bubble-lecturer);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-time {
+            font-size: 0.68rem;
+            color: var(--text-light);
+            margin-top: 4px;
+            text-align: right;
+        }
+
+        .chat-bubble.lecturer .chat-time {
+            text-align: left;
+        }
+
+        .chat-bubble .highlight {
+            background: rgba(200, 169, 81, 0.3);
+            padding: 1px 4px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .chat-bubble .highlight:hover {
+            background: rgba(200, 169, 81, 0.5);
+        }
+
+        .chat-replay-btn {
+            display: block;
+            margin: 16px auto;
+            padding: 10px 24px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .chat-replay-btn:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+
+        /* Tooltip */
+        .tooltip-popup {
+            position: fixed;
+            background: var(--primary-dark);
+            color: white;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            max-width: 300px;
+            z-index: 1000;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            line-height: 1.5;
+        }
+
+        .tooltip-popup.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .tooltip-popup::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid var(--primary-dark);
+        }
+
+        /* Notice & Compare */
+        .compare-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .compare-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 2px solid var(--border);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .compare-card.rani {
+            border-color: #7bc4a5;
+        }
+
+        .compare-card.hakim {
+            border-color: #d4b85c;
+        }
+
+        .compare-card-header {
+            padding: 20px 24px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .compare-card.rani .compare-card-header {
+            background: linear-gradient(135deg, rgba(45,155,110,0.1), rgba(45,155,110,0.05));
+            color: var(--primary);
+        }
+
+        .compare-card.hakim .compare-card-header {
+            background: linear-gradient(135deg, rgba(200,169,81,0.15), rgba(200,169,81,0.05));
+            color: #8a7530;
+        }
+
+        .compare-card-body {
+            padding: 20px 24px;
+        }
+
+        .compare-row {
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .compare-row:last-child {
+            border-bottom: none;
+        }
+
+        .compare-label {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .compare-value {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Concept Accordion */
+        .concept-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .concept-item {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .concept-item.open {
+            border-color: var(--primary-light);
+            box-shadow: var(--shadow);
+        }
+
+        .concept-header {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .concept-header:hover {
+            background: rgba(26, 107, 74, 0.03);
+        }
+
+        .concept-icon {
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .concept-title {
+            flex: 1;
+        }
+
+        .concept-title h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .concept-title p {
+            font-size: 0.82rem;
+            color: var(--text-light);
+        }
+
+        .concept-toggle {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(26, 107, 74, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        .concept-item.open .concept-toggle {
+            transform: rotate(45deg);
+            background: var(--primary);
+            color: white;
+        }
+
+        .concept-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .concept-body-inner {
+            padding: 0 24px 24px;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: var(--text);
+        }
+
+        .concept-body-inner .example-box {
+            background: rgba(26, 107, 74, 0.05);
+            border-left: 3px solid var(--primary);
+            padding: 16px 20px;
+            border-radius: 0 10px 10px 0;
+            margin: 16px 0;
+            font-style: italic;
+        }
+
+        .concept-body-inner .key-term {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .digital-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .digital-feature {
+            background: rgba(26, 107, 74, 0.05);
+            padding: 16px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .digital-feature .feat-icon {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .digital-feature .feat-title {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .digital-feature .feat-desc {
+            font-size: 0.78rem;
+            color: var(--text-light);
+        }
+
+        /* Register Tabs */
+        .register-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .register-tab {
+            padding: 12px 24px;
+            border: 2px solid var(--border);
+            background: var(--bg-card);
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .register-tab:hover {
+            border-color: var(--primary-light);
+        }
+
+        .register-tab.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .register-tab .tab-icon {
+            font-size: 1.2rem;
+        }
+
+        .register-content {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 32px;
+            min-height: 200px;
+            box-shadow: var(--shadow);
+        }
+
+        .register-message {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .register-message.casual {
+            background: #e8f5ee;
+            border-left: 4px solid var(--primary-light);
+        }
+
+        .register-message.formal {
+            background: #f0e8d8;
+            border-left: 4px solid var(--accent);
+        }
+
+        .register-message.public {
+            background: #e8eef5;
+            border-left: 4px solid #5b8db8;
+        }
+
+        .register-analysis {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .analysis-item {
+            background: rgba(26, 107, 74, 0.04);
+            padding: 14px 18px;
+            border-radius: 10px;
+        }
+
+        .analysis-item .a-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .analysis-item .a-value {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-top: 4px;
+        }
+
+        /* Framework Table */
+        .framework-table-wrapper {
+            overflow-x: auto;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .framework-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-card);
+            font-size: 0.88rem;
+        }
+
+        .framework-table thead {
+            background: var(--primary);
+            color: white;
+        }
+
+        .framework-table th {
+            padding: 16px 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .framework-table td {
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        .framework-table tbody tr {
+            transition: var(--transition);
+        }
+
+        .framework-table tbody tr:hover {
+            background: rgba(26, 107, 74, 0.04);
+        }
+
+        .framework-table tbody tr.current-unit {
+            background: rgba(200, 169, 81, 0.1);
+            border-left: 3px solid var(--accent);
+        }
+
+        .unit-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .framework-table tbody tr.current-unit .unit-badge {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* Rubric */
+        .rubric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
+
+        .rubric-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 24px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rubric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .rubric-card:nth-child(1)::before { background: var(--primary); }
+        .rubric-card:nth-child(2)::before { background: var(--accent); }
+        .rubric-card:nth-child(3)::before { background: #5b8db8; }
+        .rubric-card:nth-child(4)::before { background: #c75b8d; }
+
+        .rubric-card:hover {
+            box-shadow: var(--shadow);
+            transform: translateY(-2px);
+        }
+
+        .rubric-icon {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        .rubric-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+        }
+
+        .rubric-desc {
+            font-size: 0.88rem;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* Field Journal */
+        .journal-form {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 32px;
+            box-shadow: var(--shadow);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            background: var(--bg);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(26, 107, 74, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-submit {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+        }
+
+        .form-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(26, 107, 74, 0.3);
+        }
+
+        .journal-entries {
+            margin-top: 32px;
+        }
+
+        .journal-entry {
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 12px;
+            border-left: 3px solid var(--primary);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .journal-entry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .journal-entry-date {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .journal-entry-delete {
+            background: none;
+            border: none;
+            color: #cc4444;
+            cursor: pointer;
+            font-size: 0.85rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+
+        .journal-entry-delete:hover {
+            background: rgba(204, 68, 68, 0.1);
+        }
+
+        .journal-entry-text {
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .ethics-note {
+            background: linear-gradient(135deg, rgba(200,169,81,0.1), rgba(200,169,81,0.05));
+            border: 1px solid rgba(200,169,81,0.3);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-top: 24px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .ethics-note .note-icon {
+            font-size: 1.5rem;
+            min-width: 30px;
+        }
+
+        .ethics-note .note-text {
+            font-size: 0.88rem;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        /* Adab Discussion */
+        .adab-box {
+            background: linear-gradient(135deg, rgba(26,107,74,0.08), rgba(200,169,81,0.08));
+            border: 2px solid rgba(26,107,74,0.15);
+            border-radius: var(--radius);
+            padding: 28px 32px;
+            margin: 32px 0;
+            position: relative;
+        }
+
+        .adab-box::before {
+            content: '🕌';
+            position: absolute;
+            top: -16px;
+            left: 24px;
+            font-size: 1.8rem;
+            background: var(--bg);
+            padding: 0 8px;
+        }
+
+        .adab-box h4 {
+            color: var(--primary);
+            font-size: 1.05rem;
+            margin-bottom: 12px;
+        }
+
+        .adab-box p {
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        .adab-box .qaulan-ref {
+            display: inline-block;
+            background: rgba(26,107,74,0.1);
+            padding: 2px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            color: var(--primary);
+            font-family: 'Amiri', serif;
+        }
+
+        /* Time Allocation */
+        .time-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .time-item {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .time-item:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow);
+        }
+
+        .time-item .time-min {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .time-item .time-label {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .time-item .time-bar {
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            margin-top: 12px;
+            overflow: hidden;
+        }
+
+        .time-item .time-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 2px;
+            transition: width 1s ease;
+        }
+
+        /* Looking Ahead */
+        .looking-ahead {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            border-radius: var(--radius);
+            padding: 48px;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .looking-ahead::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='rgba(255,255,255,0.06)' stroke-width='1'%3E%3Cpath d='M30 0L60 30L30 60L0 30Z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .looking-ahead > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .looking-ahead h3 {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+        }
+
+        .looking-ahead p {
+            font-size: 1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 24px;
+            line-height: 1.8;
+        }
+
+        .looking-ahead .next-unit-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.15);
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Facilitator Notes */
+        .facilitator-notes {
+            background: #fef9e7;
+            border: 1px solid #f0e4a8;
+            border-radius: var(--radius);
+            padding: 28px 32px;
+            margin-top: 32px;
+        }
+
+        .facilitator-notes h4 {
+            color: #8a7530;
+            font-size: 1.05rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .facilitator-notes ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .facilitator-notes li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+            font-size: 0.92rem;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        .facilitator-notes li::before {
+            content: '💡';
+            position: absolute;
+            left: 0;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary-dark);
+            color: white;
+            padding: 48px 24px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .footer p {
+            opacity: 0.7;
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        .footer .footer-brand {
+            font-family: 'Amiri', serif;
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            opacity: 1;
+        }
+
+        /* Scroll Animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .animate-on-scroll.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Quiz Section */
+        .quiz-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .quiz-question {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 28px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .quiz-question h4 {
+            font-size: 1rem;
+            margin-bottom: 16px;
+            color: var(--primary-dark);
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .quiz-option {
+            padding: 14px 18px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.92rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--primary-light);
+            background: rgba(26, 107, 74, 0.03);
+        }
+
+        .quiz-option.correct {
+            border-color: var(--primary);
+            background: rgba(26, 107, 74, 0.08);
+        }
+
+        .quiz-option.incorrect {
+            border-color: #cc4444;
+            background: rgba(204, 68, 68, 0.05);
+        }
+
+        .quiz-option .opt-letter {
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 8px;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: var(--primary);
+        }
+
+        .quiz-option.correct .opt-letter {
+            background: var(--primary);
+            color: white;
+        }
+
+        .quiz-option.incorrect .opt-letter {
+            background: #cc4444;
+            color: white;
+        }
+
+        .quiz-feedback {
+            margin-top: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            display: none;
+        }
+
+        .quiz-feedback.show {
+            display: block;
+        }
+
+        .quiz-feedback.correct {
+            background: rgba(26, 107, 74, 0.08);
+            color: var(--primary);
+            border: 1px solid rgba(26, 107, 74, 0.2);
+        }
+
+        .quiz-feedback.incorrect {
+            background: rgba(204, 68, 68, 0.05);
+            color: #cc4444;
+            border: 1px solid rgba(204, 68, 68, 0.15);
+        }
+
+        /* Produce Section */
+        .produce-workspace {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 32px;
+            box-shadow: var(--shadow);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .produce-intent-select {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .intent-chip {
+            padding: 8px 16px;
+            border: 2px solid var(--border);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+            background: var(--bg);
+        }
+
+        .intent-chip:hover, .intent-chip.active {
+            border-color: var(--primary);
+            background: rgba(26, 107, 74, 0.08);
+            color: var(--primary);
+        }
+
+        .produce-textareas {
+            display: grid;
+            gap: 16px;
+        }
+
+        .produce-textarea-group {
+            position: relative;
+        }
+
+        .produce-textarea-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            color: var(--primary-dark);
+        }
+
+        .produce-textarea-group textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            min-height: 80px;
+            resize: vertical;
+            transition: var(--transition);
+            background: var(--bg);
+        }
+
+        .produce-textarea-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(26, 107, 74, 0.1);
+        }
+
+        .char-count {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            :root {
+                --sidebar-width: 240px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .mobile-toggle {
+                display: flex;
+            }
+
+            .sidebar-overlay {
+                display: block;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .progress-bar {
+                left: 0;
+            }
+
+            .hero {
+                padding: 80px 20px 60px;
+            }
+
+            .section {
+                padding: 40px 16px;
+            }
+
+            .compare-section {
+                grid-template-columns: 1fr;
+            }
+
+            .digital-features {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-stats {
+                gap: 24px;
+            }
+
+            .looking-ahead {
+                padding: 32px 24px;
+            }
+
+            .outcomes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .register-tabs {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="pattern-bg"></div>
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Mobile Toggle Button -->
+    <button class="mobile-toggle" id="mobileToggle" onclick="toggleSidebar()">☰</button>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <!-- ===== VERTICAL SIDEBAR NAVIGATION ===== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-brand">
+                <div class="icon">📖</div>
+                <div class="sidebar-brand-text">
+                    <h2>Pragmatics & Adab</h2>
+                    <p>Digital Communication</p>
+                </div>
+            </div>
+            <div class="sidebar-unit-badge">
+                <span class="dot"></span>
+                Unit 1 — Foundational Module
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section-label">Overview</div>
+            <a href="#overview" class="active">
+                <span class="nav-icon">🏠</span>
+                <span>Home</span>
+            </a>
+            <a href="#outcomes">
+                <span class="nav-icon">🎯</span>
+                <span>Learning Outcomes</span>
+            </a>
+            <a href="#time">
+                <span class="nav-icon">⏱</span>
+                <span>Time Allocation</span>
+            </a>
+
+            <div class="nav-section-label">Lesson Parts</div>
+            <a href="#snapshot">
+                <span class="nav-icon">📱</span>
+                <span>Digital Snapshot</span>
+                <span class="nav-num">Part 1</span>
+            </a>
+            <a href="#compare">
+                <span class="nav-icon">🔍</span>
+                <span>Notice & Compare</span>
+                <span class="nav-num">Part 2</span>
+            </a>
+            <a href="#concepts">
+                <span class="nav-icon">🧩</span>
+                <span>Concept Input</span>
+                <span class="nav-num">Part 3</span>
+            </a>
+            <a href="#register">
+                <span class="nav-icon">🔄</span>
+                <span>Register Shift</span>
+                <span class="nav-num">Part 4</span>
+            </a>
+            <a href="#produce">
+                <span class="nav-icon">✍️</span>
+                <span>Produce & Reflect</span>
+                <span class="nav-num">Part 5</span>
+            </a>
+            <a href="#journal">
+                <span class="nav-icon">📓</span>
+                <span>Field Journal</span>
+                <span class="nav-num">Part 6</span>
+            </a>
+
+            <div class="nav-section-label">Reference</div>
+            <a href="#framework">
+                <span class="nav-icon">🗺</span>
+                <span>Framework Map</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="sidebar-progress">
+                <div class="sidebar-progress-label">
+                    <span>Session Progress</span>
+                    <span id="progressPercent">0%</span>
+                </div>
+                <div class="sidebar-progress-bar">
+                    <div class="sidebar-progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Tooltip -->
+    <div class="tooltip-popup" id="tooltip"></div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="main-content">
+
+        <!-- Hero Section -->
+        <section class="hero" id="overview">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="dot"></span>
+                    Unit 1 — Foundational Module
+                </div>
+                <h1>Getting to Know <span>Pragmatics</span> and Our Digital World</h1>
+                <p class="hero-subtitle">Mengenal Pragmatik dan Dunia Digital Kita</p>
+                <p class="hero-desc">
+                    Every act of digital communication carries two layers of meaning: what the words literally say, 
+                    and what the sender actually intends. This unit explores that gap — and connects pragmatic accuracy 
+                    to <em>adab</em> (Islamic communicative ethics).
+                </p>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="num">100</div>
+                        <div class="label">Minutes</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="num">6</div>
+                        <div class="label">Segments</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="num">5</div>
+                        <div class="label">Outcomes</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="num">3</div>
+                        <div class="label">Lenses</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Time Allocation -->
+        <section class="section animate-on-scroll" id="time">
+            <div class="section-header">
+                <div class="section-number">⏱</div>
+                <h2 class="section-title">Session Time Allocation</h2>
+                <p class="section-subtitle">100-minute session divided into six interactive segments</p>
+            </div>
+            <div class="time-grid">
+                <div class="time-item" onclick="scrollToSection('snapshot')">
+                    <div class="time-min">10</div>
+                    <div class="time-label">Digital Snapshot</div>
+                    <div class="time-bar"><div class="time-bar-fill" data-width="10%"></div></div>
+                </div>
+                <div class="time-item" onclick="scrollToSection('compare')">
+                    <div class="time-min">20</div>
+                    <div class="time-label">Notice & Compare</div>
+                    <div class="time-bar"><div class="time-bar-fill" data-width="20%"></div></div>
+                </div>
+                <div class="time-item" onclick="scrollToSection('concepts')">
+                    <div class="time-min">25</div>
+                    <div class="time-label">Concept Input</div>
+                    <div class="time-bar"><div class="time-bar-fill" data-width="25%"></div></div>
+                </div>
+                <div class="time-item" onclick="scrollToSection('register')">
+                    <div class="time-min">20</div>
+                    <div class="time-label">Register Shift</div>
+                    <div class="time-bar"><div class="time-bar-fill" data-width="20%"></div></div>
+                </div>
+                <div class="time-item" onclick="scrollToSection('produce')">
+                    <div class="time-min">20</div>
+                    <div class="time-label">Produce & Reflect</div>
+                    <div class="time-bar"><div class="time-bar-fill" data-width="20%"></div></div>
+                </div>
+                <div class="time-item" onclick="scrollToSection('journal')">
+                    <div class="time-min">5</div>
+                    <div class="time-label">Field Journal</div>
+                    <div class="time-bar"><div class="time-bar-fill" data-width="5%"></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Learning Outcomes -->
+        <section class="section animate-on-scroll" id="outcomes">
+            <div class="section-header">
+                <div class="section-number">🎯</div>
+                <h2 class="section-title">Learning Outcomes</h2>
+                <p class="section-subtitle">Click each outcome to mark it as understood</p>
+            </div>
+            <div class="outcomes-grid">
+                <div class="outcome-card" onclick="toggleOutcome(this)">
+                    <div class="outcome-num"><span>1</span></div>
+                    <div class="outcome-text">
+                        Distinguish <strong>semantic meaning</strong> (what words denote) from <strong>pragmatic meaning</strong> (what a speaker intends and a hearer infers).
+                    </div>
+                </div>
+                <div class="outcome-card" onclick="toggleOutcome(this)">
+                    <div class="outcome-num"><span>2</span></div>
+                    <div class="outcome-text">
+                        Identify at least <strong>three features</strong> that make digital communication a distinct pragmatic environment: reduced paralinguistic cues, asynchronicity, and context collapse.
+                    </div>
+                </div>
+                <div class="outcome-card" onclick="toggleOutcome(this)">
+                    <div class="outcome-num"><span>3</span></div>
+                    <div class="outcome-text">
+                        Explain how the module's <strong>three lenses</strong> — pragmatic theory, the Qur'anic <em>qaulan</em> typology, and the Panca Cinta pillars — work together.
+                    </div>
+                </div>
+                <div class="outcome-card" onclick="toggleOutcome(this)">
+                    <div class="outcome-num"><span>4</span></div>
+                    <div class="outcome-text">
+                        Produce the same communicative intent across <strong>three digital registers</strong> (casual, academic-formal, public) and justify the differences.
+                    </div>
+                </div>
+                <div class="outcome-card" onclick="toggleOutcome(this)">
+                    <div class="outcome-num"><span>5</span></div>
+                    <div class="outcome-text">
+                        Begin a semester-long <strong>Field Journal</strong> of naturally occurring digital exchanges.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Part 1: Digital Snapshot -->
+        <section class="section animate-on-scroll" id="snapshot">
+            <div class="section-header">
+                <div class="section-number">1</div>
+                <h2 class="section-title">Digital Snapshot</h2>
+                <p class="section-subtitle">What happened here, and why did it go wrong?</p>
+            </div>
+
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div class="chat-avatar">👨‍🏫</div>
+                    <div>
+                        <div class="chat-name">Dr. Hakim</div>
+                        <div class="chat-status">Lecturer • Pragmatics</div>
+                    </div>
+                </div>
+                <div class="chat-body" id="chatBody">
+                    <div class="chat-date-divider"><span>Today</span></div>
+                </div>
+            </div>
+            <button class="chat-replay-btn" onclick="replayChat()">▶ Replay Conversation</button>
+
+            <div class="adab-box" style="margin-top: 32px;">
+                <h4>Before Discussion — Reflect:</h4>
+                <p>
+                    If you were <strong>Rani</strong>, what would you have understood Dr. Hakim to mean?<br>
+                    If you were <strong>Dr. Hakim</strong>, what did you intend?<br><br>
+                    <em>This pair of readings is exactly what Part 2 will examine.</em>
+                </p>
+            </div>
+        </section>
+
+        <!-- Part 2: Notice & Compare -->
+        <section class="section animate-on-scroll" id="compare">
+            <div class="section-header">
+                <div class="section-number">2</div>
+                <h2 class="section-title">Notice & Compare</h2>
+                <p class="section-subtitle">Examining the gap between what was said and what was meant</p>
+            </div>
+
+            <div class="compare-section">
+                <div class="compare-card rani">
+                    <div class="compare-card-header">
+                        👩‍🎓 Rani's Reading
+                    </div>
+                    <div class="compare-card-body">
+                        <div class="compare-row">
+                            <div class="compare-label">What was said</div>
+                            <div class="compare-value">"Bisa aja sih..."</div>
+                        </div>
+                        <div class="compare-row">
+                            <div class="compare-label">What it was taken to do</div>
+                            <div class="compare-value">Grant permission to submit late</div>
+                        </div>
+                        <div class="compare-row">
+                            <div class="compare-label">What made that reading available</div>
+                            <div class="compare-value">Absence of an explicit refusal; Indonesian academic digital norms where hedges often soften a "yes"</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="compare-card hakim">
+                    <div class="compare-card-header">
+                        👨‍🏫 Dr. Hakim's Intention
+                    </div>
+                    <div class="compare-card-body">
+                        <div class="compare-row">
+                            <div class="compare-label">What was said</div>
+                            <div class="compare-value">"Bisa aja sih..."</div>
+                        </div>
+                        <div class="compare-row">
+                            <div class="compare-label">What it was taken to do</div>
+                            <div class="compare-value">Express non-committal possibility</div>
+                        </div>
+                        <div class="compare-row">
+                            <div class="compare-label">What made that reading available</div>
+                            <div class="compare-value">A generic hedge, not tied to institutional norms about deadlines</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="adab-box">
+                <h4>Adab Discussion Prompt</h4>
+                <p>
+                    If Dr. Hakim's actual intention was to withhold clear permission, what would a response closer to 
+                    <span class="qaulan-ref">qaulan sadida</span> (clear, correct, truthful speech) have looked like, 
+                    without losing courtesy?<br><br>
+                    <strong>Key insight:</strong> Politeness and clarity are not opposites. A courteous reply can still be unambiguous, 
+                    and an unclear reply is not made more respectful by being softened — it simply relocates the misunderstanding.
+                </p>
+            </div>
+
+            <!-- Quick Quiz -->
+            <div class="quiz-container" style="margin-top: 32px;">
+                <h3 style="text-align: center; margin-bottom: 20px; color: var(--primary-dark);">🧠 Quick Check</h3>
+                <div class="quiz-question" id="quiz1">
+                    <h4>What is the core pragmatic issue in the Rani–Dr. Hakim exchange?</h4>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz1')">
+                            <span class="opt-letter">A</span>
+                            Rani didn't understand Indonesian
+                        </div>
+                        <div class="quiz-option" onclick="checkAnswer(this, true, 'quiz1')">
+                            <span class="opt-letter">B</span>
+                            The same sentence performed different speech acts for sender and receiver
+                        </div>
+                        <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz1')">
+                            <span class="opt-letter">C</span>
+                            Dr. Hakim made a grammatical error
+                        </div>
+                        <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz1')">
+                            <span class="opt-letter">D</span>
+                            The message was sent at the wrong time
+                        </div>
+                    </div>
+                    <div class="quiz-feedback" id="quiz1-feedback"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Part 3: Concept Input -->
+        <section class="section animate-on-scroll" id="concepts">
+            <div class="section-header">
+                <div class="section-number">3</div>
+                <h2 class="section-title">Concept Input</h2>
+                <p class="section-subtitle">Core ideas using the Snapshot as a running illustration</p>
+            </div>
+
+            <div class="concept-list">
+                <div class="concept-item" onclick="toggleConcept(this)">
+                    <div class="concept-header">
+                        <div class="concept-icon">🔤</div>
+                        <div class="concept-title">
+                            <h3>3.1 Semantic vs. Pragmatic Meaning</h3>
+                            <p>What words mean vs. what speakers mean</p>
+                        </div>
+                        <div class="concept-toggle">+</div>
+                    </div>
+                    <div class="concept-body">
+                        <div class="concept-body-inner">
+                            <p>
+                                <span class="key-term">Semantics</span> asks what a sentence means in isolation. 
+                                <span class="key-term">Pragmatics</span> asks what a speaker means by using that sentence, 
+                                <em>here, now, with this hearer</em>.
+                            </p>
+                            <div class="example-box">
+                                "Bisa aja sih" has <strong>one</strong> semantic meaning but at least <strong>two</strong> live pragmatic readings: 
+                                it can function as permission or as a non-committal hedge.
+                            </div>
+                            <p>
+                                This is why the same sentence can lead to completely different actions — Rani submitted her assignment, 
+                                while Dr. Hakim expected a follow-up question.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="concept-item" onclick="toggleConcept(this)">
+                    <div class="concept-header">
+                        <div class="concept-icon">🧩</div>
+                        <div class="concept-title">
+                            <h3>3.2 The Inferential Model</h3>
+                            <p>Communication as active inference, not code transmission</p>
+                        </div>
+                        <div class="concept-toggle">+</div>
+                    </div>
+                    <div class="concept-body">
+                        <div class="concept-body-inner">
+                            <p>
+                                Communication is not simply encoding and decoding a fixed message (the 
+                                <span class="key-term">"code model"</span>). Hearers actively 
+                                <span class="key-term">infer</span> speaker meaning from:
+                            </p>
+                            <ul style="margin: 12px 0 12px 20px;">
+                                <li>What is <strong>said</strong></li>
+                                <li>What is <strong>left unsaid</strong></li>
+                                <li>What they <strong>assume</strong> about the speaker's intentions</li>
+                            </ul>
+                            <div class="example-box">
+                                Rani's misreading was <strong>not a comprehension failure</strong> — it was a 
+                                <strong>reasonable inference</strong> given the available cues. In Indonesian academic norms, 
+                                a non-refusal from a lecturer often reads as consent.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="concept-item" onclick="toggleConcept(this)">
+                    <div class="concept-header">
+                        <div class="concept-icon">📱</div>
+                        <div class="concept-title">
+                            <h3>3.3 Digital Communication as Pragmatic Space</h3>
+                            <p>What makes digital environments distinct</p>
+                        </div>
+                        <div class="concept-toggle">+</div>
+                    </div>
+                    <div class="concept-body">
+                        <div class="concept-body-inner">
+                            <p>Digital communication has unique features that shape pragmatic interpretation:</p>
+                            <div class="digital-features">
+                                <div class="digital-feature">
+                                    <div class="feat-icon">🔇</div>
+                                    <div class="feat-title">Reduced Paralinguistic Cues</div>
+                                    <div class="feat-desc">No tone of voice, facial expression, or pause length to disambiguate a hedge</div>
+                                </div>
+                                <div class="digital-feature">
+                                    <div class="feat-icon">⏳</div>
+                                    <div class="feat-title">Asynchronicity</div>
+                                    <div class="feat-desc">An 11-minute reply gap can itself carry meaning — hesitation? busy? considering?</div>
+                                </div>
+                                <div class="digital-feature">
+                                    <div class="feat-icon">🌐</div>
+                                    <div class="feat-title">Context Collapse</div>
+                                    <div class="feat-desc">The same message may be read by an audience the sender didn't anticipate</div>
+                                </div>
+                                <div class="digital-feature">
+                                    <div class="feat-icon">😊</div>
+                                    <div class="feat-title">New Disambiguating Resources</div>
+                                    <div class="feat-desc">Emoji, punctuation, read receipts, and typing indicators partly substitute for lost cues</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="concept-item" onclick="toggleConcept(this)">
+                    <div class="concept-header">
+                        <div class="concept-icon">🧰</div>
+                        <div class="concept-title">
+                            <h3>3.4 The Module's Toolkit Preview</h3>
+                            <p>Four analytical tools you'll acquire</p>
+                        </div>
+                        <div class="concept-toggle">+</div>
+                    </div>
+                    <div class="concept-body">
+                        <div class="concept-body-inner">
+                            <p>The Snapshot example already contains material for all four tools:</p>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px;">
+                                <div style="background: rgba(26,107,74,0.05); padding: 16px; border-radius: 10px; text-align: center;">
+                                    <div style="font-size: 1.3rem; margin-bottom: 6px;">📍</div>
+                                    <strong style="color: var(--primary); font-size: 0.9rem;">Unit 2</strong>
+                                    <div style="font-size: 0.82rem; color: var(--text-light);">Reference & Deixis</div>
+                                </div>
+                                <div style="background: rgba(26,107,74,0.05); padding: 16px; border-radius: 10px; text-align: center;">
+                                    <div style="font-size: 1.3rem; margin-bottom: 6px;">🔗</div>
+                                    <strong style="color: var(--primary); font-size: 0.9rem;">Unit 3</strong>
+                                    <div style="font-size: 0.82rem; color: var(--text-light);">Entailment & Presupposition</div>
+                                </div>
+                                <div style="background: rgba(26,107,74,0.05); padding: 16px; border-radius: 10px; text-align: center;">
+                                    <div style="font-size: 1.3rem; margin-bottom: 6px;">💬</div>
+                                    <strong style="color: var(--primary); font-size: 0.9rem;">Unit 4</strong>
+                                    <div style="font-size: 0.82rem; color: var(--text-light);">Cooperative Principle & Implicature</div>
+                                </div>
+                                <div style="background: rgba(26,107,74,0.05); padding: 16px; border-radius: 10px; text-align: center;">
+                                    <div style="font-size: 1.3rem; margin-bottom: 6px;">🎭</div>
+                                    <strong style="color: var(--primary); font-size: 0.9rem;">Unit 5</strong>
+                                    <div style="font-size: 0.82rem; color: var(--text-light);">Speech Act Theory</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Part 4: Register Shift -->
+        <section class="section animate-on-scroll" id="register">
+            <div class="section-header">
+                <div class="section-number">4</div>
+                <h2 class="section-title">Register Shift</h2>
+                <p class="section-subtitle">Same intent, three different registers — what changes and why?</p>
+            </div>
+
+            <div class="register-tabs">
+                <div class="register-tab active" onclick="switchRegister('casual', this)">
+                    <span class="tab-icon">💬</span> To a Close Friend
+                </div>
+                <div class="register-tab" onclick="switchRegister('formal', this)">
+                    <span class="tab-icon">📧</span> To a Lecturer
+                </div>
+                <div class="register-tab" onclick="switchRegister('public', this)">
+                    <span class="tab-icon">👥</span> In a Public Group
+                </div>
+            </div>
+
+            <div class="register-content" id="registerContent"></div>
+
+            <div class="adab-box" style="margin-top: 24px;">
+                <h4>Discussion Prompts</h4>
+                <p>
+                    • Which linguistic features signal register: greeting formulas, sentence length, use of "mohon izin," emoji density, directness?<br>
+                    • Why does the public group message not ask the lecturer directly? <em>(Face-saving: a public, unanswered direct request risks visible refusal.)</em><br>
+                    • Which version most clearly embodies <span class="qaulan-ref">qaulan sadida</span>, and which embodies <span class="qaulan-ref">qaulan layyina</span>? Is there a version that manages both?
+                </p>
+            </div>
+        </section>
+
+        <!-- Framework Map -->
+        <section class="section animate-on-scroll" id="framework">
+            <div class="section-header">
+                <div class="section-number">🗺</div>
+                <h2 class="section-title">The Module's Integrative Framework</h2>
+                <p class="section-subtitle">The "map" of the entire module — three lenses working together across 9 units</p>
+            </div>
+
+            <div class="framework-table-wrapper">
+                <table class="framework-table">
+                    <thead>
+                        <tr>
+                            <th>Unit</th>
+                            <th>Pragmatics Focus</th>
+                            <th>Qaulan Principle</th>
+                            <th>Panca Cinta Pillar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="current-unit">
+                            <td><span class="unit-badge">1</span></td>
+                            <td><strong>Foundations: Pragmatics & Digital Communication</strong></td>
+                            <td>Introduction to all lenses</td>
+                            <td>All pillars introduced</td>
+                        </tr>
+                        <tr>
+                            <td><span class="unit-badge">2</span></td>
+                            <td>Deixis, Reference & Inference</td>
+                            <td>— (primarily analytical)</td>
+                            <td>Cinta kepada ilmu pengetahuan</td>
+                        </tr>
+                        <tr>
+                            <td><span class="unit-badge">3</span></td>
+                            <td>Entailment & Presupposition</td>
+                            <td><em>Qaulan Sadida</em> — truthful, correct speech</td>
+                            <td>Cinta kepada ilmu pengetahuan</td>
+                        </tr>
+                        <tr>
+                            <td><span class="unit-badge">4</span></td>
+                            <td>Cooperative Principle & Implicature</td>
+                            <td><em>Qaulan Baligha</em> — effective, well-aimed speech</td>
+                            <td>Cinta kepada sesama manusia</td>
+                        </tr>
+                        <tr>
+                            <td><span class="unit-badge">5</span></td>
+                            <td>Speech Acts</td>
+                            <td><em>Qaulan Ma'rufa</em> — kind, fitting speech</td>
+                            <td>Cinta kepada sesama manusia</td>
+                        </tr>
+                        <tr>
+                            <td><span class="unit-badge">6</span></td>
+                            <td>Politeness & Impoliteness Cross-Culturally</td>
+                            <td><em>Qaulan Layyina</em> & <em>Qaulan Maysura</em> — gentle, easy speech</td>
+                            <td>Cinta kepada sesama manusia; moderasi beragama</td>
+                        </tr>
+                        <tr>
+                            <td><span class="unit-badge">7</span></td>
+                            <td>Discourse & Pragmatic Research</td>
+                            <td><em>Qaulan Sadida</em> — accuracy in reporting</td>
+                            <td>Cinta kepada ilmu pengetahuan</td>
+                        </tr>
+                        <tr>
+                            <td><span class="unit-badge">8</span></td>
+                            <td>Pragmatics in Language Teaching</td>
+                            <td><em>Qaulan Karima</em> — noble speech, mentoring</td>
+                            <td>Cinta kepada ilmu pengetahuan; sesama</td>
+                        </tr>
+                        <tr>
+                            <td><span class="unit-badge">9</span></td>
+                            <td>Capstone: Cross-Cultural Digital Communication</td>
+                            <td>Synthesis of all six qaulan</td>
+                            <td>Cinta kepada sesama manusia; bangsa</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="facilitator-notes">
+                <h4>📝 Note on Framework Provenance</h4>
+                <p style="font-size: 0.9rem; line-height: 1.7;">
+                    The pairing of pragmatic constructs with the six <em>qaulan</em> (Qur'anic speech) principles is an 
+                    <strong>original integrative device</strong> proposed for this module — it is not part of the official 
+                    Kurikulum Berbasis Cinta document, which centers on the five Panca Cinta pillars. Both layers are shown 
+                    so the mapping's provenance stays clear to readers and reviewers.
+                </p>
+            </div>
+        </section>
+
+        <!-- Part 5: Produce & Reflect -->
+        <section class="section animate-on-scroll" id="produce">
+            <div class="section-header">
+                <div class="section-number">5</div>
+                <h2 class="section-title">Produce & Reflect</h2>
+                <p class="section-subtitle">Choose a real communicative intent and write it in three registers</p>
+            </div>
+
+            <div class="produce-workspace">
+                <h4 style="margin-bottom: 12px; color: var(--primary-dark);">Choose your communicative intent:</h4>
+                <div class="produce-intent-select">
+                    <div class="intent-chip active" onclick="selectIntent(this, 'Asking for feedback on your work')">Asking for feedback</div>
+                    <div class="intent-chip" onclick="selectIntent(this, 'Declining a group project role')">Declining a group role</div>
+                    <div class="intent-chip" onclick="selectIntent(this, 'Apologizing for a late reply')">Apologizing for late reply</div>
+                    <div class="intent-chip" onclick="selectIntent(this, 'Requesting a meeting with a lecturer')">Requesting a meeting</div>
+                    <div class="intent-chip" onclick="selectIntent(this, 'custom')">✏️ Custom intent...</div>
+                </div>
+
+                <div id="customIntentInput" style="display: none; margin-bottom: 20px;">
+                    <input type="text" placeholder="Type your own communicative intent..." style="width: 100%; padding: 12px 16px; border: 2px solid var(--border); border-radius: 10px; font-family: inherit; font-size: 0.95rem;">
+                </div>
+
+                <div class="produce-textareas">
+                    <div class="produce-textarea-group">
+                        <label>💬 Casual (to a close friend via chat)</label>
+                        <textarea placeholder="Write your casual version here..." oninput="updateCharCount(this)"></textarea>
+                        <span class="char-count">0 chars</span>
+                    </div>
+                    <div class="produce-textarea-group">
+                        <label>📧 Academic-Formal (to a lecturer)</label>
+                        <textarea placeholder="Write your formal version here..." oninput="updateCharCount(this)"></textarea>
+                        <span class="char-count">0 chars</span>
+                    </div>
+                    <div class="produce-textarea-group">
+                        <label>👥 Public (in a class group)</label>
+                        <textarea placeholder="Write your public version here..." oninput="updateCharCount(this)"></textarea>
+                        <span class="char-count">0 chars</span>
+                    </div>
+                </div>
+
+                <button class="form-submit" style="margin-top: 20px;" onclick="saveProduction()">💾 Save My Draft</button>
+            </div>
+
+            <div style="margin-top: 40px;">
+                <h3 style="text-align: center; margin-bottom: 24px; color: var(--primary-dark);">Self/Peer Review Rubric</h3>
+                <div class="rubric-grid">
+                    <div class="rubric-card">
+                        <div class="rubric-icon">🎯</div>
+                        <div class="rubric-title">Pragmatic Appropriateness</div>
+                        <div class="rubric-desc">Does the register match the relationship and platform?</div>
+                    </div>
+                    <div class="rubric-card">
+                        <div class="rubric-icon">🔍</div>
+                        <div class="rubric-title">Clarity (Qaulan Sadida)</div>
+                        <div class="rubric-desc">Would the reader know exactly what is being asked or stated?</div>
+                    </div>
+                    <div class="rubric-card">
+                        <div class="rubric-icon">🤝</div>
+                        <div class="rubric-title">Courtesy (Qaulan Layyina/Ma'rufa)</div>
+                        <div class="rubric-desc">Is the tone fitting to the relationship, without sacrificing clarity?</div>
+                    </div>
+                    <div class="rubric-card">
+                        <div class="rubric-icon">🔄</div>
+                        <div class="rubric-title">Register Control</div>
+                        <div class="rubric-desc">Are the three versions genuinely distinct, not just longer/shorter?</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Part 6: Field Journal -->
+        <section class="section animate-on-scroll" id="journal">
+            <div class="section-header">
+                <div class="section-number">6</div>
+                <h2 class="section-title">Field Journal</h2>
+                <p class="section-subtitle">Log real digital exchanges where you noticed a gap between said and meant</p>
+            </div>
+
+            <div class="journal-form">
+                <h4 style="color: var(--primary-dark); margin-bottom: 20px;">📓 New Journal Entry</h4>
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="journalDate">
+                </div>
+                <div class="form-group">
+                    <label>Platform / Context</label>
+                    <select id="journalPlatform">
+                        <option value="">Select platform...</option>
+                        <option value="WhatsApp">WhatsApp</option>
+                        <option value="Instagram DM">Instagram DM</option>
+                        <option value="Email">Email</option>
+                        <option value="Learning Management System">LMS / E-learning</option>
+                        <option value="Twitter/X">Twitter/X</option>
+                        <option value="Telegram">Telegram</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>What was said (anonymized)</label>
+                    <textarea id="journalSaid" placeholder="Retype the exchange here — no names, phone numbers, or identifying details..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>What I think was meant</label>
+                    <textarea id="journalMeant" placeholder="Your interpretation of the intended meaning..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Which pragmatic concept does this relate to?</label>
+                    <select id="journalConcept">
+                        <option value="">Select concept...</option>
+                        <option value="Semantic vs Pragmatic Meaning">Semantic vs. Pragmatic Meaning</option>
+                        <option value="Inferential Model">Inferential Model</option>
+                        <option value="Reduced Paralinguistic Cues">Reduced Paralinguistic Cues</option>
+                        <option value="Asynchronicity">Asynchronicity</option>
+                        <option value="Context Collapse">Context Collapse</option>
+                        <option value="Register Shift">Register Shift</option>
+                    </select>
+                </div>
+                <button class="form-submit" onclick="addJournalEntry()">📝 Add Entry to Journal</button>
+
+                <div class="ethics-note">
+                    <div class="note-icon">⚠️</div>
+                    <div class="note-text">
+                        <strong>Data Ethics Reminder:</strong> You must anonymize all identifying details. Do not submit 
+                        screenshots containing another person's name, number, or photo — only retyped, anonymized text. 
+                        These entries become raw material for the mini discourse-analysis task in Unit 7.
+                    </div>
+                </div>
+            </div>
+
+            <div class="journal-entries" id="journalEntries"></div>
+        </section>
+
+        <!-- Looking Ahead -->
+        <section class="section animate-on-scroll">
+            <div class="looking-ahead">
+                <h3>🔭 Looking Ahead to Unit 2</h3>
+                <p>
+                    Unit 2 returns to the Snapshot's digital surface features — timestamps, "this," "here," "you," emoji — 
+                    as data for <strong>deixis and reference</strong>: how digital text points to people, places, and times 
+                    without the shared physical context that anchors face-to-face deixis.
+                </p>
+                <div class="next-unit-badge">
+                    → Unit 2: Deixis, Reference & Inference
+                </div>
+            </div>
+        </section>
+
+        <!-- Facilitator Notes -->
+        <section class="section animate-on-scroll">
+            <div class="facilitator-notes">
+                <h4>📋 Facilitator Notes</h4>
+                <ul>
+                    <li>The Snapshot example is intentionally mundane — almost every student will have a version of this exact exchange. Resist the temptation to pick a more dramatic misunderstanding; the ordinariness is what makes the pragmatic point land.</li>
+                    <li>Table 1 (Framework Map) will feel abstract on first exposure. Do not over-explain it in Unit 1 — its purpose is recognition ("oh, that's what Unit 6 will be about") rather than mastery. Revisit it briefly at the start of each subsequent unit.</li>
+                    <li>If students disagree about what Dr. Hakim "really" meant, that disagreement is the lesson, not a problem to resolve — pragmatic inference is probabilistic, not a matter of finding the one correct reading.</li>
+                    <li>Watch for students conflating "formal" with "polite" and "casual" with "impolite" in Part 4 — the friend register is not impolite, it is differently polite. This distinction matters for Unit 6.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-brand">Pragmatics for Adab-Based Digital Communication</div>
+            <p>
+                A Module Integrating Kurikulum Cinta for Indonesian Islamic Higher Education<br>
+                Unit 1: Getting to Know Pragmatics and Our Digital World<br><br>
+                <em>Draft pilot — feedback welcome</em>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // ===== Chat Messages Data =====
+        const chatMessages = [
+            { type: 'student', name: 'Rani', time: '8:41 PM', text: 'Assalamu\'alaikum, Pak. Mohon maaf mengganggu waktunya. Untuk tugas Pragmatik minggu ini, apakah boleh saya kumpulkan besok pagi? Saya masih menyelesaikan bagian analisis.' },
+            { type: 'lecturer', name: 'Dr. Hakim', time: '8:52 PM', text: 'Wa\'alaikumsalam. <span class="highlight" data-tooltip="A hedge: possibility + a soft warning against lateness — no explicit &quot;yes.&quot;">Bisa aja sih</span>, tapi usahakan jangan telat-telat ya.' },
+            { type: 'divider', text: 'Next day' },
+            { type: 'student', name: 'Rani', time: '10:04 AM', text: '[Assignment submitted]' },
+            { type: 'lecturer', name: 'Dr. Hakim', time: '10:11 AM', text: 'Rani, ini kok baru masuk jam segini? Saya kira kamu cuma tanya pendapat saya, bukan minta izin resmi buat telat.' }
+        ];
+
+        // ===== Register Data =====
+        const registerData = {
+            casual: {
+                class: 'casual',
+                message: '"bro tugas pragmatik blm kelar, deadline kelar besok kan? mepet bgt wkwk"',
+                analysis: [
+                    { label: 'Greeting', value: 'Informal ("bro")' },
+                    { label: 'Sentence Length', value: 'Short, fragmented' },
+                    { label: 'Directness', value: 'Very direct assumption' },
+                    { label: 'Emoji/Expression', value: '"wkwk" (laughter)' },
+                    { label: 'Politeness Strategy', value: 'Positive politeness — solidarity' },
+                    { label: 'Qaulan Principle', value: 'Qaulan Maysura (easy speech)' }
+                ]
+            },
+            formal: {
+                class: 'formal',
+                message: '"Assalamu\'alaikum, Pak/Bu. Mohon izin bertanya, apakah tenggat pengumpulan tugas Pragmatik dapat diperpanjang hingga besok pagi? Saya masih menyelesaikan bagian analisis data. Terima kasih atas pengertiannya."',
+                analysis: [
+                    { label: 'Greeting', value: 'Islamic greeting + honorific' },
+                    { label: 'Sentence Length', value: 'Full, complex sentences' },
+                    { label: 'Directness', value: 'Polite indirect question' },
+                    { label: 'Key Phrase', value: '"Mohon izin bertanya"' },
+                    { label: 'Politeness Strategy', value: 'Negative politeness — respect for autonomy' },
+                    { label: 'Qaulan Principle', value: 'Qaulan Sadida + Qaulan Layyina' }
+                ]
+            },
+            public: {
+                class: 'public',
+                message: '"Assalamu\'alaikum, teman-teman. Ada yang tahu apakah Bapak/Ibu dosen memberi kelonggaran waktu untuk tugas minggu ini? Terima kasih infonya"',
+                analysis: [
+                    { label: 'Greeting', value: 'Islamic greeting + peers' },
+                    { label: 'Addressee', value: 'Classmates, not the lecturer' },
+                    { label: 'Strategy', value: 'Face-saving via indirect inquiry' },
+                    { label: 'Risk Management', value: 'Avoids visible refusal from lecturer' },
+                    { label: 'Politeness Strategy', value: 'Off-record — seeks info from peers' },
+                    { label: 'Qaulan Principle', value: 'Qaulan Layyina (gentle approach)' }
+                ]
+            }
+        };
+
+        // ===== Initialize =====
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('journalDate').value = today;
+            switchRegister('casual', document.querySelector('.register-tab.active'));
+
+            setTimeout(() => {
+                document.querySelectorAll('.time-bar-fill').forEach(bar => {
+                    bar.style.width = bar.dataset.width;
+                });
+            }, 500);
+
+            loadJournalEntries();
+            setupScrollAnimations();
+        });
+
+        // ===== Progress Bar & Active Nav =====
+        window.addEventListener('scroll', function() {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (scrollTop / docHeight) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressPercent').textContent = Math.round(progress) + '%';
+
+            updateActiveNav();
+        });
+
+        function updateActiveNav() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.sidebar-nav a');
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 120;
+                if (window.scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // ===== Sidebar Toggle =====
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+        }
+
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Close mobile sidebar
+                if (window.innerWidth <= 768) {
+                    toggleSidebar();
+                }
+            }
+        }
+
+        // Close sidebar on nav click (mobile)
+        document.querySelectorAll('.sidebar-nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    toggleSidebar();
+                }
+            });
+        });
+
+        // ===== Chat Replay =====
+        let chatReplayTimeout = null;
+
+        function replayChat() {
+            const chatBody = document.getElementById('chatBody');
+            chatBody.innerHTML = '<div class="chat-date-divider"><span>Today</span></div>';
+
+            if (chatReplayTimeout) clearTimeout(chatReplayTimeout);
+
+            chatMessages.forEach((msg, index) => {
+                chatReplayTimeout = setTimeout(() => {
+                    if (msg.type === 'divider') {
+                        const divider = document.createElement('div');
+                        divider.className = 'chat-date-divider';
+                        divider.innerHTML = `<span>${msg.text}</span>`;
+                        chatBody.appendChild(divider);
+                    } else {
+                        const bubble = document.createElement('div');
+                        bubble.className = `chat-bubble ${msg.type}`;
+                        bubble.innerHTML = `
+                            ${msg.text}
+                            <div class="chat-time">${msg.time}</div>
+                        `;
+                        chatBody.appendChild(bubble);
+                        setTimeout(() => bubble.classList.add('visible'), 50);
+
+                        bubble.querySelectorAll('.highlight').forEach(hl => {
+                            hl.addEventListener('mouseenter', showTooltip);
+                            hl.addEventListener('mouseleave', hideTooltip);
+                            hl.addEventListener('click', showTooltip);
+                        });
+                    }
+                    chatBody.scrollTop = chatBody.scrollHeight;
+                }, (index + 1) * 1200);
+            });
+        }
+
+        let chatPlayed = false;
+        const chatObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !chatPlayed) {
+                    chatPlayed = true;
+                    replayChat();
+                }
+            });
+        }, { threshold: 0.3 });
+        chatObserver.observe(document.getElementById('chatBody'));
+
+        // ===== Tooltip =====
+        function showTooltip(e) {
+            const tooltip = document.getElementById('tooltip');
+            const text = e.target.dataset.tooltip;
+            if (!text) return;
+            tooltip.innerHTML = text;
+            tooltip.classList.add('show');
+            const rect = e.target.getBoundingClientRect();
+            tooltip.style.left = rect.left + rect.width / 2 - tooltip.offsetWidth / 2 + 'px';
+            tooltip.style.top = rect.top - tooltip.offsetHeight - 10 + 'px';
+        }
+
+        function hideTooltip() {
+            document.getElementById('tooltip').classList.remove('show');
+        }
+
+        // ===== Learning Outcomes =====
+        function toggleOutcome(card) {
+            card.classList.toggle('completed');
+        }
+
+        // ===== Quiz =====
+        function checkAnswer(option, isCorrect, quizId) {
+            const question = document.getElementById(quizId);
+            const options = question.querySelectorAll('.quiz-option');
+            const feedback = document.getElementById(quizId + '-feedback');
+
+            if (question.dataset.answered) return;
+            question.dataset.answered = 'true';
+
+            options.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+            });
+
+            if (isCorrect) {
+                option.classList.add('correct');
+                feedback.className = 'quiz-feedback show correct';
+                feedback.textContent = '✓ Correct! The same sentence ("Bisa aja sih") performed different speech acts — granting permission for Rani, expressing non-committal possibility for Dr. Hakim.';
+            } else {
+                option.classList.add('incorrect');
+                options[1].classList.add('correct');
+                feedback.className = 'quiz-feedback show incorrect';
+                feedback.textContent = '✗ Not quite. The core issue is that the same sentence performed different speech acts for sender and receiver — this is the essence of pragmatic ambiguity.';
+            }
+        }
+
+        // ===== Concept Accordion =====
+        function toggleConcept(item) {
+            const wasOpen = item.classList.contains('open');
+            document.querySelectorAll('.concept-item').forEach(ci => {
+                ci.classList.remove('open');
+                ci.querySelector('.concept-body').style.maxHeight = '0';
+            });
+            if (!wasOpen) {
+                item.classList.add('open');
+                const body = item.querySelector('.concept-body');
+                body.style.maxHeight = body.scrollHeight + 'px';
+            }
+        }
+
+        // ===== Register Tabs =====
+        function switchRegister(type, tabEl) {
+            document.querySelectorAll('.register-tab').forEach(t => t.classList.remove('active'));
+            tabEl.classList.add('active');
+
+            const data = registerData[type];
+            const content = document.getElementById('registerContent');
+
+            let analysisHTML = data.analysis.map(a => `
+                <div class="analysis-item">
+                    <div class="a-label">${a.label}</div>
+                    <div class="a-value">${a.value}</div>
+                </div>
+            `).join('');
+
+            content.innerHTML = `
+                <div class="register-message ${data.class}">
+                    ${data.message}
+                </div>
+                <div class="register-analysis">
+                    ${analysisHTML}
+                </div>
+            `;
+        }
+
+        // ===== Produce Section =====
+        function selectIntent(chip, intent) {
+            document.querySelectorAll('.intent-chip').forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            const customInput = document.getElementById('customIntentInput');
+            if (intent === 'custom') {
+                customInput.style.display = 'block';
+                customInput.querySelector('input').focus();
+            } else {
+                customInput.style.display = 'none';
+            }
+        }
+
+        function updateCharCount(textarea) {
+            const count = textarea.parentElement.querySelector('.char-count');
+            count.textContent = textarea.value.length + ' chars';
+        }
+
+        function saveProduction() {
+            const textareas = document.querySelectorAll('.produce-textarea-group textarea');
+            let filled = 0;
+            textareas.forEach(ta => {
+                if (ta.value.trim().length > 0) filled++;
+            });
+            if (filled === 0) {
+                alert('Please write at least one register version before saving.');
+                return;
+            }
+            const drafts = JSON.parse(localStorage.getItem('produceDrafts') || '[]');
+            const draft = {
+                date: new Date().toISOString(),
+                registers: Array.from(textareas).map(ta => ta.value)
+            };
+            drafts.push(draft);
+            localStorage.setItem('produceDrafts', JSON.stringify(drafts));
+            alert(`✅ Draft saved! You've written ${filled}/3 register versions.`);
+        }
+
+        // ===== Field Journal =====
+        function addJournalEntry() {
+            const date = document.getElementById('journalDate').value;
+            const platform = document.getElementById('journalPlatform').value;
+            const said = document.getElementById('journalSaid').value.trim();
+            const meant = document.getElementById('journalMeant').value.trim();
+            const concept = document.getElementById('journalConcept').value;
+
+            if (!said || !meant) {
+                alert('Please fill in at least "What was said" and "What was meant."');
+                return;
+            }
+
+            const entry = { id: Date.now(), date, platform, said, meant, concept };
+            const entries = JSON.parse(localStorage.getItem('journalEntries') || '[]');
+            entries.unshift(entry);
+            localStorage.setItem('journalEntries', JSON.stringify(entries));
+
+            document.getElementById('journalSaid').value = '';
+            document.getElementById('journalMeant').value = '';
+            document.getElementById('journalPlatform').value = '';
+            document.getElementById('journalConcept').value = '';
+
+            renderJournalEntries();
+        }
+
+        function deleteJournalEntry(id) {
+            let entries = JSON.parse(localStorage.getItem('journalEntries') || '[]');
+            entries = entries.filter(e => e.id !== id);
+            localStorage.setItem('journalEntries', JSON.stringify(entries));
+            renderJournalEntries();
+        }
+
+        function loadJournalEntries() {
+            renderJournalEntries();
+        }
+
+        function renderJournalEntries() {
+            const entries = JSON.parse(localStorage.getItem('journalEntries') || '[]');
+            const container = document.getElementById('journalEntries');
+
+            if (entries.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-light); padding: 24px;">No journal entries yet. Start logging your first exchange above!</p>';
+                return;
+            }
+
+            container.innerHTML = '<h4 style="margin-bottom: 16px; color: var(--primary-dark);">📓 Your Journal Entries (' + entries.length + ')</h4>' +
+                entries.map(entry => `
+                    <div class="journal-entry">
+                        <div class="journal-entry-header">
+                            <span class="journal-entry-date">${entry.date} ${entry.platform ? '• ' + entry.platform : ''} ${entry.concept ? '• ' + entry.concept : ''}</span>
+                            <button class="journal-entry-delete" onclick="deleteJournalEntry(${entry.id})">✕ Remove</button>
+                        </div>
+                        <div class="journal-entry-text">
+                            <strong>Said:</strong> ${escapeHtml(entry.said)}<br>
+                            <strong>Meant:</strong> ${escapeHtml(entry.meant)}
+                        </div>
+                    </div>
+                `).join('');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // ===== Scroll Animations =====
+        function setupScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                observer.observe(el);
+            });
+        }
+    </script>
+</body>
+</html>
