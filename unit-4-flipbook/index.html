@@ -79,17 +79,17 @@
   .pg { position: relative; width: 100%; height: 100%; container-type: inline-size; overflow: hidden; background: #fff; color: #1b4fa8; }
   .pg img.bg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; user-select: none; -webkit-user-drag: none; }
   .pg .ov { position: absolute; inset: 0; }
-  .pg button.tk { position: absolute; width: max(2.7cqw, 15px); height: max(2.7cqw, 15px); transform: translate(-50%, -50%); border: 0; padding: 0; margin: 0;
-    background: transparent; cursor: pointer; border-radius: 50%; color: inherit; font: inherit; }
-  .pg button.tk:hover { background: rgba(14,124,134,.16); }
+  .pg button.tk { position: absolute; height: 2.3cqw; transform: translateY(-50%); border: 0; padding: 0; margin: 0;
+    background: transparent; cursor: pointer; border-radius: .9cqw; color: inherit; font: inherit; -webkit-tap-highlight-color: rgba(14,124,134,.25); }
+  .pg button.tk:hover { background: rgba(14,124,134,.11); }
   .pg button.tk:focus-visible { outline: 2px solid #e8871e; outline-offset: 1px; }
-  .pg button.tk::after { content: "\2713"; position: absolute; left: 50%; top: 46%; transform: translate(-46%, -58%); font: 700 3cqw/1 Calibri, Carlito, "Segoe UI Symbol", sans-serif;
+  .pg button.tk::after { content: "\2713"; position: absolute; left: var(--cx, 50%); top: 46%; transform: translate(-46%, -58%); font: 700 3cqw/1 Calibri, Carlito, "Segoe UI Symbol", sans-serif;
     color: #1b4fa8; opacity: 0; transition: opacity .1s; pointer-events: none; }
   .pg button.tk.on::after { opacity: 1; }
   .pg button.tk.ok::after { color: #1a8a3a; }
   .pg button.tk.bad::after { color: #c62828; }
   .pg button.tk.key { background: transparent; }
-  .pg button.tk.key::before { content: ""; position: absolute; left: 50%; top: 50%; width: 1.9cqw; height: 1.9cqw; transform: translate(-50%, -50%); border-radius: .3cqw; background: rgba(26,138,58,.2); pointer-events: none; }
+  .pg button.tk.key::before { content: ""; position: absolute; left: var(--cx, 50%); top: 50%; width: 1.9cqw; height: 1.9cqw; transform: translate(-50%, -50%); border-radius: .3cqw; background: rgba(26,138,58,.2); pointer-events: none; }
   .pg button.tk.key::after { opacity: 1; color: #1a8a3a; }
   .pg input.tx { position: absolute; margin: 0; border: 0; border-radius: .4cqw; background: transparent; color: #1b4fa8; padding: 0 .6cqw; outline: 0;
     font: 500 1.75cqw/1 Calibri, Carlito, "Segoe UI", sans-serif; }
@@ -137,6 +137,19 @@
   #tip .sk:hover { text-decoration: underline; }
   .tip-target { animation: tipPulse 1.5s ease-out infinite; }
   @keyframes tipPulse { 0% { box-shadow: 0 0 0 0 rgba(232,135,30,.85); } 70% { box-shadow: 0 0 0 11px rgba(232,135,30,0); } 100% { box-shadow: 0 0 0 0 rgba(232,135,30,0); } }
+
+  /* ---- phone reader: one page, big enough to read, scroll to move around ---- */
+  #reader { position: absolute; inset: 46px 0 64px 0; overflow: auto; display: none; overscroll-behavior: contain; padding: 10px 0 12px; }
+  body.reader #reader { display: block; }
+  body.reader #stage { display: none; }
+  #reader .rp { margin: 0 auto; background: #fff; box-shadow: 0 8px 22px rgba(0,0,0,.5); position: relative; }
+  #reader .rnav { position: sticky; left: 0; width: 100vw; display: flex; gap: 10px; padding: 14px 10px 4px; }
+  #reader .rnav button { flex: 1; min-height: 48px; border: 0; border-radius: 12px; background: rgba(255,255,255,.12); color: var(--ink); font: inherit; font-size: 15px; cursor: pointer; }
+  #reader .rnav button:disabled { opacity: .3; }
+  #reader .rnav button.pri { background: var(--teal); }
+  body.reader .pg input.tx { font-size: 16px; }
+  body.reader .pg input.tx.ctr { letter-spacing: -.5px; }
+  body.reader #toast { bottom: 76px; }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   @media (max-width: 720px) {
     header.top .hint, header.top h1 span { display: none; }
@@ -172,6 +185,8 @@
   <button class="navarrow" id="next" aria-label="Next page">&#8250;</button>
   <div id="loading"><div class="spin"></div><div>Opening the book…</div></div>
 </div>
+
+<div id="reader" aria-label="Unit 4 page"></div>
 
 <div id="thumbs" role="list" aria-label="Pages"></div>
 
@@ -209,6 +224,9 @@
   var PW = 595, PH = 842;                          // one A4 page, in layout units
   var $ = function (id) { return document.getElementById(id); };
   var book = $('book'), stage = $('stage');
+  var mq = window.matchMedia('(max-width: 720px), (max-height: 480px)'), READER = mq.matches;   // phones read page by page
+  if (READER) { document.body.classList.add('reader'); stage = $('reader'); }
+  try { mq.addEventListener('change', function () { if (mq.matches !== READER) location.reload(); }); } catch (e) {}
 
   // ---------- sound: a soft synthetic paper swish, no audio file ----------
   var soundOn = true, actx = null;
@@ -271,7 +289,7 @@
         var b = document.createElement('button'); b.type = 'button'; b.className = 'tk';
         b.setAttribute('role', f.kind === 'radio' ? 'radio' : 'checkbox'); b.setAttribute('aria-checked', 'false');
         b.setAttribute('aria-label', 'Option ' + (f.o + 1) + ' of ' + byGroup[f.g].length);
-        b.style.left = pc(f.cx + TXY[0]); b.style.top = pc(f.cy + TXY[1]);
+        b.style.left = pc(f.hx0); b.style.top = pc(f.cy + TXY[1]); b.style.width = pc(f.hx1 - f.hx0); b.style.setProperty('--cx', pc(f.cx + TXY[0] - f.hx0));
         b.setAttribute('data-g', f.g); b.setAttribute('data-o', f.o);
         b.onclick = function () { setTick(f); };
         ov.appendChild(b);
@@ -375,20 +393,57 @@
     var w = Math.min(aw, ah * ratio), h = w / ratio;
     fit.style.width = Math.floor(w) + 'px'; fit.style.height = Math.floor(h) + 'px';
   }
-  fitBook();
-  window.addEventListener('resize', fitBook);
+  if (!READER) { fitBook(); window.addEventListener('resize', fitBook); }
 
   // ---------- the flip book ----------
-  var pf = new St.PageFlip(book, {
-    width: PW, height: PH, size: 'stretch',
-    minWidth: 300, maxWidth: 900, minHeight: 424, maxHeight: 1273,
-    showCover: false, usePortrait: true, autoSize: true,
-    drawShadow: true, maxShadowOpacity: 0.55, flippingTime: 850,
-    showPageCorners: true, mobileScrollSupport: false, swipeDistance: 28, startPageIndex: 0, startPage: 0
-  });
-  for (var pi = 1; pi <= N; pi++) { var pgEl = document.createElement('div'); pgEl.className = 'page'; pgEl.setAttribute('data-density', 'soft'); pgEl.appendChild(buildPg(pi, false)); book.appendChild(pgEl); }
-  pf.loadFromHTML(book.querySelectorAll('.page'));
-  paint();
+  var pf;
+  if (READER) {
+    // a small stand-in for the flip book: same calls, one page at a time, scrollable
+    var cur = 0, cbs = { init: [], flip: [], changeOrientation: [], changeState: [] }, rd = $('reader');
+    var SIZES = [{ n: 'Fit to screen', f: 0 }, { n: 'Comfortable', f: 1.75 }, { n: 'Large', f: 2.4 }], sizeIdx = 1;
+    try { var sv = parseInt(localStorage.getItem('u4-read-size'), 10); if (sv >= 0 && sv < SIZES.length) sizeIdx = sv; } catch (e) {}
+    var pageW = function () { var vw = rd.clientWidth, f = SIZES[sizeIdx].f; return f ? Math.round(Math.min(Math.max(vw * f, 560), 1100)) : Math.max(vw - 20, 280); };
+    var showPage = function (keepScroll) {
+      var oldTop = rd.scrollTop / Math.max(rd.scrollHeight, 1), oldLeft = rd.scrollLeft / Math.max(rd.scrollWidth, 1);
+      rd.innerHTML = '';
+      var w = pageW(), rp = document.createElement('div'); rp.className = 'rp'; rp.style.width = w + 'px'; rp.style.height = Math.round(w * PH / PW) + 'px';
+      rp.appendChild(buildPg(cur + 1, false)); rd.appendChild(rp);
+      var nav = document.createElement('div'); nav.className = 'rnav';
+      var pb = document.createElement('button'); pb.textContent = '‹ Previous page'; pb.disabled = cur === 0; pb.onclick = function () { go2(cur - 1); };
+      var nb = document.createElement('button'); nb.textContent = 'Next page ›'; nb.className = 'pri'; nb.disabled = cur === N - 1; nb.onclick = function () { go2(cur + 1); };
+      nav.appendChild(pb); nav.appendChild(nb); rd.appendChild(nav);
+      if (keepScroll) { rd.scrollTop = oldTop * rd.scrollHeight; rd.scrollLeft = oldLeft * rd.scrollWidth; } else { rd.scrollTop = 0; rd.scrollLeft = Math.max(0, (rd.scrollWidth - rd.clientWidth) / 2); }
+      paint();
+    };
+    var go2 = function (i) {
+      i = Math.min(Math.max(i, 0), N - 1); if (i === cur) return; cur = i; showPage(false);
+      cbs.flip.forEach(function (f) { f({ data: i }); }); swish();
+    };
+    pf = {
+      getCurrentPageIndex: function () { return cur; }, getOrientation: function () { return 'portrait'; },
+      on: function (e, f) { (cbs[e] = cbs[e] || []).push(f); },
+      flipNext: function () { go2(cur + 1); }, flipPrev: function () { go2(cur - 1); }, flip: function (i) { go2(i); },
+      turnToPage: function (i) { cur = Math.min(Math.max(i, 0), N - 1); showPage(false); },
+      cycleSize: function () {
+        sizeIdx = (sizeIdx + 1) % SIZES.length; try { localStorage.setItem('u4-read-size', String(sizeIdx)); } catch (e) {}
+        showPage(true); say('Reading size: <b>' + SIZES[sizeIdx].n + '</b>', [], 1800);
+      }
+    };
+    window.addEventListener('resize', function () { showPage(true); });
+    showPage(false);
+    setTimeout(function () { cbs.init.forEach(function (f) { f({}); }); }, 0);
+  } else {
+    var pf = new St.PageFlip(book, {
+      width: PW, height: PH, size: 'stretch',
+      minWidth: 300, maxWidth: 900, minHeight: 424, maxHeight: 1273,
+      showCover: false, usePortrait: true, autoSize: true,
+      drawShadow: true, maxShadowOpacity: 0.55, flippingTime: 850,
+      showPageCorners: true, mobileScrollSupport: false, swipeDistance: 28, startPageIndex: 0, startPage: 0
+    });
+    for (var pi = 1; pi <= N; pi++) { var pgEl = document.createElement('div'); pgEl.className = 'page'; pgEl.setAttribute('data-density', 'soft'); pgEl.appendChild(buildPg(pi, false)); book.appendChild(pgEl); }
+    pf.loadFromHTML(book.querySelectorAll('.page'));
+    paint();
+  }
 
   function spreadText() {
     var cur = pf.getCurrentPageIndex(), land = pf.getOrientation() === 'landscape';
@@ -465,7 +520,9 @@
     $('zoom').classList.add('open'); paint(); $('zclose').focus();
   }
   function closeZoom() { $('zoom').classList.remove('open'); $('zinner').innerHTML = ''; $('bzoom').focus(); }
-  $('bzoom').onclick = openZoom; $('zclose').onclick = closeZoom;
+  if (READER) { $('bzoom').onclick = function () { pf.cycleSize(); }; $('bzoom').setAttribute('title', 'Reading size'); $('bzoom').setAttribute('aria-label', 'Change reading size'); }
+  else $('bzoom').onclick = openZoom;
+  $('zclose').onclick = closeZoom;
   $('zoom').addEventListener('click', function (e) { if (e.target === $('zoom') || e.target === $('zinner')) closeZoom(); });
 
   $('bsound').onclick = function () {
@@ -481,14 +538,17 @@
 
   // ---------- first-visit balloon tips ----------
   var TIPS = [
-    { title: '1 of 3 · Tick and type', text: 'Try it! Tick a box, or click a line and type your answer. Your writing appears in blue.', target: 'page' },
-    { title: '2 of 3 · Check your work', text: 'When you finish, press Check answers. A green tick is correct. A red tick means try again.', target: '#bcheck' },
-    { title: '3 of 3 · Saved for you', text: 'Your answers are saved on this device, so you can come back later. Clear starts again.', target: '#bclear' }
+    { title: 'Tick and type', text: 'Try it! Tap a box or its words to tick, or tap a line and type your answer. Your writing appears in blue.', target: 'page' },
+    { title: 'Check your work', text: 'When you finish, press Check answers. A green tick is correct. A red tick means try again.', target: '#bcheck' },
+    { title: 'Saved for you', text: 'Your answers are saved on this device, so you can come back later. Clear starts again.', target: '#bclear' }
   ];
+  if (READER) TIPS.unshift({ title: 'Reading size', text: 'Press the magnifier to make the page smaller or bigger. Drag with one finger to move around the page.', target: '#bzoom', first: true });
+  TIPS.forEach(function (t, i) { t.title = (i + 1) + ' of ' + TIPS.length + ' \u00b7 ' + t.title; });
+  var tipTick = READER ? 1 : 0;
   var tip = $('tip'), tipStep = -1, tipEl = null, tipSeen = false;
   try { tipSeen = localStorage.getItem('u4-tips-seen') === '1'; } catch (e) {}
   function visibleTarget() {
-    var cand = book.querySelectorAll('button.tk, input.tx'), br = book.getBoundingClientRect();
+    var root = READER ? $('reader') : book, cand = root.querySelectorAll('button.tk, input.tx'), br = root.getBoundingClientRect();
     for (var i = 0; i < cand.length; i++) {
       if (!cand[i].getClientRects().length) continue;
       var r = cand[i].getBoundingClientRect();
@@ -499,18 +559,19 @@
   function placeTip() {
     if (tipStep < 0) return;
     if (tipEl) tipEl.classList.remove('tip-target');
-    var t = TIPS[tipStep], el = t.target === 'page' ? (visibleTarget() || $('fit')) : document.querySelector(t.target);
-    tipEl = el; if (el !== $('fit')) el.classList.add('tip-target');
+    var t = TIPS[tipStep], el = t.target === 'page' ? (visibleTarget() || (READER ? $('reader') : $('fit'))) : document.querySelector(t.target);
+    var anchorBox = el === $('fit') || el === $('reader'); tipEl = el; if (!anchorBox) el.classList.add('tip-target');
     tip.querySelector('.tt').textContent = t.title; tip.querySelector('.tx2').textContent = t.text;
     $('tipnext').textContent = tipStep === TIPS.length - 1 ? 'Got it' : 'Next';
-    var dots = tip.querySelectorAll('.dots i'); for (var d = 0; d < dots.length; d++) dots[d].className = d === tipStep ? 'on' : '';
+    var dh = tip.querySelector('.dots'); if (dh.children.length !== TIPS.length) { dh.innerHTML = ''; for (var q = 0; q < TIPS.length; q++) dh.appendChild(document.createElement('i')); }
+    var dots = dh.children; for (var d = 0; d < dots.length; d++) dots[d].className = d === tipStep ? 'on' : '';
     tip.classList.add('open'); tip.style.visibility = 'hidden';
     var r = el.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight, vw = window.innerWidth, vh = window.innerHeight;
     var cx = r.left + r.width / 2, left = Math.min(Math.max(cx - w / 2, 8), vw - w - 8);
     var below = r.bottom + 16 + h < vh - 8 || r.top - 16 - h < 8;
-    if (el === $('fit')) { below = true; }
+    if (anchorBox) { below = true; }
     var top = below ? r.bottom + 14 : r.top - h - 14;
-    if (el === $('fit')) top = r.top + 24;
+    if (anchorBox) top = r.top + 24;
     tip.className = 'open ' + (below ? 'below' : 'above');
     tip.style.left = left + 'px'; tip.style.top = Math.max(8, top) + 'px';
     tip.style.setProperty('--ax', Math.min(Math.max(cx - left, 20), w - 20) + 'px');
@@ -525,9 +586,9 @@
   $('tipnext').onclick = nextTip;
   $('tipskip').onclick = function () { endTips(true); };
   $('bhelp').onclick = startTips;
-  window.__tipAct = function () { if (tipStep === 0) { setTimeout(function () { if (tipStep === 0) nextTip(); }, 700); } };
+  window.__tipAct = function () { if (tipStep === tipTick) { setTimeout(function () { if (tipStep === tipTick) nextTip(); }, 700); } };
   window.addEventListener('resize', function () { if (tipStep >= 0) placeTip(); });
-  pf.on('flip', function () { if (tipStep === 0) setTimeout(function () { if (tipStep === 0) placeTip(); }, 950); });
+  pf.on('flip', function () { if (tipStep === tipTick) setTimeout(function () { if (tipStep === tipTick) placeTip(); }, READER ? 150 : 950); });
   pf.on('init', function () { if (!tipSeen) setTimeout(startTips, 1100); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && tipStep >= 0) endTips(true); });
 
