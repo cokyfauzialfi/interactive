@@ -150,6 +150,41 @@
   body.reader .pg input.tx { font-size: 16px; }
   body.reader .pg input.tx.ctr { letter-spacing: -.5px; }
   body.reader #toast { bottom: 76px; }
+
+  /* ---- animated comic on page 1 ---- */
+  .pg .comic { position: absolute; opacity: 0; pointer-events: none; }
+  .pg .comic.play { opacity: 1; }
+  .pg .comic .comic-svg { display: block; width: 100%; height: 100%; }
+  .pg .comic svg * { transform-box: view-box; }
+  .pg .comic .mv, .pg .comic .cp { opacity: 0; }
+  .pg .comic.play .cp { animation: cpIn .5s ease-out both; animation-delay: var(--t0); }
+  .pg .comic.play .slide { animation: slideIn var(--du, .9s) cubic-bezier(.2,.8,.3,1) both; animation-delay: var(--d); }
+  .pg .comic.play .pop { animation: popIn .42s cubic-bezier(.3,1.5,.5,1) both; animation-delay: var(--d); }
+  .pg .comic.play .ln { animation: lineIn .4s ease-out both; animation-delay: var(--d); }
+  .pg .comic.play .q { animation: qWob 1.1s ease-out both; animation-delay: var(--d); }
+  .pg .comic.play .arm { transform-origin: 112px 296px; animation: pointArm .8s cubic-bezier(.3,1.3,.5,1) both; animation-delay: var(--d); }
+  .pg .comic.play .nudge { animation: nudgeX .7s ease-in-out 3 both; animation-delay: var(--d); }
+  .pg .comic.play .thumb { transform-origin: 124px 296px; animation: thumbUp .9s ease-out both; animation-delay: var(--d); }
+  .pg .comic.play .star { animation: twinkle .8s ease-out both; animation-delay: var(--d); }
+  @keyframes cpIn { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: none; } }
+  @keyframes slideIn { from { opacity: 0; transform: translateX(-80px); } to { opacity: 1; transform: none; } }
+  @keyframes popIn { 0% { opacity: 0; transform: scale(.2); } 70% { opacity: 1; transform: scale(1.06); } 100% { opacity: 1; transform: scale(1); } }
+  @keyframes lineIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @keyframes qWob { 0% { opacity: 0; transform: scale(.3) rotate(0); } 30% { opacity: 1; transform: scale(1.25) rotate(-14deg); } 55% { opacity: 1; transform: scale(1) rotate(10deg); } 80% { opacity: 1; transform: rotate(-6deg); } 100% { opacity: 1; transform: none; } }
+  @keyframes pointArm { 0% { opacity: 1; transform: rotate(70deg); } 100% { opacity: 1; transform: rotate(0); } }
+  @keyframes nudgeX { 0% { opacity: 1; transform: translateX(0); } 50% { opacity: 1; transform: translateX(10px); } 100% { opacity: 1; transform: translateX(0); } }
+  @keyframes thumbUp { 0% { opacity: 1; transform: translateY(0) rotate(0); } 30% { opacity: 1; transform: translateY(-10px) rotate(-7deg); } 60% { opacity: 1; transform: translateY(2px) rotate(2deg); } 100% { opacity: 1; transform: none; } }
+  @keyframes twinkle { 0% { opacity: 0; transform: scale(0); } 55% { opacity: 1; transform: scale(1.4); } 100% { opacity: .95; transform: scale(1); } }
+  @keyframes fadeOnly { from { opacity: 0; } to { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) {
+    .pg .comic.play .mv { animation-name: fadeOnly !important; animation-duration: .6s !important; animation-iteration-count: 1 !important; }
+  }
+  .pg button.replay { position: absolute; display: none; border: 0; border-radius: 99px; background: rgba(14,124,134,.92); color: #fff; cursor: pointer;
+    font: 600 1.55cqw/1 Calibri, Carlito, "Segoe UI", sans-serif; padding: .7cqw 1.5cqw .7cqw 1.2cqw; box-shadow: 0 1px 4px rgba(0,0,0,.3); }
+  .pg button.replay:hover { background: #0b6a73; }
+  .pg button.replay:focus-visible { outline: 2px solid #e8871e; outline-offset: 2px; }
+  .pg button.replay.on { display: block; }
+  body.reader .pg button.replay { font-size: max(1.55cqw, 13px); }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   @media (max-width: 720px) {
     header.top .hint, header.top h1 span { display: none; }
@@ -199,7 +234,7 @@
   <div class="sep"></div>
   <button class="btn" id="bthumb" aria-label="Show page thumbnails" title="Thumbnails"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="lbl">Pages</span></button>
   <button class="btn" id="bzoom" aria-label="Zoom in on the current pages" title="Zoom"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5M11 8v6M8 11h6"/></svg><span class="lbl">Zoom</span></button>
-  <button class="btn on" id="bsound" aria-label="Page-turn sound on" aria-pressed="true" title="Sound"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12"/></svg></button>
+  <button class="btn on" id="bsound" aria-label="Sound for page turns and the comic voice on" aria-pressed="true" title="Sound: page turns and comic voice"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12"/></svg></button>
   <button class="btn" id="bfull" aria-label="Full screen" title="Full screen"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
 </footer>
 
@@ -217,6 +252,7 @@
 
 <script src="js/page-flip.browser.js"></script>
 <script src="js/fields.js"></script>
+<script src="js/comic.js"></script>
 <script>
 (function () {
   var N = 8;
@@ -283,6 +319,14 @@
     var im = document.createElement('img'); im.className = 'bg'; im.src = urls[n - 1]; im.alt = 'Page ' + n + ' of Unit 4'; im.draggable = false; pg.appendChild(im);
     var ov = document.createElement('div'); ov.className = 'ov'; pg.appendChild(ov);
     ['mousedown', 'touchstart', 'pointerdown', 'dblclick'].forEach(function (ev) { ov.addEventListener(ev, stop, { passive: true }); });
+    if (n === 1 && window.U4_COMIC) {
+      var cb = window.U4_COMIC.box, cm = document.createElement('div'); cm.className = 'comic';
+      cm.style.left = pc(cb[0]); cm.style.top = pc(cb[1]); cm.style.width = pc(cb[2]); cm.style.height = pc(cb[3]); cm.innerHTML = window.U4_COMIC.svg;
+      ov.appendChild(cm);
+      var rb = document.createElement('button'); rb.type = 'button'; rb.className = 'replay on'; rb.textContent = '\u21BB Replay with voice'; rb.setAttribute('aria-label', 'Replay the animated comic');
+      rb.style.left = pc(cb[0] + cb[2]); rb.style.top = pc(cb[1] - 3); rb.style.transform = 'translate(-100%, -100%)';
+      rb.onclick = function () { playComic(pg); }; ov.appendChild(rb);
+    }
     FIELDS.forEach(function (f) {
       if (f.p !== n) return;
       if (f.t === 'tick') {
@@ -527,7 +571,8 @@
 
   $('bsound').onclick = function () {
     soundOn = !soundOn; this.classList.toggle('on', soundOn); this.setAttribute('aria-pressed', String(soundOn));
-    this.setAttribute('aria-label', 'Page-turn sound ' + (soundOn ? 'on' : 'off'));
+    this.setAttribute('aria-label', 'Sound for page turns and the comic voice ' + (soundOn ? 'on' : 'off'));
+    if (!soundOn) stopVoice(); if (typeof replayLabels === 'function') replayLabels();
   };
   $('bfull').onclick = function () {
     try {
@@ -591,6 +636,41 @@
   pf.on('flip', function () { if (tipStep === tipTick) setTimeout(function () { if (tipStep === tipTick) placeTip(); }, READER ? 150 : 950); });
   pf.on('init', function () { if (!tipSeen) setTimeout(startTips, 1100); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && tipStep >= 0) endTips(true); });
+
+
+  // ---------- animated comic (page 1) ----------
+  var voice = { el: null };
+  (function loadVoice() {          // fetch the voice track once; a blob URL always plays inside the sandboxed page
+    var C = window.U4_COMIC; if (!C || !C.audio) return;
+    function make(src) { try { voice.el = new Audio(src); voice.el.preload = 'auto'; } catch (e) {} }
+    try { fetch(C.audio).then(function (r) { return r.ok ? r.blob() : null; }).then(function (b) { make(b ? URL.createObjectURL(b) : C.audio); }).catch(function () { make(C.audio); }); }
+    catch (e) { make(C.audio); }
+  })();
+  function startVoice() {
+    if (!soundOn || !voice.el) return;
+    try { voice.el.currentTime = 0; var pr = voice.el.play(); if (pr && pr.catch) pr.catch(function () {}); } catch (e) {}
+  }
+  function stopVoice() { if (voice.el) { try { voice.el.pause(); voice.el.currentTime = 0; } catch (e) {} } }
+  function replayLabels() {
+    var bs = document.querySelectorAll('button.replay');
+    for (var i = 0; i < bs.length; i++) bs[i].textContent = soundOn ? '\u21BB Replay with voice' : '\u21BB Replay comic';
+  }
+  function playComic(root) {
+    var list = root ? [root.querySelector('.comic')] : document.querySelectorAll('.comic'), any = false;
+    for (var i = 0; i < list.length; i++) {
+      var c = list[i]; if (!c) continue;
+      c.classList.remove('play'); void c.offsetWidth; c.classList.add('play'); any = true;
+    }
+    if (any) startVoice();
+  }
+  function page1Showing() {
+    var el = document.querySelector('#book .pg[data-page="1"], #reader .pg[data-page="1"]');
+    return !!(el && el.getClientRects().length);
+  }
+  var reduceMotion = false; try { reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+  function autoComic() { if (page1Showing() && !$('zoom').classList.contains('open')) playComic(null); }
+  pf.on('init', function () { setTimeout(autoComic, 900); });
+  pf.on('flip', function () { setTimeout(function () { if (page1Showing()) autoComic(); else stopVoice(); }, READER ? 150 : 900); });
 
   window.addEventListener('hashchange', function () {
     var m = /^#page-(\d+)$/.exec(location.hash || '');
